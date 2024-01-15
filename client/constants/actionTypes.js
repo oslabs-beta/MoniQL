@@ -1,0 +1,2 @@
+export const POPULATE_TABLES = 'POPULATE_TABLES';
+export const CHANGE_TEST = 'CHANGE_TEST';
