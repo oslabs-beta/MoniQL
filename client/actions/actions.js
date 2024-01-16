@@ -10,4 +10,9 @@ export const populateTablesActionCreator = (changeData) => ({
     payload: changeData
 })
 
+export const logInActionCreator = (user, uri) => ({
+  type: types.LOG_IN,
+  payload: {user, uri}
+})
+
 

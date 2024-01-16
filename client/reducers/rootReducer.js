@@ -4,6 +4,7 @@ import { combineReducers } from "redux";
 //The way Redux works, when we fire off a dispatch, it will be sent through each reducer file.
 import alertsReducer from "./alertsReducer";
 import diagramReducer from "./diagramReducer";
+import userReducer from "./usersReducer";
 
 //combineReducers method combines our reducers so we can import them all as one to the store.js file!
 //if we ended up with more reducer files, they would go here. 
@@ -11,6 +12,8 @@ import diagramReducer from "./diagramReducer";
 const rootReducer = combineReducers({
   alerts: alertsReducer,
   diagram: diagramReducer,
+  user: userReducer,
 });
 
 export default rootReducer;
+
