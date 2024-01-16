@@ -1,8 +1,8 @@
 import * as types from '../constants/actionTypes';
 
-const initialState ={
+const initialState = {
     alertsTest: 'hello, world'
-}
+};
 
 const alertsReducer = (state = initialState, action) => {
   switch(action.type) {
@@ -15,6 +15,6 @@ const alertsReducer = (state = initialState, action) => {
     default:
       return state;
   }
-}
+};
 
 export default alertsReducer;

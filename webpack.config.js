@@ -57,9 +57,9 @@ module.exports = {
     hot: true,
     // disables the full-screen overlay that displays build errors
     // uncomment while styling
-    // client: {
-    //   overlay: false,
-    // },
+    client: {
+      overlay: false,
+    },
 
     static: {
       publicPath: '/build',

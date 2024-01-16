@@ -1,11 +1,12 @@
 import React from 'react';
 import TestComponent from './components/TestComponent';
+import LoginContainer from './components/LoginContainer';
 
 const App = () => {
   return (
     <div className='App'>
       <TestComponent />
-
+      <LoginContainer />
       <h2>
         ฅV●ᴥ●Vฅ
         <br></br>
