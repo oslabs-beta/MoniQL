@@ -6,8 +6,5 @@ const app = express();
 
 app.use(express.static(path.resolve(__dirname, '../client')))
 
-
-
-
 app.listen(PORT, () => console.log('HEY LISTEN! (on 3000)'));
 
