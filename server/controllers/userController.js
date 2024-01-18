@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
-const db = require('../models/db');
+const { pool } = require('../models/db');
+const db = pool;
 
 const userController = {};
 
