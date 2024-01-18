@@ -82,7 +82,7 @@ const SideBar = () => {
         <Toolbar />
         <Box sx={{ overflow: "auto" }}>
           <List>
-            <Typography color="#E5E7FA">
+            <Typography color="#B5B8CB">
               {["Visualize", "Monitors", "Reports", "Query"].map(
                 (text, index) => (
                   <ListItem key={text} disablePadding>

@@ -3,6 +3,7 @@ import TestComponent from './components/TestComponent';
 import LoginContainer from './components/LoginContainer';
 import Header from "./components/Header";
 import SideBar from "./components/SideBar";
+import ErdVisualizerContainer from "./containers/ErdVisualizerContainer";
 
 import "./components/stylesheets/App.css";
 
@@ -32,6 +33,7 @@ const App = () => {
       <Header />
       <SideBar />
       <LoginContainer />
+      <ErdVisualizerContainer />
     </div>
   );
 };
