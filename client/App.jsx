@@ -5,7 +5,6 @@ import LoginContainer from './components/LoginContainer';
 const App = () => {
   return (
     <div className='App'>
-      <TestComponent />
       <LoginContainer />
       <h2>
         ฅV●ᴥ●Vฅ
@@ -21,6 +20,7 @@ const App = () => {
         <br></br>
         ʚɞ ⁺˖ ⸝⸝
       </h2>
+      <TestComponent />
     </div>
   );
 };

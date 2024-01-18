@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { logInActionCreator } from '../actions/actions';
+import { logInActionCreator, saveDBActionCreator } from '../actions/actions';
 //mui imports below:
 import { Roboto, Container, Switch, Link, Box, TextField, Typography, Button } from '@mui/material';
 import { ThemeProvider, createTheme } from "@mui/material/styles";
@@ -56,8 +56,10 @@ const LoginContainer = () => {
       console.log('HERE IS DATAAAAAA', data)
       if (!response.ok) throw new Error(data.error || 'Error from server')
       console.log(`userID: ${data.userId}, username: ${data.username}, uri: ${data.uri} `)
-      dispatch(logInActionCreator(data.userId, data.uri));
-
+      console.log(data.dbArray)
+      dispatch(logInActionCreator(data.userId, data.username, data.uri, data.dbArray));
+      dispatch(saveDBActionCreator(data.dbArray));
+      
 
       //leaving this open for now, but here is where we will go store shit in redux state
       if (!response.ok) {

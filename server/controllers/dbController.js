@@ -4,7 +4,7 @@ const fs = require('fs').promises;
 require('dotenv').config();
 const userUri = process.env.USER_URI || undefined;
 
-// const db = userPool;
+const db = userPool;
 
 const dbController = {};
 dbController.connect = async (req, res, next) => {
@@ -25,13 +25,32 @@ dbController.connect = async (req, res, next) => {
         console.error('Error writing file:', err);
         return next(err);
     }
-}
+  }
 
-dbController.connectionTest = async (req, res, next) => {
+dbController.getDB = async (req, res, next) => {
   try {
-    const query = 'SELECT * FROM people LIMIT 10'
+    // const query = 'SELECT * FROM people LIMIT 10'
+    const query = `SELECT 
+    json_agg(
+        json_build_object(
+            'table_name', table_info.table_name,
+            'columns', table_info.columns
+        )
+    ) as tables_with_columns
+FROM (
+    SELECT 
+        table_name, 
+        json_agg(column_name) AS columns
+    FROM 
+        information_schema.columns 
+    WHERE 
+        table_schema = 'public'
+    GROUP BY 
+        table_name
+) AS table_info;`
     const results = await db.query(query);
-    res.locals = {results}
+    console.log(results)
+    res.locals = {dbArray: results.rows[0].tables_with_columns}
     return next()
   } catch (err) {
     return next(err)

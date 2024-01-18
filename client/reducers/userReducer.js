@@ -2,6 +2,7 @@ import * as types from "../constants/actionTypes";
 
 const initialState= {
     user: null,
+    username: null,
     uri: null
 };
 
@@ -12,6 +13,7 @@ const userReducer = (state = initialState, action) => {
         return {
             ...state,
             user: action.payload.user,
+            username: action.payload.username,
             uri: action.payload.uri
         }
         default:
