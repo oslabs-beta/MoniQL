@@ -38,8 +38,9 @@ const LoginContainer = () => {
   const [regToggle, setRegToggle] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [uri, setUri] = useState('');
-  
+  const [uri, setUri] = useState(null);
+  const [error, setError] = useState(''); 
+
   const dispatch = useDispatch();
 
   const handleAuth = async (path) => {
@@ -48,22 +49,27 @@ const LoginContainer = () => {
       const requestOptions = {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({ username, password})
+        body: JSON.stringify({ username, password, uri })
       };
       const response = await fetch(path, requestOptions);
       const data = await response.json();
-      
-      if (!response.ok) throw new Error(data.message || 'Error from server')
-      console.log(`here is your userID: ${data.userId}`)
+      console.log('HERE IS DATAAAAAA', data)
+      if (!response.ok) throw new Error(data.error || 'Error from server')
+      console.log(`userID: ${data.userId}, username: ${data.username}, uri: ${data.uri} `)
       dispatch(logInActionCreator(data.userId, data.uri));
 
 
       //leaving this open for now, but here is where we will go store shit in redux state
-
+      if (!response.ok) {
+        setError(data.error || 'Error from server');
+        throw new Error(data.error || 'Error from server');
+      }
+      dispatch(logInActionCreator(data.userId, data.uri));
     } catch (err) {
-      console.error(err.message);
+      console.error('IN CATCH ERROR HANDLER FOR HANDLEAUTH', err.message);
     }
   }
+
 
 
   return (
@@ -101,6 +107,9 @@ const LoginContainer = () => {
               onChange={(e) => setUsername(e.target.value)}
               autoFocus
             />
+            <Typography color="error" variant="body2">
+            {error} username does not exist
+            </Typography>
             <TextField
               margin="normal"
               required
