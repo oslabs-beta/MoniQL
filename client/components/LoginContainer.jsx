@@ -1,6 +1,37 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { logInActionCreator } from '../actions/actions';
+//mui imports below:
+import { Roboto, Container, Switch, Link, Box, TextField, Typography, Button } from '@mui/material';
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+// import { CssBaseline } from '@material-ui/core';
+
+
+const theme = createTheme({
+  typography: {
+    fontFamily: ["Pixelify Sans", "sans-serif"].join(","),
+  },
+  palette: {
+    primary: {
+      main: "#766ffc",
+    },
+    secondary: {
+      main: "#B5B8CB",
+    },
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 30,
+          padding: 15,
+        },
+      },
+    },
+  },
+})
+
+
 
 
 const LoginContainer = () => {
@@ -36,7 +67,120 @@ const LoginContainer = () => {
 
 
   return (
-    <div>
+    <ThemeProvider theme={theme}>
+      <Container component="main" maxWidth="xs">
+        <Box
+          sx={{
+            marginTop: 8,
+            padding: 4,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            backgroundColor: "#35353F",
+            borderRadius: 4,
+            boxShadow: 3,
+          }}
+        >
+          <Typography color="#B5B8CB" component="h1" variant="h5">
+            Sign In
+          </Typography>
+          <Box
+            // component="form"
+            onSubmit={() =>
+              regToggle ? handleAuth("/register") : handleAuth("/login")
+            }
+            noValidate
+            sx={{ mt: 1 }}
+          >
+            <Button
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              onClick={() => setRegToggle(!regToggle)}
+            >
+              {regToggle ? "Register" : "Log In"}
+            </Button>
+            <TextField
+              margin="normal"
+              required
+              label="username"
+              fullWidth
+              id="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              autoFocus
+              sx={{
+                backgroundColor: "#3B3B4B",
+                borderRadius: "5px",
+              }}
+              InputLabelProps={{
+                style: { color: "#fff" },
+              }}
+              InputProps={{
+                style: { color: "#fff" },
+              }}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              label="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              sx={{
+                backgroundColor: "#3B3B4B",
+                borderRadius: "5px",
+              }}
+              InputLabelProps={{
+                style: { color: "#fff" },
+              }}
+              InputProps={{
+                style: { color: "#fff" },
+              }}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              label="SQL"
+              id="uri"
+              value={uri}
+              onChange={(e) => setUri(e.target.value)}
+              sx={{
+                backgroundColor: "#3B3B4B",
+                borderRadius: "5px",
+              }}
+              InputLabelProps={{
+                style: { color: "#fff" },
+              }}
+              InputProps={{
+                style: { color: "#fff" },
+              }}
+            />
+            <Button
+              onClick={() =>
+                regToggle ? handleAuth("/register") : handleAuth("/login")
+              }
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              {regToggle ? "Register" : "Sign in"}
+            </Button>
+          </Box>
+        </Box>
+      </Container>
+    </ThemeProvider>
+  );
+};
+
+
+export default LoginContainer;
+
+
+    {/* <div>
       <h1>Log In</h1>
       <button onClick={() => setRegToggle(!regToggle)}>
         {regToggle ? "Register" : "Log In"}
@@ -75,9 +219,4 @@ const LoginContainer = () => {
           <button type="submit">{regToggle ? "Register" : "Sign in"}</button>
         </div>
       </form>
-    </div>
-  );
-};
-
-
-export default LoginContainer;
+    </div> */}

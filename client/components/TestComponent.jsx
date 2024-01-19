@@ -5,7 +5,7 @@ import { changeTestActionCreator } from '../actions/actions.js';
 const TestComponent = () => {
 const dispatch = useDispatch();
 const [testText, setTestText] = useState('')
-const storeText = useSelector(state => state.alerts.alertsTest)
+const storeText = useSelector(state => state.alert.alertsTest)
 
   return (
     <div>
