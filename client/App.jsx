@@ -1,9 +1,9 @@
 import React from 'react';
 import TestComponent from './components/TestComponent';
 import LoginContainer from './components/LoginContainer';
-import Header from "./components/Header";
-import SideBar from "./components/SideBar";
-import ErdVisualizerContainer from "./containers/ErdVisualizerContainer";
+import AppContainer from './containers/AppContainer';
+
+
 
 import "./components/stylesheets/App.css";
 
@@ -30,10 +30,8 @@ import "./components/stylesheets/App.css";
 const App = () => {
   return (
     <div className='App'>
-      <Header />
-      <SideBar />
       <LoginContainer />
-      <ErdVisualizerContainer />
+      <AppContainer />
     </div>
   );
 };
