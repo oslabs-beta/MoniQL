@@ -37,7 +37,8 @@
   "dependencies": {
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
-    "@mui/material": "^5.15.4",
+    "@mui/icons-material": "^5.15.5",
+    "@mui/material": "^5.15.5",
     "@reduxjs/toolkit": "^2.0.1",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",

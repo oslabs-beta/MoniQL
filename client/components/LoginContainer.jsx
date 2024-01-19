@@ -16,7 +16,7 @@ const theme = createTheme({
       main: "#766ffc",
     },
     secondary: {
-      main: "#9c97fc",
+      main: "#B5B8CB",
     },
   },
   components: {
@@ -75,30 +75,39 @@ const LoginContainer = () => {
 
 
   return (
-  <ThemeProvider theme={theme}>
-    <Container component="main" maxWidth="xs">
-      <Box
-        sx={{
-          marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <Typography component="h1" variant='h5'>Sign In</Typography>
-        <Box 
-          // component="form" 
-          onSubmit={() =>
-          regToggle ? handleAuth("/register") : handleAuth("/login")
-        } 
-        noValidate sx={{ mt: 1 }}>
-          <Button
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            onClick={() => setRegToggle(!regToggle)}>
-        {regToggle ? "Register" : "Log In"}
-          </Button>
+    <ThemeProvider theme={theme}>
+      <Container component="main" maxWidth="xs">
+        <Box
+          sx={{
+            marginTop: 8,
+            padding: 4,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            backgroundColor: "#35353F",
+            borderRadius: 4,
+            boxShadow: 3,
+          }}
+        >
+          <Typography color="#B5B8CB" component="h1" variant="h5">
+            Sign In
+          </Typography>
+          <Box
+            // component="form"
+            onSubmit={() =>
+              regToggle ? handleAuth("/register") : handleAuth("/login")
+            }
+            noValidate
+            sx={{ mt: 1 }}
+          >
+            <Button
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              onClick={() => setRegToggle(!regToggle)}
+            >
+              {regToggle ? "Register" : "Log In"}
+            </Button>
             <TextField
               margin="normal"
               required
@@ -108,6 +117,16 @@ const LoginContainer = () => {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               autoFocus
+              sx={{
+                backgroundColor: "#3B3B4B",
+                borderRadius: "5px",
+              }}
+              InputLabelProps={{
+                style: { color: "#fff" },
+              }}
+              InputProps={{
+                style: { color: "#fff" },
+              }}
             />
             <Typography color="error" variant="body2">
             {error} username does not exist
@@ -120,30 +139,51 @@ const LoginContainer = () => {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              sx={{
+                backgroundColor: "#3B3B4B",
+                borderRadius: "5px",
+              }}
+              InputLabelProps={{
+                style: { color: "#fff" },
+              }}
+              InputProps={{
+                style: { color: "#fff" },
+              }}
             />
-             <TextField
+            <TextField
               margin="normal"
               required
               fullWidth
+              label="SQL"
               id="uri"
               value={uri}
               onChange={(e) => setUri(e.target.value)}
+              sx={{
+                backgroundColor: "#3B3B4B",
+                borderRadius: "5px",
+              }}
+              InputLabelProps={{
+                style: { color: "#fff" },
+              }}
+              InputProps={{
+                style: { color: "#fff" },
+              }}
             />
             <Button
-            onClick={() =>
-              regToggle ? handleAuth("/register") : handleAuth("/login")
-            } 
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
-            {regToggle ? "Register" : "Sign in"}
-          </Button>
+              onClick={() =>
+                regToggle ? handleAuth("/register") : handleAuth("/login")
+              }
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              {regToggle ? "Register" : "Sign in"}
+            </Button>
           </Box>
         </Box>
-    </Container>
-  </ThemeProvider>
+      </Container>
+    </ThemeProvider>
   );
 };
 
