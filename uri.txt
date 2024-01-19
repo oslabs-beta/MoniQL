@@ -1,0 +1,263 @@
+{
+    "results": {
+        "command": "SELECT",
+        "rowCount": 1,
+        "oid": null,
+        "rows": [
+            {
+                "tables_with_columns": [
+                    {
+                        "table_name": "vessels",
+                        "columns": [
+                            "name",
+                            "cargo_capacity",
+                            "crew",
+                            "passengers",
+                            "vessel_type",
+                            "consumables",
+                            "vessel_class",
+                            "length",
+                            "cost_in_credits",
+                            "max_atmosphering_speed",
+                            "manufacturer",
+                            "_id",
+                            "model"
+                        ]
+                    },
+                    {
+                        "table_name": "pg_stat_statements",
+                        "columns": [
+                            "shared_blks_dirtied",
+                            "local_blks_written",
+                            "temp_blks_read",
+                            "temp_blks_written",
+                            "calls",
+                            "wal_fpi",
+                            "rows",
+                            "total_exec_time",
+                            "stddev_plan_time",
+                            "shared_blks_hit",
+                            "dbid",
+                            "mean_exec_time",
+                            "min_exec_time",
+                            "shared_blks_written",
+                            "plans",
+                            "shared_blks_read",
+                            "local_blks_dirtied",
+                            "wal_bytes",
+                            "max_plan_time",
+                            "blk_read_time",
+                            "wal_records",
+                            "total_plan_time",
+                            "blk_write_time",
+                            "stddev_exec_time",
+                            "local_blks_read",
+                            "query",
+                            "local_blks_hit",
+                            "userid",
+                            "queryid",
+                            "max_exec_time",
+                            "mean_plan_time",
+                            "min_plan_time"
+                        ]
+                    },
+                    {
+                        "table_name": "species_in_films",
+                        "columns": [
+                            "film_id",
+                            "species_id",
+                            "_id"
+                        ]
+                    },
+                    {
+                        "table_name": "people_in_films",
+                        "columns": [
+                            "person_id",
+                            "film_id",
+                            "_id"
+                        ]
+                    },
+                    {
+                        "table_name": "species",
+                        "columns": [
+                            "_id",
+                            "average_height",
+                            "language",
+                            "skin_colors",
+                            "classification",
+                            "eye_colors",
+                            "hair_colors",
+                            "average_lifespan",
+                            "homeworld_id",
+                            "name"
+                        ]
+                    },
+                    {
+                        "table_name": "pilots",
+                        "columns": [
+                            "vessel_id",
+                            "_id",
+                            "person_id"
+                        ]
+                    },
+                    {
+                        "table_name": "starship_specs",
+                        "columns": [
+                            "hyperdrive_rating",
+                            "MGLT",
+                            "vessel_id",
+                            "_id"
+                        ]
+                    },
+                    {
+                        "table_name": "planets",
+                        "columns": [
+                            "orbital_period",
+                            "_id",
+                            "rotation_period",
+                            "gravity",
+                            "surface_water",
+                            "terrain",
+                            "climate",
+                            "diameter",
+                            "name",
+                            "population"
+                        ]
+                    },
+                    {
+                        "table_name": "films",
+                        "columns": [
+                            "producer",
+                            "episode_id",
+                            "release_date",
+                            "opening_crawl",
+                            "_id",
+                            "title",
+                            "director"
+                        ]
+                    },
+                    {
+                        "table_name": "people",
+                        "columns": [
+                            "skin_color",
+                            "height",
+                            "homeworld_id",
+                            "name",
+                            "mass",
+                            "species_id",
+                            "birth_year",
+                            "hair_color",
+                            "_id",
+                            "eye_color",
+                            "gender"
+                        ]
+                    },
+                    {
+                        "table_name": "planets_in_films",
+                        "columns": [
+                            "film_id",
+                            "_id",
+                            "planet_id"
+                        ]
+                    },
+                    {
+                        "table_name": "vessels_in_films",
+                        "columns": [
+                            "film_id",
+                            "_id",
+                            "vessel_id"
+                        ]
+                    }
+                ]
+            }
+        ],
+        "fields": [
+            {
+                "name": "tables_with_columns",
+                "tableID": 0,
+                "columnID": 0,
+                "dataTypeID": 114,
+                "dataTypeSize": -1,
+                "dataTypeModifier": -1,
+                "format": "text"
+            }
+        ],
+        "_parsers": [
+            null
+        ],
+        "_types": {
+            "_types": {
+                "arrayParser": {},
+                "builtins": {
+                    "BOOL": 16,
+                    "BYTEA": 17,
+                    "CHAR": 18,
+                    "INT8": 20,
+                    "INT2": 21,
+                    "INT4": 23,
+                    "REGPROC": 24,
+                    "TEXT": 25,
+                    "OID": 26,
+                    "TID": 27,
+                    "XID": 28,
+                    "CID": 29,
+                    "JSON": 114,
+                    "XML": 142,
+                    "PG_NODE_TREE": 194,
+                    "SMGR": 210,
+                    "PATH": 602,
+                    "POLYGON": 604,
+                    "CIDR": 650,
+                    "FLOAT4": 700,
+                    "FLOAT8": 701,
+                    "ABSTIME": 702,
+                    "RELTIME": 703,
+                    "TINTERVAL": 704,
+                    "CIRCLE": 718,
+                    "MACADDR8": 774,
+                    "MONEY": 790,
+                    "MACADDR": 829,
+                    "INET": 869,
+                    "ACLITEM": 1033,
+                    "BPCHAR": 1042,
+                    "VARCHAR": 1043,
+                    "DATE": 1082,
+                    "TIME": 1083,
+                    "TIMESTAMP": 1114,
+                    "TIMESTAMPTZ": 1184,
+                    "INTERVAL": 1186,
+                    "TIMETZ": 1266,
+                    "BIT": 1560,
+                    "VARBIT": 1562,
+                    "NUMERIC": 1700,
+                    "REFCURSOR": 1790,
+                    "REGPROCEDURE": 2202,
+                    "REGOPER": 2203,
+                    "REGOPERATOR": 2204,
+                    "REGCLASS": 2205,
+                    "REGTYPE": 2206,
+                    "UUID": 2950,
+                    "TXID_SNAPSHOT": 2970,
+                    "PG_LSN": 3220,
+                    "PG_NDISTINCT": 3361,
+                    "PG_DEPENDENCIES": 3402,
+                    "TSVECTOR": 3614,
+                    "TSQUERY": 3615,
+                    "GTSVECTOR": 3642,
+                    "REGCONFIG": 3734,
+                    "REGDICTIONARY": 3769,
+                    "JSONB": 3802,
+                    "REGNAMESPACE": 4089,
+                    "REGROLE": 4096
+                }
+            },
+            "text": {},
+            "binary": {}
+        },
+        "RowCtor": null,
+        "rowAsArray": false,
+        "_prebuiltEmptyResultObject": {
+            "tables_with_columns": null
+        }
+    }
+}

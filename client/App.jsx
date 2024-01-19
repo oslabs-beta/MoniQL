@@ -31,7 +31,6 @@ const App = () => {
   return (
     <div className='App'>
       <LoginContainer />
-      <AppContainer />
     </div>
   );
 };
