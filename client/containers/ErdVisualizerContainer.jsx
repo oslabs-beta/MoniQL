@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Box, Container } from "@mui/material";
+import ErdVisualizer from "../components/ErdVisualizer";
 
 const ErdVisualizerContainer = () => {
   return (
@@ -10,13 +11,16 @@ const ErdVisualizerContainer = () => {
         sx={{
             border: "pink",
           position: "fixed",
-          top: "0",
-          marginLeft: "240px",
-          width: "calc(100% - 240px)",
+          marginLeft: "200px",
+          top: "50px",
+          width: "calc(99% - 150px)",
           height: "100vh",
-          backgroundColor: "gray",
+          backgroundColor: "#A5AFFB",
+          zIndex: 1,
         }}
-      ></Box>
+      >
+      <ErdVisualizer/>
+      </Box>
     </div>
   );
 };

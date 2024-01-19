@@ -5,9 +5,9 @@ import ErdVisualizerContainer from "../containers/ErdVisualizerContainer";
 
 const AppContainer = () => {
     return (
-        <div classname = 'AppContainer'>
-            <Header />
-            <SideBar />
+        <div className = 'AppContainer'>
+            {/* <Header />
+            <SideBar /> */}
             <ErdVisualizerContainer />
         </div> 
     )

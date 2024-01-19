@@ -3,7 +3,8 @@ import * as types from "../constants/actionTypes";
 const initialState= {
     user: null,
     username: null,
-    uri: null
+    uri: null,
+    isLoggedIn: false,
 };
 
 const userReducer = (state = initialState, action) => {
@@ -14,7 +15,9 @@ const userReducer = (state = initialState, action) => {
             ...state,
             user: action.payload.user,
             username: action.payload.username,
-            uri: action.payload.uri
+            uri: action.payload.uri,
+            isLoggedIn: true,
+            
         }
         default:
             return state;
@@ -22,4 +25,3 @@ const userReducer = (state = initialState, action) => {
 };
 
 export default userReducer;
-
