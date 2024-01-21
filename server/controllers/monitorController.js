@@ -162,7 +162,7 @@ monitorController.stats = async (req, res, next) => {
   const { table, starting, ending, timeColumn } = req.body;
 
   // query metadata for column names, but only for columns holding numbers
-  // returns array of objects like {column_name: 'name'}
+  // returns array of objects like {column_name: 'name'} 
   try {
     const queryMd = `SELECT column_name 
       FROM information_schema.columns 
