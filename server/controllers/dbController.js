@@ -49,8 +49,8 @@ FROM (
         table_name
 ) AS table_info;`
     const results = await db.query(query);
-    console.log(results)
-    res.locals = {dbArray: results.rows[0].tables_with_columns}
+    console.log('results in getDB: ', results)
+    res.locals.dbArray = results.rows[0].tables_with_columns
     return next()
   } catch (err) {
     return next(err)

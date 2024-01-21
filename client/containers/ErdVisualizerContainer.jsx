@@ -15,7 +15,7 @@ const ErdVisualizerContainer = () => {
           top: "50px",
           width: "calc(99% - 150px)",
           height: "100vh",
-          backgroundColor: "#A5AFFB",
+          backgroundColor: "tan",
           zIndex: 1,
         }}
       >
