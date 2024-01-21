@@ -4,7 +4,7 @@ const initialState = {
     alertsTest: 'hello, world'
 };
 
-const alertsReducer = (state = initialState, action) => {
+const alertReducer = (state = initialState, action) => {
   switch(action.type) {
     case types.CHANGE_TEST:
 
@@ -17,4 +17,4 @@ const alertsReducer = (state = initialState, action) => {
   }
 };
 
-export default alertsReducer;
+export default alertReducer;

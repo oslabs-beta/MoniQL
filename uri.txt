@@ -1,0 +1,1 @@
+postgres://brcinqqs:vVcwddQCC_ebHwGbKefRAacN2dIFO0XO@bubble.db.elephantsql.com/brcinqqs
