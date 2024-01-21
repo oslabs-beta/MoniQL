@@ -58,6 +58,8 @@ const ErdVisualizer = () => {
         data: { label },
       });
 
+      //jdfkljfdsjflksd
+
       if (table.foreign_keys) {
         table.foreign_keys.forEach((fk) =>
           newEdges.push({
