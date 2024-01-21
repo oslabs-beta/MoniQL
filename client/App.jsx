@@ -10,8 +10,8 @@ const App = () => {
 
   return (
     <div className='App'>
-      { (isLoggedIn) ? <AppContainer /> : <LoginContainer /> }
-      {/* <AppContainer /> */}
+      {/* { (isLoggedIn) ? <AppContainer /> : <LoginContainer /> } */}
+      <AppContainer />
     </div>
   );
 };
