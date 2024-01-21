@@ -37,10 +37,10 @@ const ErdVisualizer = () => {
     const label = (
       <div>
         <h1>{table.table_name}</h1>
-        <div>{table.columns.map(column => column + '\n')}</div>
+        <ul>{table.columns.map(column => <li>{column}</li>)}</ul>
       </div>
     )
-    initialNodes.push({id: `${i}`, position: {x: (100*i), y: 0}, data: {label}})
+    initialNodes.push({id: `${i}`, position: {x: (150*i), y: 0}, data: {label}})
 })
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   // const onConnect = useCallback(
