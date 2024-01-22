@@ -11,21 +11,6 @@ import ReactFlow, {
 
  //must import reactflow css for visualizer to work
 import 'reactflow/dist/style.css';
-// import './components/stylesheets/visualizer.css';
-
-// const initialNodes = [
-//   { id: '1', position: { x: 0, y: 0 }, data: { label: '1' } },
-//   { id: '2', position: { x: 50, y: 100 }, data: { label: '2' } },
-//   { id: '3', position: { x: 0, y: 200 }, data: { label: '3' } },
-// ];
-
-//this is where we will map over the data and create nodes
-const initialEdges = [
-  // { id: 'e1-2', source: '1 ', target: '2', label: 'line' },
-  // { id: 'e1-3', source: '1', target: '3' },
-];
-
-
 
 const ErdVisualizer = () => {
   const initialNodes = [];
