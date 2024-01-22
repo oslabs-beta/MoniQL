@@ -5,9 +5,9 @@ const db = pool;
 const userController = {};
 
 userController.register = async (req, res, next) => {
-    const { username, password, uri } = req.body;
-    //change pw length back to < 10
-    if (password.length < 3 || !/[.!@#$%&]/.test(password) || !/[A-Z]/.test(password)) {
+  const { username, password, uri } = req.body;
+  //change pw length back to < 10
+  if (password.length < 3 || !/[.!@#$%&]/.test(password) || !/[A-Z]/.test(password)) {
     return next({
       log: 'Error happened at middleware userController.register',
       message: {
@@ -15,7 +15,7 @@ userController.register = async (req, res, next) => {
       },
     });
   }
-   if (username.includes(' ')) {
+  if (username.includes(' ')) {
     return next({
       log: 'Error happened at middleware userController.register',
       message: {
@@ -23,18 +23,18 @@ userController.register = async (req, res, next) => {
       },
     });
   }
-    try {
-      // Check if username already exists
-        const checkUserQuery = 'SELECT * FROM users WHERE username = $1';
-        const checkUserResult = await db.query(checkUserQuery, [username]);
-        if (checkUserResult.rows.length > 0) {
-            return next({ message: {error: 'Username already exists'} })
-        }
+  try {
+    // Check if username already exists
+    const checkUserQuery = 'SELECT * FROM users WHERE username = $1';
+    const checkUserResult = await db.query(checkUserQuery, [username]);
+    if (checkUserResult.rows.length > 0) {
+      return next({ message: {error: 'Username already exists'} })
+    }
         
-        const salt = 10;
-        const hashedPassword = await bcrypt.hash(password, salt);
-        const params = [username, hashedPassword, uri];
-        const queryText = 
+    const salt = 10;
+    const hashedPassword = await bcrypt.hash(password, salt);
+    const params = [username, hashedPassword, uri];
+    const queryText = 
        ` WITH inserted_uri AS (
           INSERT INTO uris (uri)
           VALUES ($3)
@@ -45,47 +45,47 @@ userController.register = async (req, res, next) => {
           FROM inserted_uri
           RETURNING username, user_id, (SELECT uri FROM inserted_uri);`
         
-        const result = await db.query(queryText, params);
-        // console.log(result.rows)
+    const result = await db.query(queryText, params);
+    // console.log(result.rows)
         
-        //ensure user was registered to the db
-        if (!result.rows.length) 
-          return next({
-            log: `userController.register. ERROR: Unable to register user`,
-            status: 500,
-            message: {
-              error: 'Error occured in userController.register. Unable to register user',
-          }
-        });
+    //ensure user was registered to the db
+    if (!result.rows.length) 
+      return next({
+        log: `userController.register. ERROR: Unable to register user`,
+        status: 500,
+        message: {
+          error: 'Error occured in userController.register. Unable to register user',
+        }
+      });
       
-        //store username in res locals
-        res.locals = {
-          userId: result.rows[0].user_id, 
-          username: result.rows[0].username, 
-          uri: result.rows[0].uri 
-        };
-        return next();
+    //store username in res locals
+    res.locals = {
+      userId: result.rows[0].user_id, 
+      username: result.rows[0].username, 
+      uri: result.rows[0].uri 
+    };
+    return next();
+  }
+  catch (err) {
+    // //userController.register. ERROR: error: duplicate key value violates unique constraint "users_username_key"
+    // console.log(err)
+    // if (err.constraint.includes('users_username_key')) {
+    //   return next({
+    //     log: `userController.register duplicate username ERROR: ${err}`,
+    //     status: 500,
+    //     message: {
+    //       error: 'Username already exists!',
+    //     }
+    //   })
+    // }
+    return next({
+      log: `userController.register. ERROR: ${err}`,
+      status: 500,
+      message: {
+        error: 'Error occured in userController.register',
       }
-     catch (err) {
-      // //userController.register. ERROR: error: duplicate key value violates unique constraint "users_username_key"
-      // console.log(err)
-      // if (err.constraint.includes('users_username_key')) {
-      //   return next({
-      //     log: `userController.register duplicate username ERROR: ${err}`,
-      //     status: 500,
-      //     message: {
-      //       error: 'Username already exists!',
-      //     }
-      //   })
-      // }
-        return next({
-            log: `userController.register. ERROR: ${err}`,
-            status: 500,
-            message: {
-                error: 'Error occured in userController.register',
-            }
-        });
-    }
+    });
+  }
 }
 
 
@@ -114,7 +114,7 @@ userController.login = async (req, res, next) => {
     const isMatch = await bcrypt.compare(password, user.password);
     
     if (!isMatch) {
-        return res.status(401).json({ error: 'Password is incorrect' });
+      return res.status(401).json({ error: 'Password is incorrect' });
     }
     console.log('user in login: ', user);
     res.locals.username = user.username;
@@ -124,13 +124,13 @@ userController.login = async (req, res, next) => {
     return next();
   } catch (err) {
     return next({
-            log: `userController.login ERROR: ${err}`,
-            status: 500,
-            message: {
-                error: 'Error occured in userController.login',
-            }
-        });
-    }
+      log: `userController.login ERROR: ${err}`,
+      status: 500,
+      message: {
+        error: 'Error occured in userController.login',
+      }
+    });
+  }
 }
 
 
