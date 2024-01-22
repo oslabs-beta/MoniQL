@@ -11,25 +11,27 @@ import ErdVisualizerContainer from "../containers/ErdVisualizerContainer";
 // import { response } from "express";
 
 const AppContainer = () => {
+    //circumvent sign-in for testing
     const dispatch = useDispatch();
-    useEffect(() => {
-        const fetchDB = async () => {
-            try {
-                const requestOptions = {
-                    method: "GET",
-                    headers: {"Content-Type": "application/json"},
-                };
-                const response = await fetch('/eboshi', requestOptions);
-                const data = await response.json();
-                console.log(data.dbArray)
-                if (!response.ok) throw new Error(data.error || 'Error from server');
-                dispatch(saveDBActionCreator(data.dbArray));
-            } catch (err) {
-                console.log('AppContainer Mounted', err);
-            }
-        };
-        fetchDB();
-    }, []);
+
+    // useEffect(() => {
+    //     const fetchDB = async () => {
+    //         try {
+    //             const requestOptions = {
+    //                 method: "GET",
+    //                 headers: {"Content-Type": "application/json"},
+    //             };
+    //             const response = await fetch('/eboshi', requestOptions);
+    //             const data = await response.json();
+    //             console.log(data.dbArray)
+    //             if (!response.ok) throw new Error(data.error || 'Error from server');
+    //             dispatch(saveDBActionCreator(data.dbArray));
+    //         } catch (err) {
+    //             console.log('AppContainer Mounted', err);
+    //         }
+    //     };
+    //     fetchDB();
+    // }, []);
 
 
 

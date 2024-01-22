@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const { pool } = require('../models/db');
+// const { userPool } = require('../routers/api.js');
 const db = pool;
 
 const userController = {};

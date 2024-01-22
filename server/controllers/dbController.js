@@ -1,6 +1,8 @@
 const { userPool } = require('../models/db');
 const { Pool } = require('pg');
 const fs = require('fs').promises;
+// const uri = require('../../uri.txt');
+
 require('dotenv').config();
 const userUri = process.env.USER_URI || undefined;
 
@@ -13,12 +15,15 @@ dbController.connect = async (req, res, next) => {
     console.log('userURI in dbcontroller try block: ', userUri)
     if (!userUri) {
       // fs.appendFileSync('.env' , '\n' + 'USER_URI=' + dbConnect);
-      // fs.appendFile 
-            
-      console.log('Successfully wrote URI to file');
+      fs.appendFile('.env' , '\n' + 'USER_URI=' + dbConnect);
+      // fs.appendFile('uri.txt', '\n' + dbConnect);
+      // fs.appendFile('uri.txt', '\n' + 'module.exports = uri;');
+      // const uri = fs.readFile('./../../uri.txt', 'utf8');
+      // console.log(uri)
+      process.env.USER_URI = dbConnect;
     }
     // read the env, parse it into js object, reassign the user uri property, rewrite the .env file, plugging in new obj
-    process.env.USER_URI = dbConnect;
+    // const userUri = process.env.USER_URI;
     console.log(' THIS IS OUR DBCONNECT IN DBCONTROLLER: ', process.env.USER_URI)
     return next()  
   } catch (err) {
@@ -69,7 +74,7 @@ ON
     res.locals.dbArray = results.rows
     return next()
   } catch (err) {
-    return next(err)
+    return next('Get DB err:', err)
   }
 }
 //SELECT * FROM "public"."people" LIMIT 100

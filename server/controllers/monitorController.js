@@ -1,8 +1,10 @@
-const { userPool } = require('../models/db');
+const { userPool } = require('../models/db2');
 require('dotenv').config();
 const userUri = process.env.USER_URI || undefined;
 
 const db = userPool;
+
+console.log('db in monitcont: ', db);
 
 const monitorController = {};
 

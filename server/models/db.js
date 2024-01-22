@@ -11,14 +11,23 @@ const pool = new Pool({
 });
 
 // console.log('userUri in dbjs: ', userUri);
-const userPool = new Pool({
-  connectionString: userUri
-});
+// let userPool
+
+// if(userUri) {
+//   userPool = new Pool({
+//     connectionString: userUri
+//   });
+// } else {
+// setTimeout(() => {
+//   userPool = new Pool({
+//     connectionString: userUri
+//   });
+// }, 1000)};
 
 
 module.exports = {
   pool,
-  userPool,
+  // userPool,
   query: (text, params, callback) => {
     console.log('executed query', text);
     return pool.query(text, params, callback);
