@@ -13,80 +13,63 @@ import ReactFlow, {
 import 'reactflow/dist/style.css';
 import {Select, MenuItem} from "@mui/material"; 
 const Focus = () => {
-const initialNodes = [{id: '1', position: { x: 100, y: 0}, data: {label: 'hellooo'}}];
+const initialNodes = [];
 const initialEdges = [];
 const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
 const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 const data = useSelector((state) => state.diagram.data);
-const [currNode, setCurrNode] = useState('people')
+const focusTable = useSelector((state) => state.diagram.focusTable);
+const focusDepth = useSelector((state) => state.diagram.depth);
 
 
 
   useEffect(() => {
   console.log("THIS IS FOCUS DATA", data)
+  console.log(`THIS IS DEPTH ${focusDepth}`)
   const newNodes = [];
   const newEdges = [];
-  const depth = 3;
 
-  const addTable = (currTable, depth = 0) => {
-    if (depth <= 0) {
+  const addTable = (currTable, pizza = 0, xVal = 0, yVal = 0) => {
+    console.log(`NEW CALL OF addTable. table now = '${currTable}' xVal now = ${xVal}`)
+    if (xVal > pizza) {
       return;
     }
     data.forEach((table, i) => {
       if (table.table_name === currTable) {
-        console.log(`found ${currTable} at index ${i}`)
-        newNodes.push({id: `${table.table_name}`, position: { x: 200 * depth, y: 100 * i}, data: {label: `${table.table_name}`}});
+        console.log(`found ${currTable} at index ${i}. coordinates will be x:${100 * xVal }, y:${100*yVal}`)
+        newNodes.push({
+          id: `${table.table_name}`,  
+          position: { x: 200 * xVal, y: 100 + 100 * yVal}, 
+          data: {label: `${table.table_name}`}});
         //iterate thru foreign keys property of table
-        if (table.foreign_keys){
+        if (table.foreign_keys) {
+          xVal += 1;
           console.log('helloooooo')
-          table.foreign_keys.forEach(key => addTable(key.foreign_table, depth -= 1))
+          table.foreign_keys.forEach((key, j) => {
+            newEdges.push({
+              id: `e${currTable}-${key.foreign_table}`,
+              source: `${currTable}`,
+              target: `${key.foreign_table}`,
+            })
+            addTable(key.foreign_table, pizza, xVal, yVal = j);
+          });
         }
-        //recursively call addTable on each foreign key
-
-
-
-
-
-
-
-
-        
-        
-      }
-      else {
-        console.log(i, 'hehehehe')
-        return
       }
     })
   }
-  addTable(currNode, depth)
+  addTable(focusTable, focusDepth)
   console.log(newNodes)
   setNodes(newNodes);
   console.log('THIS IS NODES NOW', nodes)
   setEdges(newEdges);
-}, [data, currNode]); // runs whenever `data` or `currNode` changes
+}, [data, focusTable, focusDepth]); // runs whenever `data` or `currNode` changes
 
 
   
   return (
     <div style={{ width: "100vw", height: "100vh" }}>
       <h1>BERD VIZISUALMALIZERATOR 3000</h1>
-      <Select
-      labelId="depth-select-label"
-          label="currNode"
-          id="depth-select"
-          value={currNode}
-          onChange={(e) => setCurrNode(e.target.value)}
-          sx={{
-            backgroundColor: "white",
-            borderRadius: "5px",
-          }}>
-            <MenuItem value="people">people</MenuItem>
-            <MenuItem value="planets">planets</MenuItem>
-
-          </Select> 
-
-
+      
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -103,3 +86,35 @@ const [currNode, setCurrNode] = useState('people')
 
 export default Focus;
 
+// useEffect(() => {
+//   console.log("THIS IS FOCUS DATA", data)
+//   const newNodes = [];
+//   const newEdges = [];
+//   const depth = 3;
+
+//   const addTable = (currTable, depth = 0) => {
+//     console.log(`NEW CALL OF addTable. depth now =`, depth)
+//     if (depth > 6) {
+//       return;
+//     }
+//     data.forEach((table, i) => {
+//       if (table.table_name === currTable) {
+//         console.log(`found ${currTable} at index ${i}. coordinates will be x:${200 * depth}, y:${100*i}`)
+//         newNodes.push({
+//           id: `${table.table_name}`, 
+//           position: { x: depth * 200, y: 100 * depth + i}, 
+//           data: {label: `${table.table_name}`}});
+//         //iterate thru foreign keys property of table
+//         if (table.foreign_keys) {
+//           console.log('helloooooo')
+//           table.foreign_keys.forEach(key => addTable(key.foreign_table, depth + 1));
+//         }
+//       }
+//     })
+//   }
+//   addTable(currNode, depth)
+//   console.log(newNodes)
+//   setNodes(newNodes);
+//   console.log('THIS IS NODES NOW', nodes)
+//   setEdges(newEdges);
+// }, [data, currNode]); // runs whenever `data` or `currNode` changes

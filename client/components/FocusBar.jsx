@@ -1,28 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {Select, MenuItem} from "@mui/material"; 
+import {Select, MenuItem} from "@mui/material";
+import { selectTableActionCreator, selectDepthActionCreator } from '../actions/actions'; 
 
 const FocusBar = () => {
     const [focus, setFocus] = useState("");
-    //     // depth: 0,
-    //     // direction: "horizontal",
-    // });
     const [depth, setDepth] = useState(0);
     // const [direction, setDirection] = useState("");
+    const dispatch = useDispatch();
 
-const handleFocus = (tableName) => {
-    console.log(tableName);
-    setFocus(tableName);
-}
 
-const focusItems = useSelector((state) => state.diagram.data || []);
+    const handleFocus = (tableName) => {
+      console.log(tableName);
+      setFocus(tableName);
+      dispatch(selectTableActionCreator(tableName))
+    }
 
-const handleDepth = (num) => {
-  console.log(num);
-    setDepth(num);
-}
-const depthOptions = Array.from({length: 7}, (_, i) => i);
-// const directionSet = useSelector((state) => state.diagram.direction || "horizontal");
+    const focusItems = useSelector((state) => state.diagram.data || []);
+
+    const handleDepth = (num) => {
+      console.log(num);
+      setDepth(num);
+      dispatch(selectDepthActionCreator(num))
+    }
+
+    //fix this please
+    const depthOptions = Array.from({length: 7}, (_, i) => i);
+    // const directionSet = useSelector((state) => state.diagram.direction || "horizontal");
 
 
     return (
