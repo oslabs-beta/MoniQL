@@ -56,7 +56,7 @@ const LoginContainer = () => {
       console.log('HERE IS DATAAAAAA', data)
       if (!response.ok) throw new Error(data.error || 'Error from server')
       console.log(`userID: ${data.userId}, username: ${data.username}, uri: ${data.uri} `)
-      console.log(data.dbArray)
+      console.log('THIS IS THE DATABASE ARRAY: ', data.dbArray)
       dispatch(logInActionCreator(data.userId, data.username, data.uri, data.dbArray));
       dispatch(saveDBActionCreator(data.dbArray));
       

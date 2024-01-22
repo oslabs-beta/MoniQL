@@ -10,4 +10,6 @@ router.post( '/register', userController.register, /* dbcontroller.userpoolconne
 
 router.get('/people', dbController.getDB, (req, res) => {res.status(200).json(res.locals)});
 
+//this is temp for working on front end
+router.get('/eboshi', dbController.getDB, (req, res) => {res.status(200).json(res.locals)});
 module.exports = router; 

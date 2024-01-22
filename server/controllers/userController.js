@@ -103,7 +103,7 @@ userController.login = async (req, res, next) => {
       WHERE users.username = $1;`;
     const params = [username];
     const { rows } = await db.query(queryText, params);
-    
+    console.log('rows in login: ', rows);
     if (rows.length === 0) {
       return res.status(401).json({ error: 'Username not found' });
     }
@@ -116,7 +116,7 @@ userController.login = async (req, res, next) => {
     if (!isMatch) {
         return res.status(401).json({ error: 'Password is incorrect' });
     }
-
+    console.log('user in login: ', user);
     res.locals.username = user.username;
     res.locals.userId = user.user_id;
     res.locals.uri = user.uri;

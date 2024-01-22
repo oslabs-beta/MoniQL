@@ -30,27 +30,43 @@ dbController.connect = async (req, res, next) => {
 dbController.getDB = async (req, res, next) => {
   try {
     // const query = 'SELECT * FROM people LIMIT 10'
-    const query = `SELECT 
-    json_agg(
-        json_build_object(
-            'table_name', table_info.table_name,
-            'columns', table_info.columns
-        )
-    ) as tables_with_columns
-FROM (
-    SELECT 
+    const query = `SELECT
+    table_info.table_name,
+    table_info.columns,
+    fk_info.foreign_keys
+FROM
+    (SELECT 
         table_name, 
         json_agg(column_name) AS columns
-    FROM 
+     FROM 
         information_schema.columns 
-    WHERE 
+     WHERE 
         table_schema = 'public'
-    GROUP BY 
+     GROUP BY 
         table_name
-) AS table_info;`
+    ) AS table_info
+LEFT JOIN
+    (SELECT
+        tc.table_name, 
+        json_agg(json_build_object('foreign_table', ccu.table_name, 'column', kcu.column_name, 'foreign_column', ccu.column_name)) AS foreign_keys
+     FROM 
+        information_schema.table_constraints AS tc 
+        JOIN information_schema.key_column_usage AS kcu
+          ON tc.constraint_name = kcu.constraint_name
+          AND tc.table_schema = kcu.table_schema
+        JOIN information_schema.constraint_column_usage AS ccu
+          ON ccu.constraint_name = tc.constraint_name
+          AND ccu.table_schema = tc.table_schema
+     WHERE 
+        tc.constraint_type = 'FOREIGN KEY' AND tc.table_schema = 'public'
+     GROUP BY 
+        tc.table_name
+    ) AS fk_info
+ON 
+    table_info.table_name = fk_info.table_name;`
     const results = await db.query(query);
-    console.log(results)
-    res.locals = {dbArray: results.rows[0].tables_with_columns}
+    console.log('*********results in getDB: ', results)
+    res.locals.dbArray = results.rows
     return next()
   } catch (err) {
     return next(err)
