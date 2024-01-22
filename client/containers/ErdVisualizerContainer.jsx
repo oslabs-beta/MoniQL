@@ -1,10 +1,12 @@
 import * as React from "react";
 import { Box, Container } from "@mui/material";
 import ErdVisualizer from "../components/ErdVisualizer";
+import FocusBar from "../components/FocusBar";  
 
 const ErdVisualizerContainer = () => {
   return (
     <div>
+      <FocusBar />
       <Box
         display="flex"
         justifyContent="center"

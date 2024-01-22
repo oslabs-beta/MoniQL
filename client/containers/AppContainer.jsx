@@ -3,7 +3,6 @@ import React, {useEffect, useState} from "react";
 //TEMPORARY IMPORTS
 import { useDispatch } from "react-redux";
 import { saveDBActionCreator } from "../actions/actions";
-import FocusBar from "../components/FocusBar";  
 //END TEMPORARY IMPORTS
 
 import Header from "../components/Header";
@@ -38,7 +37,6 @@ const AppContainer = () => {
         <div className = 'AppContainer'>
             {/* <Header />
             <SideBar /> */}
-            <FocusBar />
             <ErdVisualizerContainer />
         </div> 
     )
