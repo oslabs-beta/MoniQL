@@ -7,7 +7,7 @@ const monitorController = require('../controllers/monitorController');
 
 router.post('/login', userController.login, dbController.connect, (req, res) => {res.status(200).json(res.locals)});
 
-router.post( '/register', userController.register, /* dbcontroller.userpoolconnect,*/ (req, res) => {res.status(200).json(res.locals)});
+router.post('/register', userController.register, /* dbcontroller.userpoolconnect,*/ (req, res) => {res.status(200).json(res.locals)});
 
 router.get('/people', dbController.connectionTest, (req, res) => {res.status(200).json(res.locals)});
 

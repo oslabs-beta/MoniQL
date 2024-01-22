@@ -74,11 +74,11 @@ monitorController.fresh = async (req, res, next) => {
 
   try {
     // query exact row count (more precise, less performant)
-    const queryCount = `SELECT COUNT(*) AS exact_row_count FROM ${table}`;
+    // const queryCount = `SELECT COUNT(*) AS exact_row_count FROM ${table}`;
 
     // OR query metadata (less precise, more performant)
     // precision depends on how recently the table has been analyzed
-    // const text = `SELECT reltuples AS approximate_row_count FROM pg_class WHERE relname = '${table}'`;
+    const queryCount = `SELECT reltuples AS approximate_row_count FROM pg_class WHERE relname = '${table}'`;
     
     const data = await db.query(queryCount);
     res.locals.fresh = data.rows;
