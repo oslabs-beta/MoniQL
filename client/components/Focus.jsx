@@ -1,4 +1,7 @@
+
 import React, { useCallback, useEffect, useState } from 'react';
+
+
 import { useDispatch, useSelector } from 'react-redux';
 import ReactFlow, {
   MiniMap,
@@ -8,6 +11,7 @@ import ReactFlow, {
   useEdgesState,
   addEdge,
 } from 'reactflow';
+
 
  //must import reactflow css for visualizer to work
 import 'reactflow/dist/style.css';
@@ -85,36 +89,3 @@ const focusDepth = useSelector((state) => state.diagram.depth);
 };
 
 export default Focus;
-
-// useEffect(() => {
-//   console.log("THIS IS FOCUS DATA", data)
-//   const newNodes = [];
-//   const newEdges = [];
-//   const depth = 3;
-
-//   const addTable = (currTable, depth = 0) => {
-//     console.log(`NEW CALL OF addTable. depth now =`, depth)
-//     if (depth > 6) {
-//       return;
-//     }
-//     data.forEach((table, i) => {
-//       if (table.table_name === currTable) {
-//         console.log(`found ${currTable} at index ${i}. coordinates will be x:${200 * depth}, y:${100*i}`)
-//         newNodes.push({
-//           id: `${table.table_name}`, 
-//           position: { x: depth * 200, y: 100 * depth + i}, 
-//           data: {label: `${table.table_name}`}});
-//         //iterate thru foreign keys property of table
-//         if (table.foreign_keys) {
-//           console.log('helloooooo')
-//           table.foreign_keys.forEach(key => addTable(key.foreign_table, depth + 1));
-//         }
-//       }
-//     })
-//   }
-//   addTable(currNode, depth)
-//   console.log(newNodes)
-//   setNodes(newNodes);
-//   console.log('THIS IS NODES NOW', nodes)
-//   setEdges(newEdges);
-// }, [data, currNode]); // runs whenever `data` or `currNode` changes

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
 import {Select, MenuItem} from "@mui/material";
 import { selectTableActionCreator, selectDepthActionCreator } from '../actions/actions'; 
 
@@ -36,12 +37,15 @@ const FocusBar = () => {
         <h1>SQL Visualizer</h1>
 
         {/* //FOCUS SELECT */}
+
         <Select
           labelId="focus-select-label"
           label="Select Focus"
           id="focus-select"
+
           value={focus}
           onChange={(e) => handleFocus(e.target.value)}
+
           //ongChange={handleFocus}
           sx={{
             backgroundColor: "white",
@@ -54,6 +58,7 @@ const FocusBar = () => {
             </MenuItem>
           ))}
         </Select>
+
 
         {/* //DEPTH SELECT */}
          <Select
@@ -74,6 +79,7 @@ const FocusBar = () => {
             </MenuItem>
           ))}
         </Select>
+
       </div>
     );
 }
