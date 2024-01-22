@@ -15,3 +15,12 @@ export const saveDBActionCreator = (dbArray) => ({
   payload: dbArray
 })
 
+export const selectTableActionCreator = (tableName) => ({
+  type: types.SELECT_TABLE,
+  payload: tableName
+})
+
+export const selectDepthActionCreator = (depth) => ({
+  type: types.SELECT_DEPTH,
+  payload: depth
+})  

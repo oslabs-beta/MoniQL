@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Box, Container } from "@mui/material";
-import ErdVisualizer from "../components/ErdVisualizer";
+// import ErdVisualizer from "../components/ErdVisualizer";
+import Focus from "../components/Focus";
 import FocusBar from "../components/FocusBar";  
 
 const ErdVisualizerContainer = () => {
@@ -21,7 +22,8 @@ const ErdVisualizerContainer = () => {
           zIndex: 1,
         }}
       >
-      <ErdVisualizer/>
+      {/* <ErdVisualizer/> */}
+      <Focus />
       </Box>
     </div>
   );
