@@ -7,12 +7,12 @@ const userUri = process.env.USER_URI;
 
 
 const pool = new Pool({
-    connectionString: pgUri
+  connectionString: pgUri
 });
 
-console.log('userUri in dbjs: ', userUri);
+// console.log('userUri in dbjs: ', userUri);
 const userPool = new Pool({
-    connectionString: userUri
+  connectionString: userUri
 });
 
 
