@@ -116,7 +116,7 @@ userController.login = async (req, res, next) => {
     if (!isMatch) {
       return res.status(401).json({ error: 'Password is incorrect' });
     }
-
+    console.log('user in login: ', user);
     res.locals.username = user.username;
     res.locals.userId = user.user_id;
     res.locals.uri = user.uri;
