@@ -8,6 +8,8 @@ import { saveDBActionCreator } from "../actions/actions";
 import Header from "../components/Header";
 import SideBar from "../components/SideBar";
 import ErdVisualizerContainer from "../containers/ErdVisualizerContainer";
+import MonitorContainer from "../containers/MonitorContainer";  
+import CustomRangesMonitor from "../components/monitors/CustomRangesMonitor";
 // import { response } from "express";
 
 const AppContainer = () => {
@@ -35,9 +37,11 @@ const AppContainer = () => {
 
     return (
         <div className = 'AppContainer'>
-            {/* <Header />
-            <SideBar /> */}
-            <ErdVisualizerContainer />
+            <Header />
+            <SideBar />
+            {/* <ErdVisualizerContainer /> */}
+            {/* <MonitorContainer /> */}
+            <CustomRangesMonitor />
         </div> 
     )
 }

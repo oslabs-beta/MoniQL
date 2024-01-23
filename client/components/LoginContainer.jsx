@@ -29,7 +29,7 @@ const theme = createTheme({
       },
     },
   },
-})
+});
 
 
 

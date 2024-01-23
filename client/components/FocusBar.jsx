@@ -85,4 +85,3 @@ const FocusBar = () => {
 }
 
 export default FocusBar;
-
