@@ -7,29 +7,14 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import { createTheme, ThemeProvider } from "@mui/material";
 
-// import { Themes } from "./stylesheets/Themes";
-// const useStyles = makeStyles((theme) => ({
-// menuSliderContainer: {
-//     width: 250,
-//     background: "#2F3243",
-//     height: "100%"
-//   },
-//   listItem: {
-//     color: "tan"
-//   }
-// }));
-// });
+import { useDispatch } from "react-redux";
+
+import { selectPageActionCreator } from '../actions/actions'
 
 const theme = createTheme({
-  //    typography: {
-  //      fontFamily: "Roboto",
-  //    },
   palette: {
     primary: {
       main: "#2F3243",
@@ -42,36 +27,18 @@ const theme = createTheme({
   },
 });
 
-// const listItems = [
-//   {
-//     listIcon: <Home />,
-//     listText: "Visualize",
-//   },
-//   {
-//     listIcon: <AssignmentInd />,
-//     listText: "Monitors",
-//   },
-//   {
-//     listIcon: <Apps />,
-//     listText: "Reports",
-//   },
-//   {
-//     listIcon: <ContactMail />,
-//     listText: "Query",
-//   },
-// ];
-
 const drawerWidth = 150;
 
 const SideBar = () => {
+  const dispatch = useDispatch();
+
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex", border: '1px solid #000'  }}>
       <Drawer
         variant="permanent"
         sx={{
           width: drawerWidth,
           flexShrink: 0,
-
           [`& .MuiDrawer-paper`]: {
             width: drawerWidth,
             boxSizing: "border-box",
@@ -82,35 +49,29 @@ const SideBar = () => {
         <Toolbar />
         <Box sx={{ overflow: "auto" }}>
           <List>
-            <Typography color="#B5B8CB">
-              {["Visualize", "Monitors", "Reports", "Query"].map(
-                (text, index) => (
-                  <ListItem key={text} disablePadding>
-                    <ListItemButton>
-                      <ListItemText primary={text} />
-                    </ListItemButton>
-                  </ListItem>
-                )
-              )}
-            </Typography>
+            {["Visualize", "Monitors", "Reports", "Query"].map((text, index) => (
+              <ListItem key={text} disablePadding>
+                <ListItemButton onClick={() => dispatch(selectPageActionCreator(text))}>
+                  <ListItemText primary={<Typography color="#B5B8CB">{text}</Typography>} />
+                </ListItemButton>
+              </ListItem>
+            ))}
           </List>
           <Divider color="#444756" />
           <List>
-            <Typography color="#B5B8CB">
-              {["Account", "Settings", "Help"].map((text, index) => (
-                <ListItem key={text} disablePadding>
-                  <ListItemButton>
-                    <ListItemText primary={text} />
-                  </ListItemButton>
-                </ListItem>
-              ))}
-            </Typography>
+            {["Account", "Settings", "Help"].map((text, index) => (
+              <ListItem key={text} disablePadding>
+                <ListItemButton>
+                  <ListItemText primary={<Typography color="#B5B8CB">{text}</Typography>} />
+                </ListItemButton>
+              </ListItem>
+            ))}
           </List>
         </Box>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      {/* <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
-      </Box>
+      </Box> */}
     </Box>
   );
 }

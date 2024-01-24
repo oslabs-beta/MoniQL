@@ -7,8 +7,7 @@ import FocusBar from "../components/FocusBar";
 const ErdVisualizerContainer = () => {
   return (
     <div>
-      <FocusBar />
-      <Box
+      {/* <Box
         display="flex"
         justifyContent="center"
         sx={{
@@ -21,9 +20,12 @@ const ErdVisualizerContainer = () => {
           backgroundColor: "DarkSlateGray",
           zIndex: 1,
         }}
-      >
+      > */}
       {/* <ErdVisualizer/> */}
-      <Focus />
+      
+      {/* </Box> */}
+      <Box sx={{backgroundColor: "DarkSlateGray"}}>
+        <Focus />
       </Box>
     </div>
   );

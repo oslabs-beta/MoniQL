@@ -1,23 +1,24 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Box, Card, Chip, Container, Button, Divider, Stack, Typography } from '@mui/material';
-import CustomRangesMonitor from '../components/monitors/CustomRangesMonitor';
+import RangeMonitor from '../components/monitors/RangeMonitor';
+import FreshnessMonitor from '../components/monitors/FreshnessMonitor';
+import VolumeMonitor from '../components/monitors/VolumeMonitor';
+import CustomMonitor from '../components/monitors/CustomMonitor';
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import NullMonitor from '../components/monitors/NullMonitor';
 
 
 const MonitorContainer = () => {
-const handleClick = () => console.log('this is handleclick');
-const handleDelete = () => console.log('this is handledelete');
-
-
-
+  const [selectedMonitor, setSelectedMonitor] = useState('');
+  const monitors = ['Range', 'Freshness', 'Volume', 'Null', 'Custom'];
 
     return (
-      <div>
+    
         <Box
           display="flex"
-          justifyContent="center"
-          alignItems="center"
-          minHeight="100vh"
+          justifyContent="flex-start"
+          alignItems="flex-start"
+          minHeight="50vh"
         >
           <Card
             variant="outlined"
@@ -26,7 +27,7 @@ const handleDelete = () => console.log('this is handledelete');
               display: "flex",
               flexDirection: "column",
               //   alignItems: "center",
-              justifyContent: "center",
+              justifyContent: "flex-start",
               padding: 3,
               boxShadow: 3,
               backgroundColor: "rgba(255, 255, 255, 0.7)",
@@ -50,79 +51,31 @@ const handleDelete = () => console.log('this is handledelete');
               </Stack>
             </Box>
             <Divider variant="middle" style={{ width: "100%" }} />
-            <Box sx={{ p: 2 }}>
+            <Box sx={{ p: 2}}>
               <Typography gutterBottom variant="body2" color="white">
                 default monitors
               </Typography>
               {/* array of buttons to edit monitor */}
-              <Stack
-                direction="column"
-                spacing={1}
-                alignItems="center"
-                justifyContent="left"
-              >
-                <Chip
-                  color="primary"
-                  label="Freshness"
-                  size="small"
-                  onClick={handleClick}
-                  deleteIcon={<AddCircleIcon color="primary" />}
-                />
-                <Chip
-                  label="Volume"
-                  size="small"
-                  onClick={handleClick}
-                  deleteIcon={<AddCircleIcon color="primary" />}
-                />
-                <Chip
-                  label="Schema"
-                  size="small"
-                  onClick={handleClick}
-                  deleteIcon={<AddCircleIcon color="primary" />}
-                />
-                <Chip
-                  label="Range"
-                  size="small"
-                  onClick={handleClick}
-                  deleteIcon={<AddCircleIcon color="primary" />}
-                />
-              </Stack>
-
-              <Typography gutterBottom variant="body2" color="white">
-                custom monitors
-              </Typography>
-              {/* array of buttons to edit monitor */}
-              <Stack
-                direction="column"
-                spacing={1}
-                alignItems="center"
-                justifyContent="left"
-              >
-                <Chip
-                  color="primary"
-                  label="custom 1"
-                  size="small"
-                  onClick={handleClick}
-                  deleteIcon={<AddCircleIcon color="primary" />}
-                />
-                <Chip
-                  label="custom 2"
-                  size="small"
-                  onClick={handleClick}
-                  deleteIcon={<AddCircleIcon color="primary" />}
-                />
-                <Chip
-                  label="custom 3"
-                  size="small"
-                  onClick={handleClick}
-                  deleteIcon={<AddCircleIcon color="primary" />}
-                />
+              <Stack direction="row" spacing={1}>
+                {monitors.map(monitor => (
+                  <Chip
+                    key={monitor}
+                    label={monitor}
+                    color={selectedMonitor === monitor ? 'primary' : 'default'}
+                    onClick={() => setSelectedMonitor(monitor)}
+                  />
+                ))}
               </Stack>
             </Box>
-            <CustomRangesMonitor />
+            {/* Conditional Rendering for Monitors */}
+            {selectedMonitor === 'Range' && <RangeMonitor />}
+            {selectedMonitor === 'Freshness' && <FreshnessMonitor />}
+            {selectedMonitor === 'Volume' && <VolumeMonitor />}
+            {selectedMonitor === 'Null' && <NullMonitor />}
+            {selectedMonitor === 'Custom' && <CustomMonitor />}
           </Card>
         </Box>
-      </div>
+     
     );
 
 }

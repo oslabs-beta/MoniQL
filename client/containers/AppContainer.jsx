@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react";
+import { Box } from '@mui/material';
 
 //TEMPORARY IMPORTS
 import { useDispatch } from "react-redux";
@@ -9,7 +10,9 @@ import Header from "../components/Header";
 import SideBar from "../components/SideBar";
 import ErdVisualizerContainer from "../containers/ErdVisualizerContainer";
 import MonitorContainer from "../containers/MonitorContainer";  
-import CustomRangesMonitor from "../components/monitors/CustomRangesMonitor";
+import CustomRangesMonitor from "../components/monitors/RangeMonitor";
+import PageContainer from './PageContainer';
+import SubheaderContainer from "./SubheaderContainer";
 // import { response } from "express";
 
 const AppContainer = () => {
@@ -37,11 +40,20 @@ const AppContainer = () => {
 
     return (
         <div className = 'AppContainer'>
-            <Header />
-            <SideBar />
+            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                <Header />
+                <Box sx={{ display: 'flex', mt: 10 }}>
+                    <SideBar sx={{m:0, p:0}}/>
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                        <SubheaderContainer />
+                        <PageContainer/>
+                    </Box>
+                </Box>
+            </Box>
             {/* <ErdVisualizerContainer /> */}
             {/* <MonitorContainer /> */}
-            <CustomRangesMonitor />
+            {/* <CustomRangesMonitor /> */}
+
         </div> 
     )
 }

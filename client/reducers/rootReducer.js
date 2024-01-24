@@ -5,6 +5,7 @@ import { combineReducers } from "redux";
 import alertReducer from "./alertReducer";
 import diagramReducer from "./diagramReducer";
 import userReducer from "./userReducer";
+import appReducer from "./appReducer";
 
 //combineReducers method combines our reducers so we can import them all as one to the store.js file!
 //if we ended up with more reducer files, they would go here. 
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   alert: alertReducer,
   diagram: diagramReducer,
   user: userReducer,
+  app: appReducer,
 });
 
 export default rootReducer;
