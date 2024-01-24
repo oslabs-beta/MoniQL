@@ -48,7 +48,7 @@ const AppContainer = () => {
       <Box sx={{ display: "flex", flexDirection: "column" }}>
         <Header />
         <Box sx={{ display: "flex", mt: 10 }}>
-          {/* <SideBar sx={{ m: 0, p: 0 }} /> */}
+          <SideBar sx={{ m: 0, p: 0 }} />
           <Box sx={{ display: "flex", flexDirection: "column" }}>
             <SubheaderContainer />
             <PageContainer />
