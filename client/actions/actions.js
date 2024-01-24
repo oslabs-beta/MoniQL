@@ -24,3 +24,13 @@ export const selectDepthActionCreator = (depth) => ({
   type: types.SELECT_DEPTH,
   payload: depth
 })  
+
+export const selectPageActionCreator = (page) => ({
+  type: types.SELECT_PAGE,
+  payload: page
+})
+
+export const addMonitorActionCreator = (monitorObject) => ({
+  type: types.ADD_MONITOR,
+  payload: monitorObject
+})

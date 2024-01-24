@@ -72,7 +72,6 @@ const focusDepth = useSelector((state) => state.diagram.depth);
   
   return (
     <div style={{ width: "100vw", height: "100vh" }}>
-      <h1>BERD VIZISUALMALIZERATOR 3000</h1>
       
       <ReactFlow
         nodes={nodes}
@@ -82,7 +81,7 @@ const focusDepth = useSelector((state) => state.diagram.depth);
         // onConnect={onConnect}
         
       >
-      <Background />
+      {/* <Background color="#2A2A43"/> */}
     </ReactFlow>
     </div>
   );
