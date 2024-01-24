@@ -25,6 +25,7 @@
     "concurrently": "^8.2.2",
     "cross-env": "^7.0.3",
     "css-loader": "^6.9.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "html-webpack-plugin": "^5.6.0",
     "sass": "^1.69.7",
     "sass-loader": "^13.3.3",
@@ -53,6 +54,7 @@
     "react-dom": "^18.2.0",
     "react-redux": "^9.1.0",
     "reactflow": "^11.10.2",
-    "redux": "^5.0.1"
+    "redux": "^5.0.1",
+    "uuid": "^9.0.1"
   }
 }

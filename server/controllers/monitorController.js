@@ -1,8 +1,48 @@
 const { userPool } = require('../models/db');
-require('dotenv').config();
-const userUri = process.env.USER_URI || undefined;
+const { v4: uuidv4 } =  require('uuid');
+const dayjs = require('dayjs');
 
 const db = userPool;
+
+/**
+ * alert object shape:
+ * {
+ *    alert_id: number,
+ *    table: string,
+ *    monitorType: string,
+ *    anomalyType: string,
+ *    severity: string,
+ *    column?: string,
+ *    anomalyValue?: number || string,
+ *    anomalyTime?: timestamptz,
+ *    notes?: string,
+ *    resolved_at?: timestamptz,
+ *    resolved?: boolean,
+ *    resolved_by?: string,
+ *    display: boolean,
+ *    detected_at: timestamptz,
+ * }
+ */
+
+const alertObjCreator = (table, monitorType, anomalyType, severity = 'error', 
+  column, anomalyValue, anomalyTime, notes = []) => {
+  return {
+    alert_id: uuidv4(),
+    table,
+    monitorType,
+    anomalyType,
+    severity,
+    column,
+    anomalyValue,
+    anomalyTime: dayjs(anomalyTime).format('ddd MM-DD-YYYY hh:mm:ss a'),
+    notes,
+    resolved_at: null,
+    resolved: false,
+    resolved_by: null,
+    display: true,
+    detected_at: dayjs().format('ddd MM-DD-YYYY hh:mm:ss a'),
+  }
+};
 
 const monitorController = {};
 
@@ -96,18 +136,27 @@ monitorController.fresh = async (req, res, next) => {
   }
 }
 
-monitorController.custom = async (req, res, next) => {
+monitorController.ranges = async (req, res, next) => {
   // query tables by name
   // for values out of normal range set by user
 
-  const { table, column, minValue, maxValue } = req.body;  
+  const { table, column, minValue, maxValue } = req.body; 
+  const timeColumn = req.body.timeColumn || 'created_at';
 
   try {
     const text = `SELECT * FROM ${table} WHERE "${column}" < $1 OR "${column}" > $2`;
     const values = [minValue, maxValue];
     const data = await db.query(text, values);
-    res.locals.custom = data.rows;
-    console.log('custom data in moncont.custom: ', res.locals.custom);
+    const anomalousArray = data.rows;
+    res.locals.ranges = anomalousArray;
+    console.log('custom data in moncont.ranges: ', anomalousArray);
+    if(anomalousArray.length) {
+      res.locals.alerts = [];
+      anomalousArray.map((obj) => {
+        res.locals.alerts.push(alertObjCreator(table, 'custom range', 'out of range', 'error', column, obj[column], obj[timeColumn]));
+      });
+      console.log('res.locals.alerts in moncont.ranges: ', res.locals.alerts)
+    }
     next();
   } catch(err) {
     return next({
@@ -124,6 +173,7 @@ monitorController.null = async (req, res, next) => {
   // query table by name, look for any null values
 
   const { table } = req.body;
+  const timeColumn = req.body.timeColumn || 'created_at';
 
   try {
     // first, query metadata for column names
@@ -141,8 +191,17 @@ monitorController.null = async (req, res, next) => {
     query = query.slice(0, -4); // remove trailing ' OR '
 
     const data = await db.query(query);
-    res.locals.null = data.rows;
-    console.log('null data in moncont.null: ', res.locals.null);
+    const anomalousArray = data.rows;
+    res.locals.null = anomalousArray;
+    if(anomalousArray.length) {
+      res.locals.alerts = [];
+      anomalousArray.map((obj) => {
+        for(const column in obj){
+          if(obj[column] === null) res.locals.alerts.push(alertObjCreator(table, 'notnull', 'null found', 'error', column, null, obj[timeColumn]));
+        }
+      });
+    }
+    console.log('res.locals in moncont.null: ', res.locals);
     next();
   } catch(err) {
     return next({
@@ -161,41 +220,36 @@ monitorController.stats = async (req, res, next) => {
 
   const { table, starting, ending, timeColumn } = req.body;
 
+  try {
   // query metadata for column names, but only for columns holding numbers
   // returns array of objects like {column_name: 'name'} 
-  try {
     const queryMd = `SELECT column_name 
       FROM information_schema.columns 
       WHERE table_name = '${table}' 
       AND data_type IN ('integer', 'numeric', 'real', 'double precision', 'smallint', 'bigint')`;
     const numberData = await db.query(queryMd);
     const columns = numberData.rows; 
-    console.log('columns in moncont.fresh: ', columns);
+    console.log('columns in moncont.stats: ', columns);
 
     const statsQuery = `SELECT
-      AVG( column ) AS mean,
-      PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY  column ) AS median,
-      MIN( column ) AS min,
-      MAX( column ) AS max,
-      STDDEV( column ) AS std_dev
+      ${columns.map(column => `
+      AVG("${column.column_name}") AS ${column.column_name.replace(/[^a-zA-Z0-9]/g, '')}_mean,
+      PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY "${column.column_name}") AS ${column.column_name.replace(/[^a-zA-Z0-9]/g, '')}_median,
+      MIN("${column.column_name}") AS ${column.column_name.replace(/[^a-zA-Z0-9]/g, '')}_min,
+      MAX("${column.column_name}") AS ${column.column_name.replace(/[^a-zA-Z0-9]/g, '')}_max,
+      STDDEV("${column.column_name}") AS ${column.column_name.replace(/[^a-zA-Z0-9]/g, '')}_std_dev`
+  ).join(',\n')}
     FROM
       ${table}
     WHERE "${timeColumn}" >= $2::timestamptz AND "${timeColumn}" <= $1::timestamptz`;
     
-    const values = [ending || 'now()', starting || '1 day'];
+    const values = [ending || 'now()', starting || 'now() - 1 day'];
 
-    // iterate over columns, add each to query text
-    const arrQueries = [];
-    columns.map((obj) => {
-      arrQueries.push(statsQuery.replace(/ column /g, `"${obj.column_name}"`));
-    });
-    console.log('arrQueries in moncont.stats: ', arrQueries);
-    const arrData = [];
-    arrQueries.map(async (query) => {
-      const data = await db.query(query, values);
-      console.log('data in moncont.stats: ', data.rows);
-    });
-    
+    statsQuery.replace(/v, \n FROM/g, '\n FROM');
+    console.log('statsQuery in moncont.stats: ', statsQuery);
+    const data = await db.query(statsQuery, values);
+    console.log('stats data in moncont.stats: ', data.rows);
+    res.locals.stats = data.rows;
     next(); 
   } catch(err) {
     return next({
@@ -206,10 +260,9 @@ monitorController.stats = async (req, res, next) => {
       }
     });
   }
-  
 }
 
-module.exports = monitorController; 
+module.exports = monitorController;
 
 //   const statsQuery = `SELECT
 //   AVG( column ) AS mean,
@@ -262,3 +315,17 @@ module.exports = monitorController;
 //   AND $3::timestamp <= $2::timestamp;`
 
   
+
+// iterate over columns, add each to query text
+// const arrQueries = [];
+// columns.map((obj) => {
+//   arrQueries.push(statsQuery.replace(/ column /g, `"${obj.column_name}"`));
+// });
+// console.log('arrQueries in moncont.stats: ', arrQueries);
+// const arrData = [];
+// arrQueries.map(
+//   setTimeout(async (query) => {
+//     const data = await db.query(query, values);
+//     console.log('data in moncont.stats: ', data.rows);
+//   }, 25)
+// );
