@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import {useSelector} from 'react-redux'
-import { Box, Card, Chip, Container, Button, Divider, Stack, Typography } from '@mui/material';
+import { Box, Card, Chip, Container, Button, Divider, Stack, Typography, CardContent, List, ListItem } from '@mui/material';
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import RangeMonitor from '../components/monitors/RangeMonitor';
 import FreshnessMonitor from '../components/monitors/FreshnessMonitor';
 import VolumeMonitor from '../components/monitors/VolumeMonitor';
 import CustomMonitor from '../components/monitors/CustomMonitor';
-import AddCircleIcon from "@mui/icons-material/AddCircle";
 import NullMonitor from '../components/monitors/NullMonitor';
 
 
@@ -69,20 +69,37 @@ const MonitorContainer = () => {
                     key={monitor}
                     label={monitor}
                     color={selectedMonitor === monitor ? 'primary' : 'default'}
-                    onClick={() => setSelectedMonitor(monitor)}
+                    onClick={() => (monitor === selectedMonitor) ? setSelectedMonitor('') : setSelectedMonitor(monitor)}
                   />
                 ))}
               </Stack>
-            {
-              activeMonitors.map((monitor, i) => <Card key={i}>{monitor.type}</Card>)
-            }
+                {/* Conditional Rendering for Monitors */}
+                {selectedMonitor === 'Range' && <RangeMonitor />}
+                {selectedMonitor === 'Freshness' && <FreshnessMonitor />}
+                {selectedMonitor === 'Volume' && <VolumeMonitor />}
+                {selectedMonitor === 'Null' && <NullMonitor />}
+                {selectedMonitor === 'Custom' && <CustomMonitor />}
+          
+            <Box sx={{ p: 2, overflowX: 'auto' }}>
+              <Stack direction="row" spacing={2}>
+                {activeMonitors.map((monitor, i) => (
+                  <Card key={i} sx={{ minWidth: 240 }}>
+                    <CardContent>
+                      <Typography variant="h6">{monitor.type}</Typography>
+                      <List>
+                        {Object.entries(monitor.params).map(([key, value], index) => (
+                          <ListItem key={index}>
+                            <strong>{key}:</strong> {value.toString()}
+                          </ListItem>
+                        ))}
+                      </List>
+                    </CardContent>
+                  </Card>
+                ))}
+              </Stack>
             </Box>
-            {/* Conditional Rendering for Monitors */}
-            {selectedMonitor === 'Range' && <RangeMonitor />}
-            {selectedMonitor === 'Freshness' && <FreshnessMonitor />}
-            {selectedMonitor === 'Volume' && <VolumeMonitor />}
-            {selectedMonitor === 'Null' && <NullMonitor />}
-            {selectedMonitor === 'Custom' && <CustomMonitor />}
+
+            </Box>
           </Card>
         </Box>
      
