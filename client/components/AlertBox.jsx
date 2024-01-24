@@ -78,8 +78,8 @@ const AlertBox = (alertObj) => {
             {anomalyValue ? `Anomaly value: ${anomalyValue}, ` : null}
             {anomalyTime ? `Anomaly time: ${anomalyTime} ` : null}
             <br/>
-            {notes ? `Notes: ${notes}` : 
-            (<Button onClick={handleClickOpen}>Add Notes</Button>)}
+            {notes ? `Notes: ${notes}` : null}
+            <Button onClick={handleClickOpen}>Add Notes</Button>
             {openNotes ? (<div>
                 <TextField  fullWidth defaultValue={notes} onChange={handleNewNotesInput}/>
                 <Button onClick={addNotes}>Submit new notes</Button>

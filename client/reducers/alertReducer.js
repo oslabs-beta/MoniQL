@@ -44,7 +44,9 @@ const alertReducer = (state = initialState, action) => {
   switch(action.type) {
   case types.ADD_ALERT:
 
-    updatedAlerts = state.alerts.slice()
+    updatedAlerts = state.alerts.slice();
+    updatedAlerts.push(action.payload);
+    updatedAlerts.sort((a, b) => b.detected_at - a.detected_at);
 
     return {
       ...state,
@@ -53,7 +55,8 @@ const alertReducer = (state = initialState, action) => {
 
   case types.DELETE_ALERT:
 
-    updatedAlerts = state.alerts.slice().filter(alert => alert.alert_id !== action.payload.alert_id);
+    updatedAlerts = state.alerts.slice()
+    updatedAlerts = updatedAlerts.filter(alert => alert.alert_id !== action.payload.alert_id);
 
     return {
       ...state,
