@@ -1,8 +1,18 @@
 import * as types from '../constants/actionTypes';
 
-export const changeTestActionCreator = (testName) => ({
-  type: types.CHANGE_TEST,
-  payload: testName
+export const addAlertActionCreator = (alertObj) => ({
+  type: types.ADD_ALERT,
+  payload: alertObj
+})
+
+export const deleteAlertActionCreator = (alert_id) => ({
+  type: types.DELETE_ALERT,
+  payload: alert_id
+})
+
+export const updateAlertActionCreator = (alertObj) => ({
+  type: types.UPDATE_ALERT,
+  payload: alertObj
 })
 
 export const logInActionCreator = (user, username, uri) => ({
