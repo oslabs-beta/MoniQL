@@ -15,13 +15,13 @@ dbController.connect = async (req, res, next) => {
     if (!userUri) {
       // fs.appendFileSync('.env' , '\n' + 'USER_URI=' + dbConnect);
       // fs.appendFile 
-            
+      
       console.log('Successfully wrote URI to file');
     }
     // read the env, parse it into js object, reassign the user uri property, rewrite the .env file, plugging in new obj
     process.env.USER_URI = dbConnect;
     console.log(' THIS IS OUR DBCONNECT IN DBCONTROLLER: ', process.env.USER_URI)
-    return next()  
+    return next()
   } catch (err) {
     console.error('Error writing file:', err);
     return next(err);
@@ -66,7 +66,7 @@ LEFT JOIN
 ON 
     table_info.table_name = fk_info.table_name;`
     const results = await db.query(query);
-    console.log('*********results in getDB: ', results)
+    // console.log('*********results in getDB: ', results)
     res.locals.dbArray = results.rows
     return next()
   } catch (err) {

@@ -1,27 +1,27 @@
-import * as types from "../constants/actionTypes";
+import * as types from '../constants/actionTypes';
 
-const initialState= {
-    user: null,
-    username: null,
-    uri: null,
-    isLoggedIn: false,
+const initialState = {
+  user: null,
+  username: null,
+  uri: null,
+  isLoggedIn: false,
 };
 
 const userReducer = (state = initialState, action) => {
-    switch(action.type) {
-        case types.LOG_IN:
+  switch(action.type) {
+  case types.LOG_IN:
 
-        return {
-            ...state,
-            user: action.payload.user,
-            username: action.payload.username,
-            uri: action.payload.uri,
-            isLoggedIn: true,
+    return {
+      ...state,
+      user: action.payload.user,
+      username: action.payload.username,
+      uri: action.payload.uri,
+      isLoggedIn: true,
             
-        }
-        default:
-            return state;
     }
+  default:
+    return state;
+  }
 };
 
 export default userReducer;

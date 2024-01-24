@@ -17,7 +17,7 @@ router.get('/volume', monitorController.volume, (req, res) => {res.status(200).j
 
 router.get('/fresh', monitorController.fresh, (req, res) => {res.status(200).json(res.locals)});
 
-router.get('/custom', monitorController.custom, (req, res) => {res.status(200).json(res.locals)});
+router.get('/ranges', monitorController.ranges, (req, res) => {res.status(200).json(res.locals)});
 
 router.get('/null', monitorController.null, (req, res) => {res.status(200).json(res.locals)});
 
