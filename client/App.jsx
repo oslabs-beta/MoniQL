@@ -17,21 +17,21 @@ const App = () => {
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
   //light/dark mode
-  const [theme, colorMode] = useMode();
-  const [isSideBar, setIsSideBar] = useState(true);
+  // const [theme, colorMode] = useMode();
+  // const [isSideBar, setIsSideBar] = useState(true);
   
   return (
-    <ColorModeContext.Provider value={colorMode}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
+    // <ColorModeContext.Provider value={colorMode}>
+      // <ThemeProvider theme={theme}>
+        // <CssBaseline />
         <div className="App">
-          <Sidebar isSideBar={isSideBar} />
+          {/* <Sidebar isSideBar={isSideBar} /> */}
           {/* <Topbar setIsSidebar={setIsSidebar} /> */}
           {/* { (isLoggedIn) ? <AppContainer /> : <LoginContainer /> } */}
           <AppContainer />
         </div>
-      </ThemeProvider>
-    </ColorModeContext.Provider>
+      // </ThemeProvider>
+    // </ColorModeContext.Provider>
   );
 };
 
