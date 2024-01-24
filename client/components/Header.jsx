@@ -1,20 +1,3 @@
-// import React from "react";
-// import {
-//   AccountCircle,
-//   Badge,
-//   Box,
-//   Button,
-//   IconButton,
-//   InputBase,
-//   MailIcon,
-//   Menu,
-//   MenuItem,
-// //   MoreIcon,
-//   NotificationsIcon,
-//   SearchIcon,
-//   Toolbar,
-//   Typography,
-// } from "@mui/material";
 import * as React from "react";
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
@@ -31,23 +14,24 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
-import { createTheme, ThemeProvider } from "@mui/material";
+import { createTheme, ThemeProvider, Divider, useTheme } from "@mui/material";
 
-// import { Themes } from "./stylesheets/Themes";
 
+//theme dark/light mode
+import { tokens } from "./stylesheets/Themes";
 
 const theme = createTheme({
-  //    typography: {
-  //      fontFamily: "Roboto",
-  //    },
+    //  typography: {
+    //    fontFamily: "Roboto",
+    //  },
   palette: {
     primary: {
-      main: "#2F3243",
-      light: "#E5E7FA",
-      dark: "#1565c0",
+      main: "#222130",
+      light: "#2A2A43",
+      dark: "#2E2D3D",
     },
     secondary: {
-      main: "#E5E7FA",
+      main: "#7275F1",
     },
   },
 });
@@ -133,10 +117,11 @@ const Header = () => {
       <Box sx={{ flexGrow: 1 }}>
         <AppBar
           position="fixed"
-          sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, boxShadow: 0 }}
+          sx={{ boxShadow: 0 }}
+          // sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, boxShadow: 0 }}
         >
-          <Toolbar>
-            <Typography
+          <Toolbar sx={{ ml: 15 }}>
+            {/* <Typography
               variant="h6"
               noWrap
               color={theme.palette.secondary.light}
@@ -144,8 +129,8 @@ const Header = () => {
               sx={{ display: { xs: "none", sm: "block" } }}
             >
               H.A.C.K.
-            </Typography>
-            <Search>
+            </Typography> */}
+            {/* <Search>
               <SearchIconWrapper>
                 <SearchIcon />
               </SearchIconWrapper>
@@ -153,7 +138,7 @@ const Header = () => {
                 placeholder="Search…"
                 inputProps={{ "aria-label": "search" }}
               />
-            </Search>
+            </Search> */}
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ display: { xs: "none", md: "flex" } }}>
               <IconButton
@@ -178,6 +163,9 @@ const Header = () => {
               </IconButton>
             </Box>
           </Toolbar>
+
+          {/* DELETE THIS */}
+          <Divider color="#444756" />
         </AppBar>
         {renderMenu}
       </Box>
