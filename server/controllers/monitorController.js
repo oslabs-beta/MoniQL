@@ -25,7 +25,7 @@ const db = userPool;
  */
 
 const alertObjCreator = (table, monitorType, anomalyType, severity = 'error', 
-  column, anomalyValue, anomalyTime, notes = '') => {
+  column, anomalyValue, anomalyTime, notes = []) => {
   return {
     alert_id: uuidv4(),
     table,

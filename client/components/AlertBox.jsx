@@ -10,6 +10,7 @@ import dayjs from 'dayjs';
 const AlertBox = (alertObj) => {
 
     const dispatch = useDispatch();
+    const user = useSelector((state) => state.user.username);
 
     const { alert_id, severity, table, column, monitorType, anomalyType, anomalyValue, anomalyTime, detected_at, resolved_at, resolved, resolved_by, notes, display } = alertObj;
 
@@ -22,9 +23,13 @@ const AlertBox = (alertObj) => {
     }
 
     const addNotes = () => {
+
+        const newNotesArr = notes.slice();
+        newNotesArr.push(newNote.concat(` -by ${user} at ` + dayjs().format('ddd YYYY-MM-DD hh:mm:ss a')));
+
         alertObj = {
             ...alertObj,
-            notes: newNotes,
+            notes: newNotesArr,
         }
         handleClickOpen();
         return updateAlert(alertObj);
@@ -35,21 +40,20 @@ const AlertBox = (alertObj) => {
             ...alertObj,
             resolved: true,
             resolved_at: dayjs().format('ddd YYYY-MM-DD hh:mm:ss a'),
-            resolved_by: 'user', // need to get this from the store
+            resolved_by: user
         }
         return updateAlert(alertObj);
     }
 
     const [openNotes, setOpenNotes] = useState(false);
-    const [newNotes, setNewNotes] = useState('');
+    const [newNote, setNewNote] = useState('');
 
     const handleClickOpen = () => {
         setOpenNotes(!openNotes);
     }
 
-    const handleNewNotesInput = (e) => {
-        setNewNotes(e.target.value);
-        console.log('alertobj in alertbox', alertObj)
+    const handleNewNoteInput = (e) => {
+        setNewNote(e.target.value);
     }
 
     // will conditionally render alerts by display value (in container component)
@@ -78,10 +82,10 @@ const AlertBox = (alertObj) => {
             {anomalyValue ? `Anomaly value: ${anomalyValue}, ` : null}
             {anomalyTime ? `Anomaly time: ${anomalyTime} ` : null}
             <br/>
-            {notes ? `Notes: ${notes}` : null}
+            {notes.length ? `Notes: ${notes.join(', ')}` : null}
             <Button onClick={handleClickOpen}>Add Notes</Button>
             {openNotes ? (<div>
-                <TextField  fullWidth defaultValue={notes} onChange={handleNewNotesInput}/>
+                <TextField  fullWidth onChange={handleNewNoteInput}/>
                 <Button onClick={addNotes}>Submit new notes</Button>
                 </div>) : null}
                 <br/>
@@ -91,7 +95,6 @@ const AlertBox = (alertObj) => {
             {resolved ? `Resolved at ${resolved_at} by ${resolved_by}` : null}
             {/* <Button onClick={handleDeleteButton}>Delete alert</Button> */}
         </Alert>) : null 
-
     )
 }
 
