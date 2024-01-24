@@ -1,7 +1,7 @@
 import * as types from '../constants/actionTypes';
 
 const initialState = {
-    page: 'Monitors'
+    page: 'ERD'
 }
 
 const appReducer = (state = initialState, action)  => {
