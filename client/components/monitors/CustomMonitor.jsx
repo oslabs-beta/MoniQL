@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { addMonitorActionCreator } from "../../actions/actions";
 import {
   Box,
   Card,
@@ -18,6 +19,7 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 
 const CustomMonitor = () => {
+  const dispatch = useDispatch();
   const [params, setParams] = useState({
     table: '',
     frequency: '',
@@ -36,11 +38,13 @@ const handleChanges = (e) => {
 const handleSubmit = async (e) => {
   e.preventDefault();
   console.log('this is params', params);
+  const monitorObject = {type: 'custom', params: params}
+  dispatch(addMonitorActionCreator(monitorObject))
 }
 
 return (
   <div>
-    <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
+    <Box display="flex" justifyContent="center" alignItems="center">
       <Card
         variant="outlined"
         sx={{ width: "50vw", display: "flex", flexDirection: "column",
@@ -75,7 +79,7 @@ return (
               multiline
               rows={4}
               name="query"
-              value={params.description}
+              value={params.query}
               onChange={handleChanges}
               sx={{ backgroundColor: "white", borderRadius: "5px", width: '100%' }}
             />

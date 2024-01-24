@@ -29,3 +29,8 @@ export const selectPageActionCreator = (page) => ({
   type: types.SELECT_PAGE,
   payload: page
 })
+
+export const addMonitorActionCreator = (monitorObject) => ({
+  type: types.ADD_MONITOR,
+  payload: monitorObject
+})

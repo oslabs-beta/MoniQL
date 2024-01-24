@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { addMonitorActionCreator } from "../../actions/actions";
 import {
   Box,
   Card,
@@ -18,6 +19,7 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 
 const RangeMonitor = () => {
+  const dispatch = useDispatch();
   const [params, setParams] = useState({
     table: '',
     column: '',
@@ -48,6 +50,8 @@ const handleChanges = (e) => {
 const handleSubmit = async (e) => {
   e.preventDefault();
   console.log('this is params', params);
+  const monitorObject = {type: 'range', params: params}
+  dispatch(addMonitorActionCreator(monitorObject))
 }
 
 //Hi hay, if you're reading this its because I took a lunch and you didnt...
@@ -65,7 +69,7 @@ const handleSubmit = async (e) => {
 
 return (
   <div>
-    <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
+    <Box display="flex" justifyContent="center" alignItems="center">
       <Card
         variant="outlined"
         sx={{ width: "50vw", display: "flex", flexDirection: "column",

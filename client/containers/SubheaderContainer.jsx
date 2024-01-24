@@ -13,7 +13,7 @@ const SubheaderContainer = () => {
     return (
       <Box sx={{ border: '1px solid #000' }}>
           {page === 'Visualize' && <FocusBar/>}
-          {page === 'Monitors' && <></>}
+          {page === 'Monitors' && <FocusBar/>}
           {page === 'Reports' && <></>}
           {page === 'Query' && <></>}
           {page === 'Account' && <></>}

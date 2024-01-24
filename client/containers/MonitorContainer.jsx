@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
+import {useSelector} from 'react-redux'
 import { Box, Card, Chip, Container, Button, Divider, Stack, Typography } from '@mui/material';
 import RangeMonitor from '../components/monitors/RangeMonitor';
 import FreshnessMonitor from '../components/monitors/FreshnessMonitor';
@@ -11,7 +12,10 @@ import NullMonitor from '../components/monitors/NullMonitor';
 const MonitorContainer = () => {
   const [selectedMonitor, setSelectedMonitor] = useState('');
   const monitors = ['Range', 'Freshness', 'Volume', 'Null', 'Custom'];
-
+  const activeMonitors = useSelector((state) => state.monitor.activeMonitors);
+  useEffect(() => {
+    console.log("ACTIVE MONITORS HAS CHANGED!!",activeMonitors)
+  }, [activeMonitors])
     return (
     
         <Box
@@ -19,13 +23,16 @@ const MonitorContainer = () => {
           justifyContent="flex-start"
           alignItems="flex-start"
           minHeight="50vh"
+          spacing={1}
         >
           <Card
             variant="outlined"
+            height="80vh"
             sx={{
               width: "50vw",
               display: "flex",
               flexDirection: "column",
+              minHeight: "80vh",
               //   alignItems: "center",
               justifyContent: "flex-start",
               padding: 3,
@@ -66,6 +73,9 @@ const MonitorContainer = () => {
                   />
                 ))}
               </Stack>
+            {
+              activeMonitors.map((monitor, i) => <Card key={i}>{monitor.type}</Card>)
+            }
             </Box>
             {/* Conditional Rendering for Monitors */}
             {selectedMonitor === 'Range' && <RangeMonitor />}

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { addMonitorActionCreator } from "../../actions/actions";
 import {
   Box, Card, Button, Divider, FormControl, FormHelperText,
   Stack, Typography, MenuItem, Select, TextField
 } from "@mui/material";
 
 const VolumeMonitor = () => {
+  const dispatch = useDispatch();
   const [params, setParams] = useState({
     table: '',
     timeColumn: '',
@@ -31,12 +33,14 @@ const VolumeMonitor = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Submitted params:', params);
+    console.log('this is params', params);
+    const monitorObject = {type: 'volume', params: params}
+    dispatch(addMonitorActionCreator(monitorObject))
   }
 
   return (
     <div>
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
+      <Box display="flex" justifyContent="center" alignItems="center">
         <Card
           variant="outlined"
           sx={{ width: "50vw", display: "flex", flexDirection: "column",
@@ -80,8 +84,15 @@ const VolumeMonitor = () => {
                 <FormHelperText>Select a time column from the table</FormHelperText>
               </Stack>
   
-              {/* INTERVAL AND PERIOD INPUT */}
-              <Stack direction="row" spacing={2} sx={{ width: '100%', justifyContent: 'center' }}>
+              {/* INTERVAL AND PERIOD AND ENDING INPUT */}
+              {/* <Stack direction="row" spacing={2} sx={{ width: '100%', justifyContent: 'space-between' }}> */}
+                <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              width: "100%",
+            }}
+          >
                 <TextField
                   required
                   id="interval"
@@ -90,7 +101,7 @@ const VolumeMonitor = () => {
                   name="interval"
                   value={params.interval}
                   onChange={handleChanges}
-                  sx={{ backgroundColor: "white", borderRadius: "5px", width: '45%' }}
+                  sx={{ backgroundColor: "white", borderRadius: "5px", m: 1 }}
                 />
                 <FormHelperText>Enter the monitoring interval</FormHelperText>
 
@@ -102,11 +113,23 @@ const VolumeMonitor = () => {
                   name="period"
                   value={params.period}
                   onChange={handleChanges}
-                  sx={{ backgroundColor: "white", borderRadius: "5px", width: '45%' }}
+                  sx={{ backgroundColor: "white", borderRadius: "5px", m: 1 }}
                 />
                 <FormHelperText>Enter the monitoring period</FormHelperText>
 
-            </Stack>
+                <TextField
+                  required
+                  id="ending"
+                  label="Ending"
+                  type="text"
+                  name="ending"
+                  value={params.ending}
+                  onChange={handleChanges}
+                  sx={{ backgroundColor: "white", borderRadius: "5px", m: 1 }}
+                />
+                <FormHelperText>Enter the end point</FormHelperText>
+              </Box>
+            {/* </Stack> */}
               {/* Description Input */}
             <TextField
               required
@@ -117,7 +140,7 @@ const VolumeMonitor = () => {
               name="description"
               value={params.description}
               onChange={handleChanges}
-              sx={{ backgroundColor: "white", borderRadius: "5px", width: '100%' }}
+              sx={{ backgroundColor: "white", borderRadius: "5px", width: '100%'}}
             />
             <FormHelperText>Enter a description for the monitor</FormHelperText>
 
