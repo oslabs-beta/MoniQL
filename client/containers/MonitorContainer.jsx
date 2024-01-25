@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {useSelector} from 'react-redux'
+import {useSelector, useDispatch} from 'react-redux'
 import { Box, Card, Chip, Container, Button, Divider, Stack, Typography, CardContent, List, ListItem } from '@mui/material';
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import RangeMonitor from '../components/monitors/RangeMonitor';
@@ -7,15 +7,46 @@ import FreshnessMonitor from '../components/monitors/FreshnessMonitor';
 import VolumeMonitor from '../components/monitors/VolumeMonitor';
 import CustomMonitor from '../components/monitors/CustomMonitor';
 import NullMonitor from '../components/monitors/NullMonitor';
+import { addAlertsActionCreator } from '../actions/actions';
 
 
 const MonitorContainer = () => {
+  const dispatch = useDispatch();
   const [selectedMonitor, setSelectedMonitor] = useState('');
   const monitors = ['Range', 'Freshness', 'Volume', 'Null', 'Custom'];
   const activeMonitors = useSelector((state) => state.monitor.activeMonitors);
   useEffect(() => {
     console.log("ACTIVE MONITORS HAS CHANGED!!",activeMonitors)
   }, [activeMonitors])
+
+  const sendQuery = async (monitor) => {
+    try {
+      const path = `/${monitor.type}`;
+      const requestOptions = {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(monitor.params)
+      };
+      const response = await fetch(path, requestOptions);
+      const data = await response.json();
+      
+      
+      if (!response.ok) throw new Error(data.message || 'Error from server');
+      console.log('data returned in sendquery in mon container: ', data);
+
+      //below we will send the alert object to redux state with a dispatch/action
+      if(data.alerts.length){
+        dispatch(addAlertsActionCreator(data.alerts))
+      };
+
+
+    } catch (error) {
+      throw new Error(error)
+    }
+  } 
+
+
+
     return (
     
         <Box
@@ -93,6 +124,7 @@ const MonitorContainer = () => {
                           </ListItem>
                         ))}
                       </List>
+                      <Button onClick={() => sendQuery(monitor)}>fire me</Button>
                     </CardContent>
                   </Card>
                 ))}

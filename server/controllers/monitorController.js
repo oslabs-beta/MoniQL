@@ -136,26 +136,28 @@ monitorController.fresh = async (req, res, next) => {
   }
 }
 
-monitorController.ranges = async (req, res, next) => {
+monitorController.range = async (req, res, next) => {
   // query tables by name
   // for values out of normal range set by user
 
   const { table, column, minValue, maxValue } = req.body; 
-  const timeColumn = req.body.timeColumn || 'created_at';
+  console.log('IN RANGE CONTROLLER PRE-QUERY TO DB', table, column, minValue)
+  // const timeColumn = req.body.timeColumn || 'created_at';
 
   try {
+    console.log('THIS IS IN THE RANGE MIDDLEWARE',req.body)
     const text = `SELECT * FROM ${table} WHERE "${column}" < $1 OR "${column}" > $2`;
     const values = [minValue, maxValue];
     const data = await db.query(text, values);
     const anomalousArray = data.rows;
-    res.locals.ranges = anomalousArray;
-    console.log('custom data in moncont.ranges: ', anomalousArray);
+    res.locals.range = anomalousArray;
+    console.log('custom data in moncont.range: ', anomalousArray);
     if(anomalousArray.length) {
       res.locals.alerts = [];
       anomalousArray.map((obj) => {
-        res.locals.alerts.push(alertObjCreator(table, 'custom range', 'out of range', 'error', column, obj[column], obj[timeColumn]));
+        res.locals.alerts.push(alertObjCreator(table, 'custom range', 'out of range', 'error', column, obj[column], /*obj[timeColumn]*/));
       });
-      console.log('res.locals.alerts in moncont.ranges: ', res.locals.alerts)
+      console.log('res.locals.alerts in moncont.range: ', res.locals.alerts)
     }
     next();
   } catch(err) {
