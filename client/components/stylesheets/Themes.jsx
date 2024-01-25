@@ -90,7 +90,7 @@ export const tokens = (mode) => ({
           200: "#1e5245",
           300: "#2e7c67",
           400: "#3da58a",
-          500: "#4cceac",
+          500: "#4cceac", //green
           600: "#70d8bd",
           700: "#94e2cd",
           800: "#b7ebde",
@@ -112,7 +112,7 @@ export const tokens = (mode) => ({
           200: "#2a2d64",
           300: "#3e4396",
           400: "#535ac8",
-          500: "#6870fa",
+          500: "#6870fa", //blueee
           600: "#868dfb",
           700: "#a4a9fc",
           800: "#c3c6fd",
@@ -129,7 +129,7 @@ export const themeSettings = (mode) => {
       mode: mode,
       ...(mode === "dark"
         ? {
-            // palette values for dark mode
+            ////// DARK MODE //////
             primary: {
               main: colors.primary[500],
             },
@@ -146,7 +146,7 @@ export const themeSettings = (mode) => {
             },
           }
         : {
-            // palette values for light mode
+            ////// LIGHT MODE //////
             primary: {
               main: colors.primary[100],
             },
@@ -214,6 +214,8 @@ export const useMode = () => {
   return [theme, colorMode];
 };
 
+
+export default tokens;
 ///////////OLD THEME//////////////
 
 // export const headerTheme = createTheme({

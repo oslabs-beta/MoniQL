@@ -18,10 +18,22 @@ import SubheaderContainer from "./SubheaderContainer";
 import MainContainer from "./MainContainer";
   
 
+
+//////////////////////hay added for light/dark mode/////////////////////
+// import { ThemeProvider } from '@emotion/react';
+import { ColorModeContext, useMode } from "../components/stylesheets/Themes";
+import { CssBaseline, ThemeProvider } from "@mui/material";
+
+
+  //for pull out drawer:
+//   import Topbar from "./scenes/global/Topbar";
+
+
 const AppContainer = () => {
 
-  //sidebar
-
+  //light/dark mode
+  const [theme, colorMode] = useMode();
+  const [isSideBar, setIsSideBar] = useState(true);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -44,23 +56,28 @@ const AppContainer = () => {
   }, []);
 
   return (
-    <div className="AppContainer">
-      {/* <Sidebar  />; */}
-      <Box sx={{ display: "flex", flexDirection: "column" }}>
-        <Header />
-        <Box sx={{ display: "flex", mt: 10 }}>
-          <SideBar sx={{ m: 0, p: 0 }} />
+    <ColorModeContext.Provider value={colorMode}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <div className="AppContainer">
+          <SideBar isSideBar={isSideBar} />
           <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <SubheaderContainer />
-            <PageContainer />
-            {/* <MainContainer/> */}
+            <Header />
+            <Box sx={{ display: "flex", mt: 10 }}>
+              <SideBar sx={{ m: 0, p: 0 }} />
+              <Box sx={{ display: "flex", flexDirection: "column" }}>
+                <SubheaderContainer />
+                <PageContainer />
+                {/* <MainContainer/> */}
+              </Box>
+            </Box>
           </Box>
-        </Box>
-      </Box>
-      {/* <ErdVisualizerContainer /> */}
-      {/* <MonitorContainer /> */}
-      {/* <CustomRangesMonitor /> */}
-    </div>
+          {/* <ErdVisualizerContainer /> */}
+          {/* <MonitorContainer /> */}
+          {/* <CustomRangesMonitor /> */}
+        </div>
+      </ThemeProvider>
+    </ColorModeContext.Provider>
   );
 }
 

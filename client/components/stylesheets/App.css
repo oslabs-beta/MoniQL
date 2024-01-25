@@ -21,6 +21,7 @@ body,
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  overflow-y: auto;
   cursor: url("https://cur.cursors-4u.net/cursors/cur-2/cur113.cur"), auto;
 }
 
@@ -30,20 +31,18 @@ body,
 }
 
 ::-webkit-scrollbar {
-  width: 10px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-  background: #e0e0e0;
+  width: 8px;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #888;
+  background: rgba(104, 112, 250, 0.01); /* Semi-transparent when not in use */
+  border-radius: 10px;
+  transition: background 0.1s ease-in-out;
 }
 
-/* Handle on hover */
+/* Handle on hover or when scrolling */
+::-webkit-scrollbar-thumb:active,
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: #6870fa; /* Fully opaque when in use or hovered over */
 }

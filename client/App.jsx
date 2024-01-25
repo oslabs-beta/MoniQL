@@ -14,9 +14,6 @@ import Sidebar from './components/SideBar';
 
 
 
-//for pull out drawer:
-// import Topbar from "./scenes/global/Topbar";
-
 const App = () => {
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
