@@ -1,6 +1,5 @@
 const { userPool } = require('../models/db');
 const { v4: uuidv4 } =  require('uuid');
-const dayjs = require('dayjs');
 
 const db = userPool;
 
@@ -174,7 +173,7 @@ monitorController.null = async (req, res, next) => {
   // query table by name, look for any null values
 
   const { table } = req.body;
-  const timeColumn = req.body.timeColumn || 'created_at';
+  const timeColumn = 'Formatted Date' //req.body.timeColumn || 'created_at';
 
   try {
     // first, query metadata for column names
@@ -198,7 +197,7 @@ monitorController.null = async (req, res, next) => {
       res.locals.alerts = [];
       anomalousArray.map((obj) => {
         for(const column in obj){
-          if(obj[column] === null) res.locals.alerts.push(alertObjCreator(table, 'notnull', 'null found', 'error', column, null, obj[timeColumn]));
+          if(obj[column] === null) res.locals.alerts.push(alertObjCreator(table, 'null', 'null found', 'error', column, null, obj[timeColumn]));
         }
       });
     }
