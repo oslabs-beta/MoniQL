@@ -21,6 +21,7 @@ import MainContainer from "./MainContainer";
 // import { ThemeProvider } from '@emotion/react';
 import { ColorModeContext, useMode } from "../components/stylesheets/Themes";
 import { CssBaseline, ThemeProvider } from "@mui/material";
+import LandingContainer from "./LandingContainer";
 
 //for pull out drawer:
 //   import Topbar from "./scenes/global/Topbar";
@@ -53,23 +54,37 @@ const AppContainer = () => {
   }, []);
 
   return (
-    <ColorModeContext.Provider value={colorMode}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <div className="AppContainer">
-          <Header />
-          <Box sx={{ display: "flex" }}>
-            <SideBar />
-            <Box sx={{ display: "flex", flexDirection: "column" }}>
-              <SubheaderContainer />
-              <Box sx={{ ml: 4 }}>
-                <PageContainer />
-              </Box>
-            </Box>
+    // <ColorModeContext.Provider value={colorMode}>
+    //   <ThemeProvider theme={theme}>
+    <div className="AppContainer">
+      <CssBaseline />
+      <Header />
+      <Box sx={{ display: "flex" }}>
+        <SideBar />
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+          }}
+        >
+          <SubheaderContainer />
+          <Box
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center"
+            minHeight="80vh"
+            sx={{ right: 0 }}
+          >
+            {/* <LandingContainer /> */}
+            <PageContainer />
           </Box>
-        </div>
-      </ThemeProvider>
-    </ColorModeContext.Provider>
+        </Box>
+      </Box>
+    </div>
+    //   </ThemeProvider>
+    // </ColorModeContext.Provider>
   );
 };
 

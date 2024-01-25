@@ -136,7 +136,7 @@ const SideBar = () => {
 
   return (
     <div>
-      <Box sx={{ display: "flex", border: "1px solid #000" }}>
+      {/* <Box sx={{ display: "flex" }}> */}
         <Drawer
           variant="permanent"
           about="left"
@@ -174,8 +174,6 @@ const SideBar = () => {
             </Typography>
           </Box>
           <Toolbar />
-          {/* do we want this? */}
-          {/* <Divider color="#444756" /> */}
           <Box display="flex" flexDirection="column" height="100%">
             <Box>
               <List>
@@ -233,7 +231,6 @@ const SideBar = () => {
               </List>
             </Box>
             <Box mt="auto" align="center" sx={{ mb: 5 }}>
-              {/* <Divider color="#444756" /> */}
               <IconButton
                 label="Settings"
                 sx={{
@@ -248,7 +245,7 @@ const SideBar = () => {
             </Box>
           </Box>
         </Drawer>
-      </Box>
+      {/* </Box> */}
     </div>
   );
 };
