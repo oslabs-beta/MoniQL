@@ -16,7 +16,7 @@ const MonitorContainer = () => {
   const monitors = ['Range', 'Freshness', 'Volume', 'Null', 'Custom'];
   const activeMonitors = useSelector((state) => state.monitor.activeMonitors);
   useEffect(() => {
-    console.log("ACTIVE MONITORS HAS CHANGED!!",activeMonitors)
+    console.log('new active monitors: ', activeMonitors)
   }, [activeMonitors])
 
   const sendQuery = async (monitor) => {

@@ -75,12 +75,12 @@ const AlertBox = (alertObj) => {
 
     return (
         display ?
-        (<Alert key={alert_id} severity={severity} variant="outlined" onClose={handleClose} sx={{bgcolor: 'background.paper', zIndex: 9999}}>
-            <AlertTitle>{`${monitorType} anomaly detected at ${detected_at} in ${table}`}</AlertTitle>
+        (<Alert severity={severity} variant="outlined" onClose={handleClose} sx={{bgcolor: 'background.paper', zIndex: 9999}}>
+            <AlertTitle>{`${monitorType} anomaly detected at ${dayjs(detected_at).format('ddd MM-DD-YYYY hh:mm:ss a')} in ${table}`}</AlertTitle>
             {column ? `Column: ${column}, ` : null}
             {anomalyType ? `Anomaly type: ${anomalyType}, ` : null}
             {anomalyValue ? `Anomaly value: ${anomalyValue}, ` : null}
-            {anomalyTime ? `Anomaly time: ${anomalyTime} ` : null}
+            {anomalyTime ? `Anomaly time: ${dayjs(anomalyTime).format('ddd MM-DD-YYYY hh:mm:ss a')} ` : null}
             <br/>
             {notes.length ? `Notes: ${notes.join(', ')}` : null}
             <Button onClick={handleClickOpen}>Add Notes</Button>
@@ -99,24 +99,3 @@ const AlertBox = (alertObj) => {
 }
 
 export default AlertBox;
-
-/**
- * alert object shape:
- * {
- *    alert_id: number,
- *    severity: string,
- *    table: string,
- *    column?: string,
- *    monitorType: string,
- *    anomalyType: string,
- *    anomalyValue?: number,
- *    anomalyTime?: timestamptz,
- *    detected_at: timestamptz,
- *    resolved_at?: timestamptz,
- *    resolved?: boolean,
- *    resolved_by?: string,
- *    notes?: string,
- *    display: boolean
- * }
- * 
- */

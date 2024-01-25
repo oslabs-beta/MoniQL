@@ -1,21 +1,25 @@
 import * as React from "react";
 import { styled, alpha } from "@mui/material/styles";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
+import { Drawer, AppBar, Box, Toolbar, IconButton, InputBase, Badge, 
+  MenuItem, Menu, createTheme, ThemeProvider, Divider, useTheme } from '@mui/material';
+// import AppBar from "@mui/material/AppBar";
+// import Box from "@mui/material/Box";
+// import Toolbar from "@mui/material/Toolbar";
+// import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import InputBase from "@mui/material/InputBase";
-import Badge from "@mui/material/Badge";
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
+// import InputBase from "@mui/material/InputBase";
+// import Badge from "@mui/material/Badge";
+// import MenuItem from "@mui/material/MenuItem";
+// import Menu from "@mui/material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
-import { createTheme, ThemeProvider, Divider, useTheme } from "@mui/material";
-
+// import { createTheme, ThemeProvider, Divider, useTheme } from "@mui/material";
+import { useSelector } from "react-redux";
+// import AlertContainer from "../containers/AlertContainer";
+import AlertBox from "./AlertBox";
 
 //theme dark/light mode
 import { tokens } from "./stylesheets/Themes";
@@ -77,6 +81,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const Header = () => {
+  
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
@@ -88,6 +93,15 @@ const Header = () => {
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
+
+  const alertsArr = useSelector((state) => state.alert.alerts);
+  React.useEffect(() => {
+    setAlertsCount(
+      alertsArr.filter((alertObj) => alertObj.display).length
+      );
+  }, [alertsArr]);
+
+  const [alertsCount, setAlertsCount] = React.useState(alertsArr.length);
 
   const menuId = "primary-search-account-menu";
   const renderMenu = (
@@ -111,6 +125,33 @@ const Header = () => {
       <MenuItem onClick={handleMenuClose}>Sign out</MenuItem>
     </Menu>
   );
+
+  const [alertsDrawerToggle, setAlertsDrawerToggle] = React.useState(false);
+
+  const handleAlertsDrawerToggle = () => {
+    setAlertsDrawerToggle(!alertsDrawerToggle);
+  }
+
+  let anomalies = alertsArr.sort((a, b) => b.anomalyTime - a.anomalyTime);
+  anomalies = anomalies.map((alertObj, i) => <AlertBox key={i * 2} {...alertObj}/>);
+
+  const renderAlertsDrawer = (
+    <Drawer anchor='right' open={alertsDrawerToggle}>
+      <Box sx={{width: 350}}>
+      <IconButton
+                size="large"
+                aria-label={`show ${alertsCount} new alerts`}
+                color="inherit"
+                onClick={handleAlertsDrawerToggle}
+              >
+                <Badge badgeContent={alertsCount} color="error">
+                  <NotificationsIcon />
+                </Badge>
+              </IconButton>
+        {anomalies}
+      </Box>
+    </Drawer>
+  )
 
   return (
     <ThemeProvider theme={theme}>
@@ -143,10 +184,11 @@ const Header = () => {
             <Box sx={{ display: { xs: "none", md: "flex" } }}>
               <IconButton
                 size="large"
-                aria-label="show 17 new notifications"
+                aria-label={`show ${alertsCount} new alerts`}
                 color="inherit"
+                onClick={handleAlertsDrawerToggle}
               >
-                <Badge badgeContent={17} color="error">
+                <Badge badgeContent={alertsCount} color="error">
                   <NotificationsIcon />
                 </Badge>
               </IconButton>
@@ -167,6 +209,7 @@ const Header = () => {
           {/* DELETE THIS */}
           <Divider color="#444756" />
         </AppBar>
+        {renderAlertsDrawer}
         {renderMenu}
       </Box>
     </ThemeProvider>

@@ -34,13 +34,13 @@ const alertObjCreator = (table, monitorType, anomalyType, severity = 'error',
     severity,
     column,
     anomalyValue,
-    anomalyTime: dayjs(anomalyTime).format('ddd MM-DD-YYYY hh:mm:ss a'),
+    anomalyTime,
     notes,
     resolved_at: null,
     resolved: false,
     resolved_by: null,
     display: true,
-    detected_at: dayjs().format('ddd MM-DD-YYYY hh:mm:ss a'),
+    detected_at: new Date,
   }
 };
 
@@ -141,11 +141,10 @@ monitorController.range = async (req, res, next) => {
   // for values out of normal range set by user
 
   const { table, column, minValue, maxValue } = req.body; 
-  console.log('IN RANGE CONTROLLER PRE-QUERY TO DB', table, column, minValue)
-  // const timeColumn = req.body.timeColumn || 'created_at';
+  const timeColumn = 'Formatted Date' /*req.body.timeColumn || 'created_at'*/;
 
   try {
-    console.log('THIS IS IN THE RANGE MIDDLEWARE',req.body)
+    console.log('req.body in moncontroller.range',req.body)
     const text = `SELECT * FROM ${table} WHERE "${column}" < $1 OR "${column}" > $2`;
     const values = [minValue, maxValue];
     const data = await db.query(text, values);
@@ -155,9 +154,9 @@ monitorController.range = async (req, res, next) => {
     if(anomalousArray.length) {
       res.locals.alerts = [];
       anomalousArray.map((obj) => {
-        res.locals.alerts.push(alertObjCreator(table, 'custom range', 'out of range', 'error', column, obj[column], /*obj[timeColumn]*/));
+        res.locals.alerts.push(alertObjCreator(table, 'custom range', 'out of range', 'error', column, obj[column], obj[timeColumn]));
       });
-      console.log('res.locals.alerts in moncont.range: ', res.locals.alerts)
+      console.log('res.locals.alerts in moncontroller.range: ', res.locals.alerts)
     }
     next();
   } catch(err) {
