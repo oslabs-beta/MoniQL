@@ -159,7 +159,7 @@ const SideBar = () => {
               alignItems: "center",
             }}
           >
-            <AutoAwesomeIcon sx={{ mt: 3, color: "#a4a9fc" }} />
+            <AutoAwesomeIcon sx={{ mt: 3, color: "#4cceac" }} />
 
             <Typography
               align="center"
