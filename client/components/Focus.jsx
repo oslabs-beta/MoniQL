@@ -159,7 +159,7 @@ const Focus = ({children, elements}) => {
           newNodes.push({
             id: `${table.table_name}`,
             type: "custom",
-            position: { x: 300 * xVal, y: 100 + 250 * yVal },
+            position: { x: 100 + 300 * xVal, y: 100 + 250 * yVal },
             data: { label: `${table.table_name}`, columns: columnArray },
           });
           //iterate thru foreign keys property of table
@@ -198,7 +198,7 @@ const Focus = ({children, elements}) => {
         nodeTypes={nodeTypes}
         // onConnect={onConnect}
       >
-        {/* <Background color="#2A2A43"/> */}
+        <Background color="#2A2A43"/>
       </ReactFlow>
     </div>
   );
