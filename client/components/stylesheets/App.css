@@ -19,9 +19,9 @@ body,
   font-family: "Source Sans Pro", sans-serif;
   background-color: #222130;
   /* background-image: url(https://img.freepik.com/free-vector/blurred-abstract-background-design_1107-169.jpg?w=2000&t=st=1706200718~exp=1706201318~hmac=6998d8adb64a2ea68c5f75f354698c93c53991a6bd012012fa955b8c73718976); */
-/* background-image: url(https://i.pinimg.com/originals/60/15/9f/60159f45955be086e295dd9400ceee86.jpg); */
-/* background-image: url(https://i.pinimg.com/originals/60/15/9f/60159f45955be086e295dd9400ceee86.jpg); */
 background-image: url(https://i.pinimg.com/originals/60/15/9f/60159f45955be086e295dd9400ceee86.jpg);
+/* background-image: url(https://i.pinimg.com/originals/60/15/9f/60159f45955be086e295dd9400ceee86.jpg); */
+/* background-image: url(https://i.pinimg.com/originals/60/15/9f/60159f45955be086e295dd9400ceee86.jpg); */
   /* opacity: 0.75; */
   background-repeat: no-repeat;
   background-size: cover;
@@ -63,7 +63,7 @@ body:before {
   width: 150px;
   height: 200px;
   border-radius: 10px;
-  overflow: auto;
+  overflow: scroll;
   color: #e0e0e0;
   overflow: hidden; 
   background: rgba( 255, 255, 255, 0.25 );
@@ -123,28 +123,28 @@ box-shadow: 0px 0px 23px 8px rgba(227,214,255,0.08);
 
 
 
-
-
-
-/*
-
 ::-webkit-scrollbar {
   width: 8px;
   border-radius: 10px;
 
 }
 
-/*
+
 ::-webkit-scrollbar-thumb {
   background: rgba(104, 112, 250, 0.01); 
   border-radius: 10px;
   transition: background 0.1s ease-in-out;
+}
 
-/*
 
 ::-webkit-scrollbar-thumb:active,
 ::-webkit-scrollbar-thumb:hover {
   background: #6870fa; 
+}
+
+/*
+
+
 
 
 

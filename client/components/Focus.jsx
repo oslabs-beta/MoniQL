@@ -177,8 +177,8 @@ const Focus = ({children, elements}) => {
         }
       });
     };
-    // addTable(focusTable, focusDepth)
-    addTable("people_in_films", focusDepth);
+    addTable(focusTable, focusDepth)
+    // addTable("people_in_films", focusDepth);
     // console.log(newNodes)
     console.log("Nodes:", newNodes);
     console.log("Edges:", newEdges);

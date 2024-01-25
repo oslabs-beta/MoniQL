@@ -77,7 +77,6 @@ const AppContainer = () => {
             minHeight="80vh"
             sx={{ right: 0 }}
           >
-            {/* <LandingContainer /> */}
             <PageContainer />
           </Box>
         </Box>
