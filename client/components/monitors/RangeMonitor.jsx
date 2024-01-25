@@ -102,13 +102,12 @@ return (
             </Typography>
             <Divider />
           </Box>
-          <Stack
-            direction="column"
-            spacing={1}
-            alignItems="center"
-            justifyContent="left"
-          >
+          
             {/* TABLE SELECT */}
+             <Box display="flex" justifyContent="space-between">
+            <FormControl sx={{ flex: 1, minWidth: "40%", mr: "1rem" }}>
+              <InputLabel style={{ color: "hotpink" }}>Table Name</InputLabel>
+
             <Select
               required
               id="select-table"
@@ -118,9 +117,11 @@ return (
               sx={{
                 backgroundColor: "white",
                 borderRadius: "5px",
-                width: "30%",
-              }}
-            >
+                width: "100%",
+              color: "hotpink",
+                  input: { color: "hotpink" },
+                }}
+              >
               {tablesArray.map((item, index) => (
                 <MenuItem key={index} value={item.table_name}>
                   {item.table_name}
@@ -128,8 +129,17 @@ return (
               ))}
             </Select>
             <FormHelperText>Select table to monitor</FormHelperText>
-
+            </FormControl>
             {/* COLUMN SELECT */}
+              <FormControl sx={{ flex: 1, minWidth: "40%" }}>
+              <InputLabel
+                style={{ color: "hotpink" }}
+                InputProps={{
+                  style: { color: "hotpink" },
+                }}
+              >
+                Column Name
+              </InputLabel>
             <Select
               required
               id="select-column"
@@ -139,9 +149,11 @@ return (
               sx={{
                 backgroundColor: "white",
                 borderRadius: "5px",
-                width: "30%",
-              }}
-            >
+                width: "100%",
+             color: "hotpink",
+                  input: { color: "hotpink" },
+                }}
+              >
               {columnsArray.map((item, index) => (
                 <MenuItem key={index} value={item}>
                   {item}
@@ -149,8 +161,11 @@ return (
               ))}
             </Select>
             <FormHelperText>Select column to monitor</FormHelperText>
-
+ </FormControl>
+          </Box>
             {/* Min Value Input */}
+              <Box display="flex" justifyContent="space-between">
+            <FormControl sx={{ flex: 1, minWidth: "30%", mr: "1rem" }}>
             <TextField
               required
               id="min-value"
@@ -162,7 +177,7 @@ return (
               sx={{
                 backgroundColor: "white",
                 borderRadius: "5px",
-                width: "30%",
+                width: "100%",
                 input: { color: "hotpink" },
               }}
               InputLabelProps={{
@@ -173,7 +188,9 @@ return (
               }}
             />
             <FormHelperText>Minimum Value</FormHelperText>
+          </FormControl>
 
+            <FormControl sx={{ flex: 1, minWidth: "30%", mr: "1rem" }}>
             {/* Max Value Input */}
             <TextField
               required
@@ -186,7 +203,7 @@ return (
               sx={{
                 backgroundColor: "white",
                 borderRadius: "5px",
-                width: "30%",
+                width: "100%",
                 input: { color: "hotpink" },
               }}
               InputLabelProps={{
@@ -197,7 +214,9 @@ return (
               }}
             />
             <FormHelperText>Maximum Value</FormHelperText>
+ </FormControl>
 
+            <FormControl sx={{ flex: 1, minWidth: "30%" }}>
             {/* Frequency Input */}
             <TextField
               required
@@ -210,7 +229,7 @@ return (
               sx={{
                 backgroundColor: "white",
                 borderRadius: "5px",
-                width: "30%",
+                width: "100%",
                 input: { color: "hotpink" },
               }}
               InputLabelProps={{
@@ -223,7 +242,8 @@ return (
             <FormHelperText>
               Enter the frequency (in hours) for the monitor to run
             </FormHelperText>
-
+ </FormControl>
+          </Box>
             {/* Description Input */}
             <TextField
               required
@@ -248,7 +268,7 @@ return (
               }}
             />
             <FormHelperText>Enter a description for the monitor</FormHelperText>
-          </Stack>
+         
           <Button
             type="submit"
             fullWidth
