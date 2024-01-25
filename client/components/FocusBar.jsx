@@ -24,7 +24,7 @@ const focusBarTheme = createTheme({
 });
 
 const FocusBar = () => {
-    const [focus, setFocus] = useState("");
+    const [focus, setFocus] = useState('');
     const [depth, setDepth] = useState(0);
     // const [direction, setDirection] = useState("");
     const dispatch = useDispatch();
