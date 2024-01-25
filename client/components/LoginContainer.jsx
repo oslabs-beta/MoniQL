@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { logInActionCreator, saveDBActionCreator } from '../actions/actions';
 //mui imports below:
-import { Roboto, Container, Switch, Link, Box, TextField, Typography, Button } from '@mui/material';
+import { Roboto, Container, Switch, Link, Box, TextField, Typography, Button, Tab, Tabs } from '@mui/material';
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 // import { CssBaseline } from '@material-ui/core';
 
@@ -36,9 +36,10 @@ const theme = createTheme({
 
 const LoginContainer = () => {
   const [regToggle, setRegToggle] = useState(false);
+  const [selectedTab, setSelectedTab] = useState('login');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [uri, setUri] = useState(null);
+  const [uri, setUri] = useState('');
   const [error, setError] = useState(''); 
 
   const dispatch = useDispatch();
@@ -71,7 +72,9 @@ const LoginContainer = () => {
       console.error('IN CATCH ERROR HANDLER FOR HANDLEAUTH', err.message);
     }
   }
-
+  const handleChange = (event, newValue) => {
+    setSelectedTab(newValue);
+  };
 
 
   return (
@@ -100,14 +103,18 @@ const LoginContainer = () => {
             noValidate
             sx={{ mt: 1 }}
           >
-            <Button
+            {/* <Button
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
               onClick={() => setRegToggle(!regToggle)}
             >
               {regToggle ? "Register" : "Log In"}
-            </Button>
+            </Button> */}
+            <Tabs value={selectedTab} onChange={handleChange} centered>
+              <Tab value="login" label="Login" />
+              <Tab value="register" label="Register" />
+            </Tabs>
             <TextField
               margin="normal"
               required
@@ -129,7 +136,7 @@ const LoginContainer = () => {
               }}
             />
             <Typography color="error" variant="body2">
-            {error} username does not exist
+            {/* {error} username does not exist */}
             </Typography>
             <TextField
               margin="normal"
@@ -178,7 +185,8 @@ const LoginContainer = () => {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              {regToggle ? "Register" : "Sign in"}
+              {/* {regToggle ? "Register" : "Sign in"} */}
+              {selectedTab === 'login' ? "Log In" : "Sign Up"}
             </Button>
           </Box>
         </Box>
