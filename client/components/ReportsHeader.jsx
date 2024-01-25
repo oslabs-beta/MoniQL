@@ -6,9 +6,9 @@ const SubHeader = ({ title, subtitle }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
-    <Box mb="30px" sx={{ mt: -3, mb: -3, mr: -3, ml: -3 }}>
+    <Box mb="30px">
       <Typography
-        variant="h2"
+        variant="h1"
         color={colors.grey[100]}
         fontWeight="bold"
         sx={{ m: "0 0 5px 0" }}
@@ -22,4 +22,17 @@ const SubHeader = ({ title, subtitle }) => {
   );
 };
 
-export default SubHeader;
+const ReportsHeader = () => {
+  return (
+    <div>
+      <Box m="30px">
+        <SubHeader
+          title="Reports"
+          subtitle="Some day this will be reports, right now it's alerts ¯\_(ツ)_/¯"
+        />
+      </Box>
+    </div>
+  );
+};
+
+export default ReportsHeader;

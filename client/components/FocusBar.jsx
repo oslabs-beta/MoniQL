@@ -83,15 +83,11 @@ const FocusBar = () => {
       <Box m="30px">
         <SubHeader
           title="SQL Visualizer"
-          subtitle="Visualize your SQL database"
+          subtitle="Visualize your SQL database  ฅV●ᴥ●Vฅ"
         />
-        <Box
-          sx={{ display: "flex", flexDirection: "row", minWidth: 120 }}
-        >
+        <Box sx={{ display: "flex", flexDirection: "row", minWidth: 120 }}>
           <FormControl sx={{ mr: 4, minWidth: 350 }}>
-            <InputLabel>
-              Table Name
-            </InputLabel>
+            <InputLabel>Table Name</InputLabel>
             <Select
               label="table name"
               value={focus}
@@ -110,9 +106,7 @@ const FocusBar = () => {
             <FormHelperText>Select table name to focus on</FormHelperText>
           </FormControl>
           <FormControl sx={{ mr: 3, minWidth: 90 }}>
-            <InputLabel>
-              Depth
-              </InputLabel>
+            <InputLabel>Depth</InputLabel>
             <Select
               label="Depth"
               value={depth}
