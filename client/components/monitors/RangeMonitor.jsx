@@ -14,6 +14,7 @@ import {
   MenuItem,
   Select,
   TextField,
+  NumberInput,
 } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 
@@ -23,8 +24,8 @@ const RangeMonitor = () => {
   const [params, setParams] = useState({
     table: '',
     column: '',
-    min: '',
-    max: '',
+    minValue: '',
+    maxValue: '',
     frequency: '',
     description: ''
   });
@@ -36,16 +37,27 @@ useEffect(() => {
   tablesArray.forEach((table, i) => {
     if (params.table === table.table_name){
       console.log("HIT!!!!! TABLE NAME SELECTED IS ", table.tablename)
-      setColumnsArray(table.columns)
+      const numColumns = table.columns.filter(column => column.data_type === 'integer').map(column => column.name)
+      setColumnsArray(numColumns)
     }
   })
 }, [params.table, tablesArray]);
 
 //for editing monitors with existing rules
+// const handleChanges = (e) => {  
+//     console.log('THIS IS THE NAME OF THE DROPDOWNLIST', e.target.name, 'THIS IS THE VALUE THE USER CHOSE', e.target.value)
+//     setParams({ ...params, [e.target.name]: e.target.value });
+// }
+
 const handleChanges = (e) => {  
-    console.log('THIS IS THE NAME OF THE DROPDOWNLIST',e.target.name, 'THIS IS THE VALUE THE USER CHOSE', e.target.value)
-    setParams({ ...params, [e.target.name]: e.target.value });
-}
+  const { name, value } = e.target;
+
+  // Check if the input name is 'min' or 'max' and convert the value to a number
+  const newValue = (name === 'minValue' || name === 'maxValue') ? Number(value) : value;
+
+  console.log('THIS IS THE NAME OF THE DROPDOWNLIST', name, 'THIS IS THE VALUE THE USER CHOSE', newValue);
+  setParams({ ...params, [name]: newValue });
+};
 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -116,8 +128,8 @@ return (
               id="min-value"
               label="Min Value"
               type="number"
-              name="min"
-              value={params.min}
+              name="minValue"
+              value={params.minValue}
               onChange={handleChanges}
               sx={{ backgroundColor: "white", borderRadius: "5px", width: '30%' }}
             />
@@ -129,8 +141,8 @@ return (
               id="max-value"
               label="Max Value"
               type="number"
-              name="max"
-              value={params.max}
+              name="maxValue"
+              value={params.maxValue}
               onChange={handleChanges}
               sx={{ backgroundColor: "white", borderRadius: "5px", width: '30%' }}
             />
