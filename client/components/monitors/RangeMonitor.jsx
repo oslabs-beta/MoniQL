@@ -37,7 +37,8 @@ useEffect(() => {
   tablesArray.forEach((table, i) => {
     if (params.table === table.table_name){
       console.log("HIT!!!!! TABLE NAME SELECTED IS ", table.tablename)
-      setColumnsArray(table.columns)
+      const numColumns = table.columns.filter(column => column.data_type === 'integer').map(column => column.name)
+      setColumnsArray(numColumns)
     }
   })
 }, [params.table, tablesArray]);
