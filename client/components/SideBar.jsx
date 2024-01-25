@@ -24,28 +24,35 @@ import {
 import { useDispatch } from "react-redux";
 import { selectPageActionCreator } from "../actions/actions";
 //icons
-//dashboard
+//dashboard 
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import HomeIcon from "@mui/icons-material/Home";
+
 //ERD
 import AccountTreeIcon from "@mui/icons-material/AccountTree";
-//monitor
+import AccountTreeOutlinedIcon from "@mui/icons-material/AccountTreeOutlined";
+//monitor Outlined
 import InsightsIcon from "@mui/icons-material/Insights";
+import AutoGraphOutlinedIcon from "@mui/icons-material/AutoGraphOutlined";
 import AutoGraphIcon from "@mui/icons-material/AutoGraph";
 //reports
 import MonitorHeartIcon from "@mui/icons-material/MonitorHeart";
+import AssessmentOutlinedIcon from "@mui/icons-material/AssessmentOutlined";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 //query
+import QueryStatsOutlinedIcon from "@mui/icons-material/QueryStatsOutlined";
 import QueryStatsIcon from "@mui/icons-material/QueryStats";
-//bubbles
-import BubbleChartIcon from "@mui/icons-material/BubbleChart";
 //light/dark mode
 import LightModeIcon from "@mui/icons-material/LightMode";
 //settings
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import SettingsIcon from "@mui/icons-material/Settings";
 //logo
 import GradeIcon from "@mui/icons-material/Grade";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import CastleIcon from "@mui/icons-material/Castle";
+import BubbleChartIcon from "@mui/icons-material/BubbleChart";
+
 //////////////////////hay added for light/dark mode/////////////////////
 import tokens from "./stylesheets/Themes";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
@@ -85,23 +92,23 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
 
 const listItems = [
   {
-    listIcon: <HomeIcon sx={{ fontSize: 25 }} />,
+    listIcon: <HomeOutlinedIcon sx={{ fontSize: 25 }} />,
     listText: "Dashboard",
   },
   {
-    listIcon: <AccountTreeIcon sx={{ fontSize: 25 }} />,
+    listIcon: <AccountTreeOutlinedIcon sx={{ fontSize: 25 }} />,
     listText: "ERD",
   },
   {
-    listIcon: <AutoGraphIcon sx={{ fontSize: 25 }} />,
+    listIcon: <AutoGraphOutlinedIcon sx={{ fontSize: 25 }} />,
     listText: "Monitors",
   },
   {
-    listIcon: <AssessmentIcon sx={{ fontSize: 25 }} />,
+    listIcon: <AssessmentOutlinedIcon sx={{ fontSize: 25 }} />,
     listText: "Reports",
   },
   {
-    listIcon: <QueryStatsIcon sx={{ fontSize: 25 }} />,
+    listIcon: <QueryStatsOutlinedIcon sx={{ fontSize: 25 }} />,
     listText: "Query",
   },
 ];
@@ -144,18 +151,28 @@ const SideBar = () => {
             },
           }}
         >
-          <Typography
-            align="center"
-            variant="h6"
-            noWrap
-            color="#6870fa"
-            component="div"
-            // transform: { rotate: '90deg'}
-            sx={{ mt: 3, display: { xs: "none", sm: "block" } }}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
           >
-            hide_n_go_SQL
-            {/* {hackLogo} */}
-          </Typography>
+            <AutoAwesomeIcon sx={{ mt: 3, color: "#a4a9fc" }} />
+
+            <Typography
+              align="center"
+              variant="h6"
+              noWrap
+              color="#a4a9fc"
+              component="div"
+              // transform: { rotate: '90deg'}
+              sx={{ display: { xs: "none", sm: "block" } }}
+            >
+              hide_n_go_SQL
+            </Typography>
+          </Box>
           <Toolbar />
           {/* do we want this? */}
           {/* <Divider color="#444756" /> */}
