@@ -80,7 +80,15 @@ return (
               name="frequency"
               value={params.frequency}
               onChange={handleChanges}
-              sx={{ backgroundColor: "white", borderRadius: "5px", width: '30%' }}
+              sx={{ backgroundColor: "white", borderRadius: "5px", width: '30%',  input: { color: "hotpink" },
+               
+              }}
+              InputLabelProps={{
+                style: { color: "hotpink" },
+              }}
+              InputProps={{
+                style: { color: "hotpink" },
+              }}
             />
             <FormHelperText>Enter the frequency (in hours) for the monitor to run</FormHelperText>
 

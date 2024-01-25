@@ -228,7 +228,7 @@ monitorController.stats = async (req, res, next) => {
     const queryMd = `SELECT column_name 
       FROM information_schema.columns 
       WHERE table_name = '${table}' 
-      AND data_type IN ('integer', 'numeric', 'real', 'double precision', 'smallint', 'bigint')`;
+      AND data_type IN ('integer', 'numeric', 'real', 'double precision', 'smallint', 'bigint', 'decimal', 'smallserial', 'serial', 'bigserial')`;
     const numberData = await db.query(queryMd);
     const columns = numberData.rows; 
     console.log('columns in moncont.stats: ', columns);
