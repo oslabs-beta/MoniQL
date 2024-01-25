@@ -47,17 +47,30 @@ return (
     <Box display="flex" justifyContent="center" alignItems="center">
       <Card
         variant="outlined"
-        sx={{ width: "50vw", display: "flex", flexDirection: "column",
-              justifyContent: "center", padding: 3, boxShadow: 3,
-              backgroundColor: "rgba(255, 255, 255, 0.7)", borderRadius: 4 }}>
+        sx={{
+          width: "50vw",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          padding: 3,
+          boxShadow: 3,
+          backgroundColor: "rgba(255, 255, 255, 0.7)",
+          borderRadius: 4,
+        }}
+      >
         <FormControl sx={{ m: 1, minWidth: 200 }}>
           <Box sx={{ p: 2 }}>
-            <Typography variant="h5" color="white">Create New Custom Monitor</Typography>
+            <Typography variant="h5" color="white">
+              Create New Custom Monitor
+            </Typography>
             <Divider />
           </Box>
-          <Stack direction="column" spacing={1} alignItems="center" justifyContent="left">
-            
-
+          <Stack
+            direction="column"
+            spacing={1}
+            alignItems="center"
+            justifyContent="left"
+          >
             {/* Frequency Input */}
             <TextField
               required
@@ -67,10 +80,24 @@ return (
               name="frequency"
               value={params.frequency}
               onChange={handleChanges}
-              sx={{ backgroundColor: "white", borderRadius: "5px", width: '30%' }}
+              sx={{
+                backgroundColor: "white",
+                borderRadius: "5px",
+                width: "30%",
+
+                input: { color: "hotpink" },
+              }}
+              InputLabelProps={{
+                style: { color: "hotpink" },
+              }}
+              InputProps={{
+                style: { color: "hotpink" },
+              }}
             />
-            <FormHelperText>Enter the frequency (in hours) for the monitor to run</FormHelperText>
-            
+            <FormHelperText>
+              Enter the frequency (in hours) for the monitor to run
+            </FormHelperText>
+
             {/* Custom Query Input */}
             <TextField
               required
@@ -81,9 +108,22 @@ return (
               name="query"
               value={params.query}
               onChange={handleChanges}
-              sx={{ backgroundColor: "white", borderRadius: "5px", width: '100%' }}
+              sx={{
+                backgroundColor: "white",
+                borderRadius: "5px",
+                width: "100%",
+                input: { color: "hotpink" },
+              }}
+              InputLabelProps={{
+                style: { color: "hotpink" },
+              }}
+              InputProps={{
+                style: { color: "hotpink" },
+              }}
             />
-            <FormHelperText>Enter your custom query string to monitor</FormHelperText>
+            <FormHelperText>
+              Enter your custom query string to monitor
+            </FormHelperText>
 
             {/* Description Input */}
             <TextField
@@ -95,10 +135,20 @@ return (
               name="description"
               value={params.description}
               onChange={handleChanges}
-              sx={{ backgroundColor: "white", borderRadius: "5px", width: '100%' }}
+              sx={{
+                backgroundColor: "white",
+                borderRadius: "5px",
+                width: "100%",
+                input: { color: "hotpink" },
+              }}
+              InputLabelProps={{
+                style: { color: "hotpink" },
+              }}
+              InputProps={{
+                style: { color: "hotpink" },
+              }}
             />
             <FormHelperText>Enter a description for the monitor</FormHelperText>
-
           </Stack>
           <Button
             type="submit"

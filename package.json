@@ -52,9 +52,12 @@
     "pg": "^8.11.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-flow-renderer": "^10.3.17",
+    "react-pro-sidebar": "^1.1.0-alpha.2",
     "react-redux": "^9.1.0",
     "reactflow": "^11.10.2",
     "redux": "^5.0.1",
+    "styled-components": "latest",
     "uuid": "^9.0.1"
   }
 }

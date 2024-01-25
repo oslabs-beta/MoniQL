@@ -84,12 +84,25 @@ const LoginContainer = () => {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            backgroundColor: "#35353F",
-            borderRadius: 4,
-            boxShadow: 3,
+            background: "rgba( 255, 255, 255, 0.25 )",
+            backdropFilter: "blur( 4px )",
+            borderRadius: "10px",
+            border: "1px solid rgba( 255, 255, 255, 0.18 )",
+            boxShadow: "0px 0px 23px 8px rgba(227,214,255,0.08)",
           }}
+          ///////take out!//////////
+          // sx={{
+          //   marginTop: 8,
+          //   padding: 4,
+          //   display: "flex",
+          //   flexDirection: "column",
+          //   alignItems: "center",
+          //   backgroundColor: "#35353F",
+          //   borderRadius: 4,
+          //   boxShadow: 3,
+          // }}
         >
-          <Typography color="#B5B8CB" component="h1" variant="h5">
+          <Typography color="white" component="h1" variant="h5">
             Sign In
           </Typography>
           <Box
@@ -118,19 +131,21 @@ const LoginContainer = () => {
               onChange={(e) => setUsername(e.target.value)}
               autoFocus
               sx={{
-                backgroundColor: "#3B3B4B",
+                input: { color: "hotpink" },
+                // backgroundColor: "#3B3B4B",
+                backgroundColor: "#e0e0e0",
                 borderRadius: "5px",
               }}
               InputLabelProps={{
-                style: { color: "#fff" },
+                style: { color: "hotpink" },
               }}
               InputProps={{
-                style: { color: "#fff" },
+                style: { color: "hotpink" },
               }}
             />
-            <Typography color="error" variant="body2">
-            {error} username does not exist
-            </Typography>
+            {/* <Typography color="error" variant="body2">
+              {error} username does not exist
+            </Typography> */}
             <TextField
               margin="normal"
               required
@@ -140,14 +155,16 @@ const LoginContainer = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               sx={{
-                backgroundColor: "#3B3B4B",
+                input: { color: "hotpink" },
+                // backgroundColor: "#3B3B4B",
+                backgroundColor: "#e0e0e0",
                 borderRadius: "5px",
               }}
               InputLabelProps={{
-                style: { color: "#fff" },
+                style: { color: "hotpink" },
               }}
               InputProps={{
-                style: { color: "#fff" },
+                style: { color: "hotpink" },
               }}
             />
             <TextField
@@ -159,14 +176,16 @@ const LoginContainer = () => {
               value={uri}
               onChange={(e) => setUri(e.target.value)}
               sx={{
-                backgroundColor: "#3B3B4B",
+                input: { color: "hotpink" },
+                // backgroundColor: "#3B3B4B",
+                backgroundColor: "#e0e0e0",
                 borderRadius: "5px",
               }}
               InputLabelProps={{
-                style: { color: "#fff" },
+                style: { color: "hotpink" },
               }}
               InputProps={{
-                style: { color: "#fff" },
+                style: { color: "hotpink" },
               }}
             />
             <Button
