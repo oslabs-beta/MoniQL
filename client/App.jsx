@@ -1,28 +1,40 @@
 import React from 'react';
-import TestComponent from './components/TestComponent';
 import LoginContainer from './components/LoginContainer';
+import AppContainer from './containers/AppContainer';
+import "./components/stylesheets/App.css";
+import { useSelector } from 'react-redux';
+import AlertBox from './components/AlertBox';
+
+//hay added for light/dark mode
+import { useState } from "react";
+// import { ThemeProvider } from '@emotion/react';
+import { ColorModeContext, useMode } from "./components/stylesheets/Themes";
+import { CssBaseline, ThemeProvider } from "@mui/material";
+import Sidebar from './components/SideBar';
+//for pull out drawer:
+// import Topbar from "./scenes/global/Topbar";
 
 const App = () => {
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+
+  //light/dark mode
+  // const [theme, colorMode] = useMode();
+  // const [isSideBar, setIsSideBar] = useState(true);
+  
   return (
-    <div className='App'>
-      <TestComponent />
-      <LoginContainer />
-      <h2>
-        ฅV●ᴥ●Vฅ
-        <br></br>
-        <br></br>
-        ₜₕₐₙₖ ᵧₒᵤ
-        <br></br>
-        <br></br>
-        <br></br> ʚɞ ପଓ¸¸.•*¨*•
-        <br></br>
-        <br></br>ʕ ⊃･ ◡ ･ ʔ⊃ ━☆ﾟ.*･｡♫.*･ ʰᵃᵖᵖʸ ᵦ𝒹ₐᵧ ʰᵃᶜᵏᵉʳˢ𝓌ᵢₜₕ 𝓌ᵢₛ𝒹ₒₘ･:*☆
-        <br></br>
-        <br></br>
-        ʚɞ ⁺˖ ⸝⸝
-      </h2>
-    </div>
+    // <ColorModeContext.Provider value={colorMode}>
+      // <ThemeProvider theme={theme}>
+        // <CssBaseline />
+        <div className="App">
+          {/* <Sidebar isSideBar={isSideBar} /> */}
+          {/* <Topbar setIsSidebar={setIsSidebar} /> */}
+          {/* { (isLoggedIn) ? <AppContainer /> : <LoginContainer /> } */}
+          <AppContainer />
+        </div>
+      // </ThemeProvider>
+    // </ColorModeContext.Provider>
   );
 };
 
 export default App;
+
