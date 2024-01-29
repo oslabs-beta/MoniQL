@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { logInActionCreator, saveDBActionCreator } from '../actions/actions';
 //mui imports below:
-import { Roboto, Container, Switch, Link, Box, TextField, Typography, Button } from '@mui/material';
+import { Roboto, Container, Switch, Link, Box, TextField, Typography, Button, Tab, Tabs } from '@mui/material';
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 // import { CssBaseline } from '@material-ui/core';
 
@@ -36,9 +36,10 @@ const theme = createTheme({
 
 const LoginContainer = () => {
   const [regToggle, setRegToggle] = useState(false);
+  const [selectedTab, setSelectedTab] = useState('login');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [uri, setUri] = useState(null);
+  const [uri, setUri] = useState('');
   const [error, setError] = useState(''); 
 
   const dispatch = useDispatch();
@@ -71,7 +72,9 @@ const LoginContainer = () => {
       console.error('IN CATCH ERROR HANDLER FOR HANDLEAUTH', err.message);
     }
   }
-
+  const handleChange = (event, newValue) => {
+    setSelectedTab(newValue);
+  };
 
 
   return (
@@ -84,12 +87,25 @@ const LoginContainer = () => {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            backgroundColor: "#35353F",
-            borderRadius: 4,
-            boxShadow: 3,
+            background: "rgba( 255, 255, 255, 0.25 )",
+            backdropFilter: "blur( 4px )",
+            borderRadius: "10px",
+            border: "1px solid rgba( 255, 255, 255, 0.18 )",
+            boxShadow: "0px 0px 23px 8px rgba(227,214,255,0.08)",
           }}
+          ///////take out!//////////
+          // sx={{
+          //   marginTop: 8,
+          //   padding: 4,
+          //   display: "flex",
+          //   flexDirection: "column",
+          //   alignItems: "center",
+          //   backgroundColor: "#35353F",
+          //   borderRadius: 4,
+          //   boxShadow: 3,
+          // }}
         >
-          <Typography color="#B5B8CB" component="h1" variant="h5">
+          <Typography color="white" component="h1" variant="h5">
             Sign In
           </Typography>
           <Box
@@ -100,14 +116,18 @@ const LoginContainer = () => {
             noValidate
             sx={{ mt: 1 }}
           >
-            <Button
+            {/* <Button
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
               onClick={() => setRegToggle(!regToggle)}
             >
               {regToggle ? "Register" : "Log In"}
-            </Button>
+            </Button> */}
+            <Tabs value={selectedTab} onChange={handleChange} centered>
+              <Tab value="login" label="Login" />
+              <Tab value="register" label="Register" />
+            </Tabs>
             <TextField
               margin="normal"
               required
@@ -118,18 +138,20 @@ const LoginContainer = () => {
               onChange={(e) => setUsername(e.target.value)}
               autoFocus
               sx={{
-                backgroundColor: "#3B3B4B",
+                input: { color: "hotpink" },
+                // backgroundColor: "#3B3B4B",
+                backgroundColor: "#e0e0e0",
                 borderRadius: "5px",
               }}
               InputLabelProps={{
-                style: { color: "#fff" },
+                style: { color: "hotpink" },
               }}
               InputProps={{
-                style: { color: "#fff" },
+                style: { color: "hotpink" },
               }}
             />
             <Typography color="error" variant="body2">
-            {error} username does not exist
+            {/* {error} username does not exist */}
             </Typography>
             <TextField
               margin="normal"
@@ -140,14 +162,16 @@ const LoginContainer = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               sx={{
-                backgroundColor: "#3B3B4B",
+                input: { color: "hotpink" },
+                // backgroundColor: "#3B3B4B",
+                backgroundColor: "#e0e0e0",
                 borderRadius: "5px",
               }}
               InputLabelProps={{
-                style: { color: "#fff" },
+                style: { color: "hotpink" },
               }}
               InputProps={{
-                style: { color: "#fff" },
+                style: { color: "hotpink" },
               }}
             />
             <TextField
@@ -159,14 +183,16 @@ const LoginContainer = () => {
               value={uri}
               onChange={(e) => setUri(e.target.value)}
               sx={{
-                backgroundColor: "#3B3B4B",
+                input: { color: "hotpink" },
+                // backgroundColor: "#3B3B4B",
+                backgroundColor: "#e0e0e0",
                 borderRadius: "5px",
               }}
               InputLabelProps={{
-                style: { color: "#fff" },
+                style: { color: "hotpink" },
               }}
               InputProps={{
-                style: { color: "#fff" },
+                style: { color: "hotpink" },
               }}
             />
             <Button
@@ -178,7 +204,8 @@ const LoginContainer = () => {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              {regToggle ? "Register" : "Sign in"}
+              {/* {regToggle ? "Register" : "Sign in"} */}
+              {selectedTab === 'login' ? "Log In" : "Sign Up"}
             </Button>
           </Box>
         </Box>

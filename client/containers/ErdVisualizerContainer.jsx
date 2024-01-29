@@ -61,8 +61,8 @@ const ErdVisualizerContainer = () => {
 
       {/* </Box> */}
       {/* <Box sx={{ backgroundColor: "pink" }}> */}
-      <Box>
-        <Focus />
+      <Box sx={{ ml: -2, zIndex: 2, backgroundColor: "#6870fa", borderRadius: 3, opacity: '60%' }}>
+        <Focus sx={{ zIndex: 2 }} />
       </Box>
     </div>
   );

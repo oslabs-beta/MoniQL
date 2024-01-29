@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from "react";
-import { Box } from '@mui/material';
+import React, { useEffect, useState } from "react";
+import { Box } from "@mui/material";
 
 //TEMPORARY IMPORTS
 import { useDispatch, useSelector } from "react-redux";
@@ -10,18 +10,28 @@ import AlertBox from "../components/AlertBox";
 import Header from "../components/Header";
 import SideBar from "../components/SideBar";
 import ErdVisualizerContainer from "../containers/ErdVisualizerContainer";
-import MonitorContainer from "../containers/MonitorContainer";  
+import MonitorContainer from "../containers/MonitorContainer";
 import CustomRangesMonitor from "../components/monitors/RangeMonitor";
-import PageContainer from './PageContainer';
+import PageContainer from "./PageContainer";
 import SubheaderContainer from "./SubheaderContainer";
 // import { response } from "express";
 import MainContainer from "./MainContainer";
-  
+
+//////////////////////hay added for light/dark mode/////////////////////
+// import { ThemeProvider } from '@emotion/react';
+import { ColorModeContext, useMode } from "../components/stylesheets/Themes";
+import { CssBaseline, ThemeProvider } from "@mui/material";
+import LandingContainer from "./LandingContainer";
+
+//for pull out drawer:
+//   import Topbar from "./scenes/global/Topbar";
 
 const AppContainer = () => {
-
-  //sidebar
-
+  //light/dark mode
+  const [theme, colorMode] = useMode();
+  //for pullout drawer:
+  //   const [isSideBar, setIsSideBar] = useState(true);
+  /* <SideBar isSideBar={isSideBar} /> */
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -44,24 +54,70 @@ const AppContainer = () => {
   }, []);
 
   return (
+    // <ColorModeContext.Provider value={colorMode}>
+    //   <ThemeProvider theme={theme}>
     <div className="AppContainer">
-      {/* <Sidebar  />; */}
-      <Box sx={{ display: "flex", flexDirection: "column" }}>
-        <Header />
-        <Box sx={{ display: "flex", mt: 10 }}>
-          <SideBar sx={{ m: 0, p: 0 }} />
-          <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <SubheaderContainer />
+      <CssBaseline />
+      <Header />
+      <Box sx={{ display: "flex" }}>
+        <SideBar />
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+          }}
+        >
+          <SubheaderContainer />
+          <Box
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center"
+            minHeight="80vh"
+            sx={{ right: 0 }}
+          >
             <PageContainer />
-            {/* <MainContainer/> */}
           </Box>
         </Box>
       </Box>
-      {/* <ErdVisualizerContainer /> */}
-      {/* <MonitorContainer /> */}
-      {/* <CustomRangesMonitor /> */}
     </div>
+    //   </ThemeProvider>
+    // </ColorModeContext.Provider>
   );
-}
+};
 
 export default AppContainer;
+
+
+
+
+
+
+
+//   return (
+//     <ColorModeContext.Provider value={colorMode}>
+//       <ThemeProvider theme={theme}>
+//         <CssBaseline />
+//         <div className="AppContainer">
+//           {/* <Box sx={{ display: "flex", flexDirection: "column" }}> */}
+//           {/* <main className="content"> */}
+//             <Header />
+//             <Box sx={{ display: "flex" }}>
+//               <SideBar sx={{ m: 0, p: 0 }} />
+//               <Box sx={{ display: "flex", flexDirection: "column" }}>
+//                 <SubheaderContainer />
+//                 <PageContainer />
+//                 {/* <MainContainer/> */}
+//               </Box>
+//             </Box>
+//             {/* </Box> */}
+//             {/* <ErdVisualizerContainer /> */}
+//             {/* <MonitorContainer /> */}
+//             {/* <CustomRangesMonitor /> */}
+//           {/* </main> */}
+//         </div>
+//       </ThemeProvider>
+//     </ColorModeContext.Provider>
+//   );
+// };

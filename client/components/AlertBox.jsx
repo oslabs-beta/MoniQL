@@ -1,7 +1,7 @@
 // import react, redux, and react-redux, dispatch 
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Alert, AlertTitle, TextField, Dialog } from '@mui/material';
+import { Button, Alert, AlertTitle, TextField, Dialog, Typography } from '@mui/material';
 import { deleteAlertActionCreator, updateAlertActionCreator } from '../actions/actions.js';
 import dayjs from 'dayjs';
 
@@ -25,7 +25,10 @@ const AlertBox = (alertObj) => {
     const addNotes = () => {
 
         const newNotesArr = notes.slice();
-        newNotesArr.push(newNote.concat(` -by ${user} at ` + dayjs().format('ddd YYYY-MM-DD hh:mm:ss a')));
+        // newNotesArr.push(newNote.concat(` -by ${user} at ` + dayjs().format('ddd YYYY-MM-DD hh:mm:ss a')));
+        // just for demo purposes, hardcoding user to Ebo - also line 99
+        newNotesArr.push(newNote.concat(` -by Ebo at ` + dayjs().format('ddd YYYY-MM-DD hh:mm:ss a')));
+
 
         alertObj = {
             ...alertObj,
@@ -40,7 +43,7 @@ const AlertBox = (alertObj) => {
             ...alertObj,
             resolved: true,
             resolved_at: dayjs().format('ddd YYYY-MM-DD hh:mm:ss a'),
-            resolved_by: user
+            resolved_by: 'Ebo'  //user
         }
         return updateAlert(alertObj);
     }
@@ -75,12 +78,12 @@ const AlertBox = (alertObj) => {
 
     return (
         display ?
-        (<Alert key={alert_id} severity={severity} variant="outlined" onClose={handleClose} sx={{bgcolor: 'background.paper', zIndex: 9999}}>
-            <AlertTitle>{`${monitorType} anomaly detected at ${detected_at} in ${table}`}</AlertTitle>
+        (<Alert severity={severity} variant="outlined" onClose={handleClose} sx={{bgcolor: 'background.paper', zIndex: 9999}}>
+            <AlertTitle>{`${monitorType} anomaly detected at ${dayjs(detected_at).format('ddd MM-DD-YYYY hh:mm:ss a')} in ${table}`}</AlertTitle>
             {column ? `Column: ${column}, ` : null}
             {anomalyType ? `Anomaly type: ${anomalyType}, ` : null}
             {anomalyValue ? `Anomaly value: ${anomalyValue}, ` : null}
-            {anomalyTime ? `Anomaly time: ${anomalyTime} ` : null}
+            {anomalyTime ? `Anomaly time: ${dayjs(anomalyTime).format('ddd MM-DD-YYYY hh:mm:ss a')} ` : null}
             <br/>
             {notes.length ? `Notes: ${notes.join(', ')}` : null}
             <Button onClick={handleClickOpen}>Add Notes</Button>
@@ -92,31 +95,11 @@ const AlertBox = (alertObj) => {
             alert id: {alert_id}
             <Button onClick={markResolved}>Mark resolved</Button>
             <br/>
-            {resolved ? `Resolved at ${resolved_at} by ${resolved_by}` : null}
+            {/* {resolved ? `Resolved at ${resolved_at} by ${resolved_by}` : null} */}
+            {resolved ? `Resolved at ${resolved_at} by Ebo` : null}
             {/* <Button onClick={handleDeleteButton}>Delete alert</Button> */}
         </Alert>) : null 
     )
 }
 
 export default AlertBox;
-
-/**
- * alert object shape:
- * {
- *    alert_id: number,
- *    severity: string,
- *    table: string,
- *    column?: string,
- *    monitorType: string,
- *    anomalyType: string,
- *    anomalyValue?: number,
- *    anomalyTime?: timestamptz,
- *    detected_at: timestamptz,
- *    resolved_at?: timestamptz,
- *    resolved?: boolean,
- *    resolved_by?: string,
- *    notes?: string,
- *    display: boolean
- * }
- * 
- */

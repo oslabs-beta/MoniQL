@@ -1,6 +1,5 @@
 const { userPool } = require('../models/db');
 const { v4: uuidv4 } =  require('uuid');
-const dayjs = require('dayjs');
 
 const db = userPool;
 
@@ -34,13 +33,13 @@ const alertObjCreator = (table, monitorType, anomalyType, severity = 'error',
     severity,
     column,
     anomalyValue,
-    anomalyTime: dayjs(anomalyTime).format('ddd MM-DD-YYYY hh:mm:ss a'),
+    anomalyTime,
     notes,
     resolved_at: null,
     resolved: false,
     resolved_by: null,
     display: true,
-    detected_at: dayjs().format('ddd MM-DD-YYYY hh:mm:ss a'),
+    detected_at: new Date,
   }
 };
 
@@ -136,26 +135,27 @@ monitorController.fresh = async (req, res, next) => {
   }
 }
 
-monitorController.ranges = async (req, res, next) => {
+monitorController.range = async (req, res, next) => {
   // query tables by name
   // for values out of normal range set by user
 
   const { table, column, minValue, maxValue } = req.body; 
-  const timeColumn = req.body.timeColumn || 'created_at';
+  const timeColumn = 'Formatted Date' /*req.body.timeColumn || 'created_at'*/;
 
   try {
+    console.log('req.body in moncontroller.range',req.body)
     const text = `SELECT * FROM ${table} WHERE "${column}" < $1 OR "${column}" > $2`;
     const values = [minValue, maxValue];
     const data = await db.query(text, values);
     const anomalousArray = data.rows;
-    res.locals.ranges = anomalousArray;
-    console.log('custom data in moncont.ranges: ', anomalousArray);
+    res.locals.range = anomalousArray;
+    console.log('custom data in moncont.range: ', anomalousArray);
     if(anomalousArray.length) {
       res.locals.alerts = [];
       anomalousArray.map((obj) => {
         res.locals.alerts.push(alertObjCreator(table, 'custom range', 'out of range', 'error', column, obj[column], obj[timeColumn]));
       });
-      console.log('res.locals.alerts in moncont.ranges: ', res.locals.alerts)
+      console.log('res.locals.alerts in moncontroller.range: ', res.locals.alerts)
     }
     next();
   } catch(err) {
@@ -173,7 +173,7 @@ monitorController.null = async (req, res, next) => {
   // query table by name, look for any null values
 
   const { table } = req.body;
-  const timeColumn = req.body.timeColumn || 'created_at';
+  const timeColumn = 'Formatted Date' //req.body.timeColumn || 'created_at';
 
   try {
     // first, query metadata for column names
@@ -197,7 +197,7 @@ monitorController.null = async (req, res, next) => {
       res.locals.alerts = [];
       anomalousArray.map((obj) => {
         for(const column in obj){
-          if(obj[column] === null) res.locals.alerts.push(alertObjCreator(table, 'notnull', 'null found', 'error', column, null, obj[timeColumn]));
+          if(obj[column] === null) res.locals.alerts.push(alertObjCreator(table, 'null', 'null found', 'error', column, null, obj[timeColumn]));
         }
       });
     }
@@ -226,7 +226,7 @@ monitorController.stats = async (req, res, next) => {
     const queryMd = `SELECT column_name 
       FROM information_schema.columns 
       WHERE table_name = '${table}' 
-      AND data_type IN ('integer', 'numeric', 'real', 'double precision', 'smallint', 'bigint')`;
+      AND data_type IN ('integer', 'numeric', 'real', 'double precision', 'smallint', 'bigint', 'decimal', 'smallserial', 'serial', 'bigserial')`;
     const numberData = await db.query(queryMd);
     const columns = numberData.rows; 
     console.log('columns in moncont.stats: ', columns);

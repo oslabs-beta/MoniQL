@@ -22,7 +22,8 @@ const VolumeMonitor = () => {
   useEffect(() => {
     tablesArray.forEach((table) => {
       if (params.table === table.table_name) {
-        setColumnsArray(table.columns);
+        const columns = table.columns.map(column => column.name)
+        setColumnsArray(columns);
       }
     });
   }, [params.table, tablesArray]);
