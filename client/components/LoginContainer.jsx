@@ -218,43 +218,4 @@ const LoginContainer = () => {
 export default LoginContainer;
 
 
-    {/* <div>
-      <h1>Log In</h1>
-      <button onClick={() => setRegToggle(!regToggle)}>
-        {regToggle ? "Register" : "Log In"}
-      </button>
-      <form
-        onSubmit={() =>
-          regToggle ? handleAuth("/register") : handleAuth("/login")
-        }
-      >
-        <div>
-          <label htmlFor="username">username:</label>
-          <input
-            type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="password">password:</label>
-          <input
-            type="text"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <label htmlFor="uri">SQL URI:</label>
-        <input
-          type="text"
-          id="uri"
-          value={uri}
-          onChange={(e) => setUri(e.target.value)}
-        />
-        <div>
-          <button type="submit">{regToggle ? "Register" : "Sign in"}</button>
-        </div>
-      </form>
-    </div> */}
+  

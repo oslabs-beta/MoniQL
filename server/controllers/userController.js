@@ -133,7 +133,36 @@ userController.login = async (req, res, next) => {
   }
 }
 
+userController.saveMonitorObject = async (req, res, next) => {
+  //save monitor object to db
+  console.log(req.body) 
+  const { type, user, params } = req.body;
+  const parameters = [type, user, JSON.stringify(params)]
+  
+  try {
+    const saveMonitor = 
+        `WITH inserted AS (
+            INSERT INTO monitors (type, user_id, parameters) 
+            VALUES ($1, $2, $3) 
+            RETURNING *
+        )
+        SELECT * FROM monitors
+        WHERE user_id = $2;`
+    const {rows} = await db.query(saveMonitor, parameters); 
+    res.locals.monitors = rows
+    console.log('^^^^^^^^ RETURNED ROWS OF MONITORS ^^^^^^^^^^^', res.locals.monitors)
+    return next();
 
+  } catch(err) {
+    return next({
+      log: `error in monitorController.saveMonitorObject: ${err}`,
+      status: 500,
+      message: {
+        error: 'Error occured in monitorController.saveMonitorObject',
+      }
+    });
+  }
+};
 
 module.exports = userController;
 

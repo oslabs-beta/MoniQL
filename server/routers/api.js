@@ -21,6 +21,9 @@ router.post('/range', monitorController.range, (req, res) => {res.status(200).js
 
 router.post('/null', monitorController.null, (req, res) => {res.status(200).json(res.locals)});
 
+// router.post('/custom', monitorController.custom, (req, res) => {res.status(200).json(res.locals)});
+router.post("/monitorObjects", userController.saveMonitorObject,(req, res) => {res.status(200).json(res.locals.monitors)});
+
 router.post('/stats', monitorController.stats, (req, res) => {res.status(200).json(res.locals)});
 
 //this is temp for working on front end

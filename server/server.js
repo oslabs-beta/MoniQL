@@ -4,11 +4,12 @@ const PORT = 3000;
 const app = express();
 const apiRouter = require('./routers/api') 
 
+
 app.use(express.json());
 
 app.use(express.static(path.resolve(__dirname, '../client')));
-app.use('/', apiRouter);
 
+app.use('/', apiRouter);
 
 
 

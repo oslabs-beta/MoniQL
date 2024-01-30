@@ -37,9 +37,26 @@ const handleChanges = (e) => {
 
 const handleSubmit = async (e) => {
   e.preventDefault();
-  console.log('this is params', params);
-  const monitorObject = {type: 'null', params: params}
+  console.log("this is params", params);
+  const monitorObject = { type: "null", params: JSON.stringify(params) };
   dispatch(addMonitorActionCreator(monitorObject))
+  //make post request to server
+  // try {
+  //   const response = await fetch("/api/null", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(monitorObject),
+  //   });
+  //   if (!response.ok) {
+  //     throw new Error(`HTTP error! status: ${response.status}`);
+  //   }
+  //   const data = await response.json();
+  //   console.log(data);
+  // } catch (error) {
+  //   console.log("fetch error:", error);
+  // }
 }
 
 

@@ -27,7 +27,7 @@ const MonitorContainer = () => {
   const monitors = ["Range", "Freshness", "Volume", "Null", "Custom"];
   const activeMonitors = useSelector((state) => state.monitor.activeMonitors);
   useEffect(() => {
-    console.log('new active monitors: ', activeMonitors)
+    // console.log('new active monitors: ', activeMonitors)
   }, [activeMonitors])
 
   const sendQuery = async (monitor) => {
@@ -42,7 +42,7 @@ const MonitorContainer = () => {
       const data = await response.json();
 
       if (!response.ok) throw new Error(data.message || "Error from server");
-      console.log("data returned in sendquery in mon container: ", data);
+      
 
       //below we will send the alert object to redux state with a dispatch/action
       if (data.alerts.length) {
