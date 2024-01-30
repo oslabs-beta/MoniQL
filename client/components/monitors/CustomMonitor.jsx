@@ -122,7 +122,8 @@ return (
               }}
             />
             <FormHelperText>
-              Enter your custom query string to monitor
+              Enter your custom query string to monitor 
+              (Structure your query so that it will only return anomalous rows)
             </FormHelperText>
 
             {/* Description Input */}

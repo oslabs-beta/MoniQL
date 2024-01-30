@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-// const dbController = require(./)
 const userController = require('../controllers/userController');
 const dbController = require('../controllers/dbController');
 const monitorController = require('../controllers/monitorController');
@@ -22,6 +21,8 @@ router.post('/range', monitorController.range, (req, res) => {res.status(200).js
 router.post('/null', monitorController.null, (req, res) => {res.status(200).json(res.locals)});
 
 router.post('/stats', monitorController.stats, (req, res) => {res.status(200).json(res.locals)});
+
+router.post('/custom', monitorController.custom, (req, res) => {res.status(200).json(res.locals)});
 
 //this is temp for working on front end
 router.get('/eboshi', dbController.getDB, (req, res) => {res.status(200).json(res.locals)});

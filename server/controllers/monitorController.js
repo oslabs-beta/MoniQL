@@ -1,7 +1,8 @@
-const { userPool } = require('../models/db');
+const { pool, userPool } = require('../models/db');
 const { v4: uuidv4 } =  require('uuid');
 
 const db = userPool;
+const ourDB = pool;
 
 /**
  * alert object shape:
@@ -12,6 +13,7 @@ const db = userPool;
  *    anomalyType: string,
  *    severity: string,
  *    column?: string,
+ *    row?: array of object(s),
  *    anomalyValue?: number || string,
  *    anomalyTime?: timestamptz,
  *    notes?: string,
@@ -24,7 +26,7 @@ const db = userPool;
  */
 
 const alertObjCreator = (table, monitorType, anomalyType, severity = 'error', 
-  column, anomalyValue, anomalyTime, notes = []) => {
+  column, row = null, anomalyValue, anomalyTime, notes = []) => {
   return {
     alert_id: uuidv4(),
     table,
@@ -32,6 +34,7 @@ const alertObjCreator = (table, monitorType, anomalyType, severity = 'error',
     anomalyType,
     severity,
     column,
+    row,
     anomalyValue,
     anomalyTime,
     notes,
@@ -113,14 +116,14 @@ monitorController.fresh = async (req, res, next) => {
 
   try {
     // query exact row count (more precise, less performant)
-    // const queryCount = `SELECT COUNT(*) AS exact_row_count FROM ${table}`;
+    const queryCount = `SELECT COUNT(*) AS exact_row_count FROM ${table}`;
 
     // OR query metadata (less precise, more performant)
     // precision depends on how recently the table has been analyzed
-    const queryCount = `SELECT reltuples AS approximate_row_count FROM pg_class WHERE relname = '${table}'`;
+    // const queryCount = `SELECT reltuples AS approximate_row_count FROM pg_class WHERE relname = '${table}'`;
     
     const data = await db.query(queryCount);
-    res.locals.fresh = data.rows;
+    res.locals.fresh = data.rows[0];
 
     console.log('fresh data in moncont.fresh: ', res.locals.fresh);
     next();
@@ -139,31 +142,40 @@ monitorController.range = async (req, res, next) => {
   // query tables by name
   // for values out of normal range set by user
 
-  const { table, column, minValue, maxValue } = req.body; 
-  const timeColumn = 'Formatted Date' /*req.body.timeColumn || 'created_at'*/;
+  const { table, column } = req.body; 
+  const timeColumn = req.body.timeColumn || 'created_at';
+  const minValue = req.body.minValue || null;
+  const maxValue = req.body.maxValue || null;
 
   try {
     console.log('req.body in moncontroller.range',req.body)
-    const text = `SELECT * FROM ${table} WHERE "${column}" < $1 OR "${column}" > $2`;
-    const values = [minValue, maxValue];
+    let text = `SELECT * FROM ${table} WHERE "${column}" < $1 OR "${column}" > $2`;
+    let values = [minValue, maxValue];
+    if(!minValue) {
+      text = `SELECT * FROM ${table} WHERE "${column}" > $1`;
+      values = [maxValue];
+    }
+    if(!maxValue) {
+      text = `SELECT * FROM ${table} WHERE "${column}" < $1`;
+      values = [minValue];
+    }
     const data = await db.query(text, values);
     const anomalousArray = data.rows;
-    res.locals.range = anomalousArray;
-    console.log('custom data in moncont.range: ', anomalousArray);
+    console.log('anomalous rows in moncont.range: ', anomalousArray);
     if(anomalousArray.length) {
       res.locals.alerts = [];
-      anomalousArray.map((obj) => {
-        res.locals.alerts.push(alertObjCreator(table, 'custom range', 'out of range', 'error', column, obj[column], obj[timeColumn]));
+      anomalousArray.map((obj, i) => {
+        res.locals.alerts.push(alertObjCreator(table, 'custom range', 'out of range', 'error', column, anomalousArray[i], obj[column], obj[timeColumn]));
       });
       console.log('res.locals.alerts in moncontroller.range: ', res.locals.alerts)
     }
     next();
   } catch(err) {
     return next({
-      log: `error in monitorController.custom: ${err}`,
+      log: `error in monitorController.range: ${err}`,
       status: 500,
       message: {
-        error: 'Error occured in monitorController.custom',
+        error: 'Error occured in monitorController.range',
       }
     });
   }
@@ -173,7 +185,7 @@ monitorController.null = async (req, res, next) => {
   // query table by name, look for any null values
 
   const { table } = req.body;
-  const timeColumn = 'Formatted Date' //req.body.timeColumn || 'created_at';
+  const timeColumn = req.body.timeColumn || 'created_at';
 
   try {
     // first, query metadata for column names
@@ -192,12 +204,11 @@ monitorController.null = async (req, res, next) => {
 
     const data = await db.query(query);
     const anomalousArray = data.rows;
-    res.locals.null = anomalousArray;
     if(anomalousArray.length) {
       res.locals.alerts = [];
-      anomalousArray.map((obj) => {
+      anomalousArray.map((obj, i) => {
         for(const column in obj){
-          if(obj[column] === null) res.locals.alerts.push(alertObjCreator(table, 'null', 'null found', 'error', column, null, obj[timeColumn]));
+          if(obj[column] === null) res.locals.alerts.push(alertObjCreator(table, 'null', 'null found', 'error', column, anomalousArray[i], null, obj[timeColumn]));
         }
       });
     }
@@ -219,6 +230,8 @@ monitorController.null = async (req, res, next) => {
 monitorController.stats = async (req, res, next) => {
 
   const { table, starting, ending, timeColumn } = req.body;
+  let exact_row_count = null;
+  if(res.locals.fresh) exact_row_count = res.locals.fresh.exact_row_count;
 
   try {
   // query metadata for column names, but only for columns holding numbers
@@ -233,11 +246,11 @@ monitorController.stats = async (req, res, next) => {
 
     const statsQuery = `SELECT
       ${columns.map(column => `
-      AVG("${column.column_name}") AS ${column.column_name.replace(/[^a-zA-Z0-9]/g, '')}_mean,
-      PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY "${column.column_name}") AS ${column.column_name.replace(/[^a-zA-Z0-9]/g, '')}_median,
-      MIN("${column.column_name}") AS ${column.column_name.replace(/[^a-zA-Z0-9]/g, '')}_min,
-      MAX("${column.column_name}") AS ${column.column_name.replace(/[^a-zA-Z0-9]/g, '')}_max,
-      STDDEV("${column.column_name}") AS ${column.column_name.replace(/[^a-zA-Z0-9]/g, '')}_std_dev`
+      AVG("${column.column_name}") AS ${column.column_name.replace(/[^a-zA-Z0-9 ]/g, '').replace(/ /g, '_')}_mean,
+      PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY "${column.column_name}") AS ${column.column_name.replace(/[^a-zA-Z0-9 ]/g, '').replace(/ /g, '_')}_median,
+      MIN("${column.column_name}") AS ${column.column_name.replace(/[^a-zA-Z0-9 ]/g, '').replace(/ /g, '_')}_min,
+      MAX("${column.column_name}") AS ${column.column_name.replace(/[^a-zA-Z0-9 ]/g, '').replace(/ /g, '_')}_max,
+      STDDEV("${column.column_name}") AS ${column.column_name.replace(/[^a-zA-Z0-9 ]/g, '').replace(/ /g, '_')}_std_dev`
   ).join(',\n')}
     FROM
       ${table}
@@ -250,6 +263,11 @@ monitorController.stats = async (req, res, next) => {
     const data = await db.query(statsQuery, values);
     console.log('stats data in moncont.stats: ', data.rows);
     res.locals.stats = data.rows;
+
+    const saveStatsQuery = 'INSERT INTO stats (table_name, stats_obj, starting, ending, num_rows) VALUES ($1, $2, $3, $4, $5)';
+    const saveStatsValues = [table, data.rows, starting, ending, exact_row_count];
+    const savedResult = await ourDB.query(saveStatsQuery, saveStatsValues);
+    console.log('savedResult in stats controller: ', savedResult);
     next(); 
   } catch(err) {
     return next({
@@ -261,6 +279,34 @@ monitorController.stats = async (req, res, next) => {
     });
   }
 }
+
+monitorController.custom = async (req, res, next) => {
+
+  const { customQuery } = req.body;
+
+  try {
+    const data = await db.query(customQuery);
+    const anomalousArray = data.rows;
+    console.log('anomalous rows in moncont.range: ', anomalousArray);
+    if(anomalousArray.length) {
+      res.locals.alerts = [];
+      anomalousArray.map((obj, i) => {
+        // might be better to make a different alert object for custom queries
+        res.locals.alerts.push(alertObjCreator('custom query table', 'custom query', 'custom', 'error', 'custom', anomalousArray[i]));
+      });
+    }
+    console.log('res.locals.alerts in moncontroller.range: ', res.locals.alerts)
+    next();
+  } catch(err) {
+    return next({
+      log: `error in monitorController.custom: ${err}`,
+      status: 500,
+      message: {
+        error: 'Error occured in monitorController.custom',
+      }
+    });
+  }
+};
 
 module.exports = monitorController;
 

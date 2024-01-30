@@ -12,7 +12,7 @@ const AlertBox = (alertObj) => {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user.username);
 
-    const { alert_id, severity, table, column, monitorType, anomalyType, anomalyValue, anomalyTime, detected_at, resolved_at, resolved, resolved_by, notes, display } = alertObj;
+    const { alert_id, severity, table, column, row, monitorType, anomalyType, anomalyValue, anomalyTime, detected_at, resolved_at, resolved, resolved_by, notes, display } = alertObj;
 
     const updateAlert = (alertObj) => {
         return dispatch(updateAlertActionCreator(alertObj));
@@ -27,7 +27,7 @@ const AlertBox = (alertObj) => {
         const newNotesArr = notes.slice();
         // newNotesArr.push(newNote.concat(` -by ${user} at ` + dayjs().format('ddd YYYY-MM-DD hh:mm:ss a')));
         // just for demo purposes, hardcoding user to Ebo - also line 99
-        newNotesArr.push(newNote.concat(` -by Ebo at ` + dayjs().format('ddd YYYY-MM-DD hh:mm:ss a')));
+        newNotesArr.push(newNote.concat(` -by ${user} at ` + dayjs().format('ddd YYYY-MM-DD hh:mm:ss a')));
 
 
         alertObj = {
@@ -43,7 +43,7 @@ const AlertBox = (alertObj) => {
             ...alertObj,
             resolved: true,
             resolved_at: dayjs().format('ddd YYYY-MM-DD hh:mm:ss a'),
-            resolved_by: 'Ebo'  //user
+            resolved_by: user
         }
         return updateAlert(alertObj);
     }
@@ -69,6 +69,23 @@ const AlertBox = (alertObj) => {
         return updateAlert(alertObj);
     }
 
+    // need to fix this! -A 
+    const unspool = rows => {
+      let showRows = '';
+      for(let row in rows){
+        showRows += `${row + 1}: `;
+        console.log('row in unspool: ', row)
+        for(let key in row){
+              showRows += `${key}: ${row[key]}, `
+            }
+        }
+        showRows = showRows.trim().slice(0, -1);
+        console.log('showRows in unspool: ', showRows);
+        return showRows;
+      }
+    
+    const unspooledRows = row ? unspool(row) : null;
+
     // will deal with this later -- not MVP
     // const handleDeleteButton = () => {
     //     return (
@@ -84,6 +101,7 @@ const AlertBox = (alertObj) => {
             {anomalyType ? `Anomaly type: ${anomalyType}, ` : null}
             {anomalyValue ? `Anomaly value: ${anomalyValue}, ` : null}
             {anomalyTime ? `Anomaly time: ${dayjs(anomalyTime).format('ddd MM-DD-YYYY hh:mm:ss a')} ` : null}
+            {row ? `Row(s): ${unspooledRows}` : null}
             <br/>
             {notes.length ? `Notes: ${notes.join(', ')}` : null}
             <Button onClick={handleClickOpen}>Add Notes</Button>

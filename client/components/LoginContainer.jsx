@@ -54,11 +54,11 @@ const LoginContainer = () => {
       };
       const response = await fetch(path, requestOptions);
       const data = await response.json();
-      console.log('HERE IS DATAAAAAA', data)
+      console.log('data returned in handleAuth func in LoginContainer', data)
       if (!response.ok) throw new Error(data.error || 'Error from server')
       console.log(`userID: ${data.userId}, username: ${data.username}, uri: ${data.uri} `)
-      console.log('THIS IS THE DATABASE ARRAY: ', data.dbArray)
-      dispatch(logInActionCreator(data.userId, data.username, data.uri, data.dbArray));
+      console.log('dbArray in handleAuth func in LoginContainer: ', data.dbArray)
+      dispatch(logInActionCreator(data.userId, data.username, data.uri));
       dispatch(saveDBActionCreator(data.dbArray));
       
 
@@ -67,7 +67,7 @@ const LoginContainer = () => {
         setError(data.error || 'Error from server');
         throw new Error(data.error || 'Error from server');
       }
-      dispatch(logInActionCreator(data.userId, data.uri));
+      // dispatch(logInActionCreator(data.userId, data.uri));
     } catch (err) {
       console.error('IN CATCH ERROR HANDLER FOR HANDLEAUTH', err.message);
     }

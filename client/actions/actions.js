@@ -15,9 +15,9 @@ export const updateAlertActionCreator = (alertObj) => ({
   payload: alertObj
 })
 
-export const logInActionCreator = (user, username, uri) => ({
+export const logInActionCreator = (userId, username, uri) => ({
   type: types.LOG_IN,
-  payload: {user, username, uri}
+  payload: {userId, username, uri}
 })
 
 export const saveDBActionCreator = (dbArray) => ({

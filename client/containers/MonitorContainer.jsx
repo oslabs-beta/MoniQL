@@ -67,7 +67,7 @@ const MonitorContainer = () => {
         variant="outlined"
         display="flex"
         justifyContent="center"
-        alignItems="center"
+        // alignItems="center"
         minHeight="60vh"
         sx={{
           minWidth: "70vw",
