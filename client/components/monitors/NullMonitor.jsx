@@ -27,6 +27,8 @@ const NullMonitor = () => {
   });
   
 const tablesArray = useSelector((state) => state.diagram.data);
+const user = useSelector((state) => state.user.user);
+
 const [columnsArray, setColumnsArray] = useState([]);
 
 //for editing monitors with existing rules
@@ -38,26 +40,30 @@ const handleChanges = (e) => {
 const handleSubmit = async (e) => {
   e.preventDefault();
   console.log("this is params", params);
-  const monitorObject = { type: "null", params: JSON.stringify(params) };
-  dispatch(addMonitorActionCreator(monitorObject))
-  //make post request to server
-  // try {
-  //   const response = await fetch("/api/null", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(monitorObject),
-  //   });
-  //   if (!response.ok) {
-  //     throw new Error(`HTTP error! status: ${response.status}`);
-  //   }
-  //   const data = await response.json();
-  //   console.log(data);
-  // } catch (error) {
-  //   console.log("fetch error:", error);
-  // }
-}
+  // const monitorObject = { type: "null", params: JSON.stringify(params) };
+  const monitorObject = {type: 'null', user: user, params: params}
+  try {
+    const response = await fetch('/monitorObjects', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(monitorObject)
+    })
+    if (!response.ok) {
+      throw new Error (`HTTP error! status: ${response.status}`);
+    }
+      const data = await response.json();
+      
+      console.log('DATADATADATDATADATA',data);
+      console.log('Data Parameters',data[0].parameters);
+  
+      dispatch(addMonitorActionCreator(data))
+  
+    } catch (error) {
+      console.log('fetch error:', error);
+    }
+  }
 
 
 

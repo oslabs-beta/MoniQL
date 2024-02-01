@@ -31,8 +31,8 @@ const RangeMonitor = () => {
   });
   
 const tablesArray = useSelector((state) => state.diagram.data);
-// const user = useSelector((state) => state.user.id);
-const user = 1;
+const user = useSelector((state) => state.user.user);
+
 const [columnsArray, setColumnsArray] = useState([]);
 
 useEffect(() => {
@@ -44,12 +44,6 @@ useEffect(() => {
     }
   })
 }, [params.table, tablesArray]);
-
-//for editing monitors with existing rules
-// const handleChanges = (e) => {  
-//     console.log('THIS IS THE NAME OF THE DROPDOWNLIST', e.target.name, 'THIS IS THE VALUE THE USER CHOSE', e.target.value)
-//     setParams({ ...params, [e.target.name]: e.target.value });
-// }
 
 const handleChanges = (e) => {  
   const { name, value } = e.target;
@@ -65,7 +59,7 @@ const handleSubmit = async (e) => {
   e.preventDefault();
   // console.log('this is params', params);
   const monitorObject = {type: 'range', user: user, params: params}
-  dispatch(addMonitorActionCreator(monitorObject))
+  // dispatch(addMonitorActionCreator(monitorObject))
     // make post request to server
     try {
   const response = await fetch('/monitorObjects', {
