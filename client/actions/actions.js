@@ -40,7 +40,7 @@ export const selectPageActionCreator = (page) => ({
   payload: page
 })
 
-export const addMonitorActionCreator = (monitorObject) => ({
+export const addMonitorActionCreator = (monitorArray) => ({
   type: types.ADD_MONITOR,
-  payload: monitorObject
+  payload: monitorArray
 })

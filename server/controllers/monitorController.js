@@ -308,6 +308,13 @@ monitorController.custom = async (req, res, next) => {
   }
 };
 
+
+
+monitorController.test = async (req, res, next) => {
+  console.log("HHIHIHIHIHIHIHIHIHIHI")
+  return next()
+}
+
 module.exports = monitorController;
 
 //   const statsQuery = `SELECT

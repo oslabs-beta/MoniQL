@@ -37,9 +37,26 @@ const handleChanges = (e) => {
 
 const handleSubmit = async (e) => {
   e.preventDefault();
-  console.log('params in freshness monitor handlesubmit', params);
-  const monitorObject = {type: 'freshness', params: params}
-  dispatch(addMonitorActionCreator(monitorObject))
+  console.log("params in freshness monitor handlesubmit", params);
+  const monitorObject = { type: "freshness", params: params };
+  // dispatch(addMonitorActionCreator(monitorObject))
+  //make post request to server
+  try {
+    const response = await fetch("/api/fresh", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(monitorObject),
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    console.log(data);
+  } catch (error) {
+    console.log("fetch error:", error);
+  }
 }
 
 return (

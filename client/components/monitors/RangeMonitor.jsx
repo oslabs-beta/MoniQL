@@ -29,8 +29,10 @@ const RangeMonitor = () => {
     frequency: '',
     description: ''
   });
-
+  
 const tablesArray = useSelector((state) => state.diagram.data);
+const user = useSelector((state) => state.user.user);
+
 const [columnsArray, setColumnsArray] = useState([]);
 
 useEffect(() => {
@@ -42,12 +44,6 @@ useEffect(() => {
     }
   })
 }, [params.table, tablesArray]);
-
-//for editing monitors with existing rules
-// const handleChanges = (e) => {  
-//     console.log('THIS IS THE NAME OF THE DROPDOWNLIST', e.target.name, 'THIS IS THE VALUE THE USER CHOSE', e.target.value)
-//     setParams({ ...params, [e.target.name]: e.target.value });
-// }
 
 const handleChanges = (e) => {  
   const { name, value } = e.target;
@@ -61,9 +57,31 @@ const handleChanges = (e) => {
 
 const handleSubmit = async (e) => {
   e.preventDefault();
-  console.log('this is params', params);
-  const monitorObject = {type: 'range', params: params}
-  dispatch(addMonitorActionCreator(monitorObject))
+  // console.log('this is params', params);
+  const monitorObject = {type: 'range', user: user, params: params}
+  // dispatch(addMonitorActionCreator(monitorObject))
+    // make post request to server
+    try {
+  const response = await fetch('/monitorObjects', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(monitorObject)
+  })
+  if (!response.ok) {
+    throw new Error (`HTTP error! status: ${response.status}`);
+  }
+    const data = await response.json();
+    
+    console.log('DATADATADATDATADATA',data);
+    console.log('Data Parameters',data[0].parameters);
+
+    dispatch(addMonitorActionCreator(data))
+
+  } catch (error) {
+    console.log('fetch error:', error);
+  }
 }
 
 //Hi hay, if you're reading this its because I took a lunch and you didnt...

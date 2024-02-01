@@ -20,6 +20,10 @@ router.post('/range', monitorController.range, (req, res) => {res.status(200).js
 
 router.post('/null', monitorController.null, (req, res) => {res.status(200).json(res.locals)});
 
+
+router.post("/monitorObjects", userController.insertMonitor, userController.getMonitors, (req, res) => {res.status(200).json(res.locals.monitors)});
+
+
 router.post('/stats', monitorController.stats, (req, res) => {res.status(200).json(res.locals)});
 
 router.post('/custom', monitorController.custom, (req, res) => {res.status(200).json(res.locals)});

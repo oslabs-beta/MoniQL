@@ -133,7 +133,71 @@ userController.login = async (req, res, next) => {
   }
 }
 
+// userController.saveMonitorObject = async (req, res, next) => {
+//   //save monitor object to db
+//   console.log(req.body) 
+//   const { type, user, params } = req.body;
+//   const parameters = [type, user, JSON.stringify(params)]
+  
+//   try {
+//     const saveMonitor = 
+//         `WITH inserted AS (
+//             INSERT INTO monitors (type, user_id, parameters) 
+//             VALUES ($1, $2, $3) 
+//             RETURNING *
+//         )
+//         SELECT * FROM monitors
+//         WHERE user_id = $2;`
+//     const {rows} = await db.query(saveMonitor, parameters); 
+//     res.locals.monitors = rows
+//     console.log('^^^^^^^^ RETURNED ROWS OF MONITORS ^^^^^^^^^^^', res.locals.monitors)
+//     return next();
 
+//   } catch(err) {
+//     return next({
+//       log: `error in monitorController.saveMonitorObject: ${err}`,
+//       status: 500,
+//       message: {
+//         error: 'Error occured in monitorController.saveMonitorObject',
+//       }
+//     });
+//   }
+// };
+
+userController.insertMonitor = async (req, res, next) => {
+  //if conditional to skip insert if no params are provided..
+  if (!req.body.params) return next();
+  //I know, I know.. this is probably not great practice. Sorry King!
+  const { type, user, params } = req.body;
+  try {
+    const insertQuery = `INSERT INTO monitors (type, user_id, parameters) VALUES ($1, $2, $3) RETURNING *;`;
+    const parameters = [type, user, JSON.stringify(params)];
+    await db.query(insertQuery, parameters);
+    return next();
+  } catch (err) {
+    return next({
+      log: `error in userController.insertMonitor: ${err}`,
+      status: 500,
+      message: { error: 'Error occurred in insertMonitor' },
+    });
+  }
+};
+
+userController.getMonitors = async (req, res, next) => {
+  const { user } = req.body;
+  try {
+    const fetchQuery = `SELECT * FROM monitors WHERE user_id = $1;`;
+    const { rows } = await db.query(fetchQuery, [user]);
+    res.locals.monitors = rows;
+    return next();
+  } catch (err) {
+    return next({
+      log: `error in userController.getMonitors: ${err}`,
+      status: 500,
+      message: { error: 'Error occurred in getMonitors' },
+    });
+  }
+};
 
 module.exports = userController;
 
