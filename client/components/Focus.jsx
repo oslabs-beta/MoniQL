@@ -140,6 +140,29 @@ const Focus = ({children, elements}) => {
     const newNodes = [];
     const newEdges = [];
 
+    ////////////////////////////**********HAY WEIGHT/IMPORTANCE ALGO**********//////////////////////////////
+    /////*** this should go somewhere else so that we can also use in our dash WE B DRY ;) ***/////
+    //calc weight/importance of each table (by # of FKs (<< hehe))
+    const tableWeight = () => {
+      const importance = new Map();
+      data.forEach((table) => {
+        //table name = key / num of FKs (<< hehe) = value
+        importance.set(table.table_name, (table.foreign_keys || []).length);
+      });
+      return tableWeight;
+    }
+
+    //sort tables by weight/importance
+    const sortTables = (tableWeight) => {
+      //sorts arr by num of FKs (<< hehe) (descending)
+      return [...data].sort((a, b) => tableWeight.get(b.table_name) - tableWeight.get(a.table_name));
+    }
+
+    //our variables for rendering below (add on between add table and foreach replace data with sortedData)
+    // const weightMap = tableWeight();
+    // const sortedData = sortTables(weightMap);
+    ////////////////////////////**********HAY WEIGHT/IMPORTANCE ALGO**********//////////////////////////////
+
     const addTable = (currTable, pizza = 0, xVal = 0, yVal = 0) => {
       console.log(
         `NEW CALL OF addTable. table now = '${currTable}' xVal now = ${xVal}`
@@ -147,7 +170,11 @@ const Focus = ({children, elements}) => {
       if (xVal > pizza) {
         return;
       }
-      data.forEach((table, i) => {
+      //our variables for rendering below (add on between add table and foreach replace data with sortedData)
+      const weightMap = tableWeight();
+      const sortedData = sortTables(weightMap);
+
+      sortedData.forEach((table, i) => {
         if (table.table_name === currTable) {
           const columnArray = table.columns.map((column) => column.name); //grab the column names from each table's column array
           console.log("COLUMNS!", columnArray);
@@ -177,7 +204,7 @@ const Focus = ({children, elements}) => {
         }
       });
     };
-    addTable(focusTable, focusDepth)
+    addTable(focusTable, focusDepth);
     // addTable("people_in_films", focusDepth);
     // console.log(newNodes)
     console.log("Nodes:", newNodes);
