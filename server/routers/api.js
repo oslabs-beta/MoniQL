@@ -16,13 +16,16 @@ router.post('/volume', monitorController.volume, (req, res) => {res.status(200).
 
 router.post('/fresh', monitorController.fresh, (req, res) => {res.status(200).json(res.locals)});
 
-router.post('/range', monitorController.range, (req, res) => {res.status(200).json(res.locals)});
+router.post('/range', monitorController.range, userController.addAlerts, (req, res) => {res.status(200).json(res.locals)});
 
-router.post('/null', monitorController.null, (req, res) => {res.status(200).json(res.locals)});
+router.post('/null', monitorController.null, userController.addAlerts, (req, res) => {res.status(200).json(res.locals)});
 
 
-router.post("/monitorObjects", userController.insertMonitor, userController.getMonitors, (req, res) => {res.status(200).json(res.locals.monitors)});
+router.post('/monitorObjects', userController.insertMonitor, userController.getMonitors, (req, res) => {res.status(200).json(res.locals.monitors)});
 
+router.post('/alerts', userController.getAlerts, (req, res) => {res.status(200).json(res.locals.allAlerts)});
+
+router.put('/alerts', userController.updateAlert, (req, res) => {res.status(200).json('all good')});
 
 router.post('/stats', monitorController.stats, (req, res) => {res.status(200).json(res.locals)});
 

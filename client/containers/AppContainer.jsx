@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 
 //TEMPORARY IMPORTS
 import { useDispatch, useSelector } from "react-redux";
-import { saveDBActionCreator } from "../actions/actions";
+import { saveDBActionCreator, addAlertsActionCreator } from "../actions/actions";
 import AlertBox from "../components/AlertBox";
 //END TEMPORARY IMPORTS
 
@@ -34,6 +34,7 @@ const AppContainer = () => {
   /* <SideBar isSideBar={isSideBar} /> */
 
   const dispatch = useDispatch();
+  
   useEffect(() => {
     const fetchDB = async () => {
       try {
@@ -51,6 +52,32 @@ const AppContainer = () => {
       }
     };
     fetchDB();
+  }, []);
+
+  const user = useSelector((state) => state.user.user);
+
+  const getAllAlerts = async () => {
+    try {
+        const response = await fetch('/alerts', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({user: user})
+        });
+        if(!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log('data in getallalerts in alertcontainer: ', data);
+        dispatch(addAlertsActionCreator(data));
+    } catch (error) {
+        console.log('fetch error:', error);
+    }
+};
+
+  useEffect(() => {
+    getAllAlerts();
   }, []);
 
   return (

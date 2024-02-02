@@ -70,10 +70,14 @@ const MonitorContainer = () => {
       const requestOptions = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(monitor.parameters),
+        body: JSON.stringify({
+          user: user,
+          monitor: monitor
+        })
       };
       const response = await fetch(path, requestOptions);
       const data = await response.json();
+      console.log('data.alerts returned in sendQuery func in MonitorContainer', data)
 
       if (!response.ok) throw new Error(data.message || "Error from server");
       

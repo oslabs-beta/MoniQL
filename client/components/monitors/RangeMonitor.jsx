@@ -21,6 +21,8 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 const RangeMonitor = () => {
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.user);
+
   const [params, setParams] = useState({
     table: '',
     column: '',
@@ -31,7 +33,6 @@ const RangeMonitor = () => {
   });
   
 const tablesArray = useSelector((state) => state.diagram.data);
-const user = useSelector((state) => state.user.user);
 
 const [columnsArray, setColumnsArray] = useState([]);
 

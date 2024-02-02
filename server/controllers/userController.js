@@ -28,7 +28,7 @@ userController.register = async (req, res, next) => {
     const checkUserQuery = 'SELECT * FROM users WHERE username = $1';
     const checkUserResult = await db.query(checkUserQuery, [username]);
     if (checkUserResult.rows.length > 0) {
-      return next({ message: {error: 'Username already exists'} })
+      return next({ message: {error: 'Username already taken'} })
     }
         
     const salt = 10;
@@ -51,7 +51,7 @@ userController.register = async (req, res, next) => {
     //ensure user was registered to the db
     if (!result.rows.length) 
       return next({
-        log: `userController.register. ERROR: Unable to register user`,
+        log: 'userController.register. ERROR: Unable to register user',
         status: 500,
         message: {
           error: 'Error occured in userController.register. Unable to register user',
@@ -118,7 +118,7 @@ userController.login = async (req, res, next) => {
     }
     console.log('user in login: ', user);
     res.locals.username = user.username;
-    res.locals.userId = user.user_id;
+    res.locals.user_id = user.user_id;
     res.locals.uri = user.uri;
 
     return next();
@@ -131,6 +131,93 @@ userController.login = async (req, res, next) => {
       }
     });
   }
+};
+
+userController.getAlerts = async (req, res, next) => {
+  const { user } = req.body;
+  try {
+    const fetchQuery = 'SELECT * FROM alerts WHERE user_id = $1';
+    const { rows } = await db.query(fetchQuery, [user]);
+    const alertObjArr = [];
+    for(const row of rows) {
+      alertObjArr.push(row.alert_obj);
+    }
+    res.locals.allAlerts = alertObjArr;
+    console.log('alertObjArr in getAlerts: ', alertObjArr);
+    return next();
+  } catch (err) {
+    return next({
+      log: `error in userController.getAlerts: ${err}`,
+      status: 500,
+      message: { error: 'Error occurred in getAlerts' },
+    });
+  }
+}
+
+userController.addAlerts = async (req, res, next) => {
+  if(!res.locals.alerts) return next();
+  if(!res.locals.alerts.length) return next();
+
+  const { user, monitor } = req.body;
+  const alertsArr = res.locals.alerts;
+
+  let insertQuery = 'INSERT INTO alerts (alert_id, user_id, alert_obj) VALUES ';
+  // create VALUES parameters for one query to insert all alerts
+  const queries = alertsArr.map((alert, i) => {
+    const alert_id_VALUE = `$${i * 3 + 1}`;
+    const user_id_VALUE = `$${i * 3 + 2}`;
+    const alert_obj_VALUE = `$${i * 3 + 3}`;
+    return `(${alert_id_VALUE}, ${user_id_VALUE}, ${alert_obj_VALUE})`;
+  });
+
+  insertQuery += queries.join(', ') + ' RETURNING *;';
+  const values = alertsArr.flatMap(alert => [alert.alert_id, user, JSON.stringify(alert)]);
+  console.log('insertQuery in addAlerts: ', insertQuery, 'query params: ', values);
+  try {
+    // console.log('insertQuery in addAlerts: ', insertQuery, 'query params: ', values);
+    const { rows } = await db.query(insertQuery, values);
+    // const alertObjArr = [];
+    // for(const row of rows) {
+    //   alertObjArr.push(row.alert_obj);
+    // }
+    // res.locals.alerts = alertObjArr;
+    // console.log('rows in addAlerts: ', rows);
+    // rows.forEach(row => {
+    //   row.alert_obj.alert_id = row.alert_id;
+    // })
+    // const alertObjArr = rows.map(row => row.alert_obj);
+    // res.locals.alerts = alertObjArr;
+    return next();
+  } catch (err) {
+    return next({
+      log: `error in userController.addAlert: ${err}`,
+      status: 500,
+      message: { error: 'Error occurred in addAlert' },
+    });
+  }
+
+}
+
+userController.updateAlert = async (req, res, next) => {
+  const { user_id, alertObj } = req.body;
+  const { alert_id } = alertObj;
+  console.log('alertObj in updateAlert: ', alertObj, 'alert_id: ', alert_id, 'user_id: ', user_id)
+  const updateQuery = 'UPDATE alerts SET alert_obj = $1 WHERE user_id = $2 AND alert_id = $3 RETURNING *;';
+  const values = [JSON.stringify(alertObj), user_id, alert_id];
+  try {
+    const { rows } = await db.query(updateQuery, values);
+
+    // res.locals.updatedAlert = rows[0];
+    console.log('rows in updateAlert: ', rows);
+    return next();
+  } catch (err) {
+    return next({
+      log: `error in userController.updateAlerts: ${err}`,
+      status: 500,
+      message: { error: 'Error occurred in updateAlerts' },
+    });
+  }
+
 }
 
 // userController.saveMonitorObject = async (req, res, next) => {
@@ -170,7 +257,7 @@ userController.insertMonitor = async (req, res, next) => {
   //I know, I know.. this is probably not great practice. Sorry King!
   const { type, user, params } = req.body;
   try {
-    const insertQuery = `INSERT INTO monitors (type, user_id, parameters) VALUES ($1, $2, $3) RETURNING *;`;
+    const insertQuery = 'INSERT INTO monitors (type, user_id, parameters) VALUES ($1, $2, $3) RETURNING *;';
     const parameters = [type, user, JSON.stringify(params)];
     await db.query(insertQuery, parameters);
     return next();
@@ -186,7 +273,7 @@ userController.insertMonitor = async (req, res, next) => {
 userController.getMonitors = async (req, res, next) => {
   const { user } = req.body;
   try {
-    const fetchQuery = `SELECT * FROM monitors WHERE user_id = $1;`;
+    const fetchQuery = 'SELECT * FROM monitors WHERE user_id = $1;';
     const { rows } = await db.query(fetchQuery, [user]);
     res.locals.monitors = rows;
     return next();

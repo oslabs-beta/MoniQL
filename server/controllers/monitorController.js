@@ -13,7 +13,7 @@ const ourDB = pool;
  *    anomalyType: string,
  *    severity: string,
  *    column?: string,
- *    row?: array of object(s),
+ *    rows?: array of object(s),
  *    anomalyValue?: number || string,
  *    anomalyTime?: timestamptz,
  *    notes?: string,
@@ -26,7 +26,7 @@ const ourDB = pool;
  */
 
 const alertObjCreator = (table, monitorType, anomalyType, severity = 'error', 
-  column, row = null, anomalyValue, anomalyTime, notes = []) => {
+  column, rows = null, anomalyValue, anomalyTime, notes = []) => {
   return {
     alert_id: uuidv4(),
     table,
@@ -34,7 +34,7 @@ const alertObjCreator = (table, monitorType, anomalyType, severity = 'error',
     anomalyType,
     severity,
     column,
-    row,
+    rows,
     anomalyValue,
     anomalyTime,
     notes,
@@ -141,11 +141,12 @@ monitorController.fresh = async (req, res, next) => {
 monitorController.range = async (req, res, next) => {
   // query tables by name
   // for values out of normal range set by user
+  console.log('req.body in moncontroller.range: ',req.body)
 
-  const { table, column } = req.body; 
-  const timeColumn = req.body.timeColumn || 'created_at';
-  const minValue = req.body.minValue || null;
-  const maxValue = req.body.maxValue || null;
+  const { table, column } = req.body.monitor.parameters; 
+  const timeColumn = req.body.monitor.parameters.timeColumn || 'created_at';
+  const minValue = req.body.monitor.parameters.minValue || null;
+  const maxValue = req.body.monitor.parameters.maxValue || null;
 
   try {
     console.log('req.body in moncontroller.range',req.body)
@@ -164,9 +165,7 @@ monitorController.range = async (req, res, next) => {
     console.log('anomalous rows in moncont.range: ', anomalousArray);
     if(anomalousArray.length) {
       res.locals.alerts = [];
-      anomalousArray.map((obj, i) => {
-        res.locals.alerts.push(alertObjCreator(table, 'custom range', 'out of range', 'error', column, anomalousArray[i], obj[column], obj[timeColumn]));
-      });
+      res.locals.alerts.push(alertObjCreator(table, 'custom range', 'out of range', 'error', column, anomalousArray, anomalousArray[0][column], anomalousArray[0][timeColumn]));
       console.log('res.locals.alerts in moncontroller.range: ', res.locals.alerts)
     }
     next();
@@ -184,8 +183,8 @@ monitorController.range = async (req, res, next) => {
 monitorController.null = async (req, res, next) => {
   // query table by name, look for any null values
 
-  const { table } = req.body;
-  const timeColumn = req.body.timeColumn || 'created_at';
+  const { table } = req.body.parameters;
+  const timeColumn = req.body.parameters.timeColumn || 'created_at';
 
   try {
     // first, query metadata for column names
@@ -206,11 +205,9 @@ monitorController.null = async (req, res, next) => {
     const anomalousArray = data.rows;
     if(anomalousArray.length) {
       res.locals.alerts = [];
-      anomalousArray.map((obj, i) => {
-        for(const column in obj){
-          if(obj[column] === null) res.locals.alerts.push(alertObjCreator(table, 'null', 'null found', 'error', column, anomalousArray[i], null, obj[timeColumn]));
-        }
-      });
+      for(const column in anomalousArray[0]){
+        if(anomalousArray[0][column] === null) res.locals.alerts.push(alertObjCreator(table, 'null', 'null found', 'error', column, anomalousArray, null, anomalousArray[0][timeColumn]));
+      }
     }
     console.log('res.locals in moncont.null: ', res.locals);
     next();
@@ -290,10 +287,8 @@ monitorController.custom = async (req, res, next) => {
     console.log('anomalous rows in moncont.range: ', anomalousArray);
     if(anomalousArray.length) {
       res.locals.alerts = [];
-      anomalousArray.map((obj, i) => {
-        // might be better to make a different alert object for custom queries
-        res.locals.alerts.push(alertObjCreator('custom query table', 'custom query', 'custom', 'error', 'custom', anomalousArray[i]));
-      });
+      // might be better to make a different alert object for custom queries
+      res.locals.alerts.push(alertObjCreator('custom query table', 'custom query', 'custom', 'error', 'custom', anomalousArray));
     }
     console.log('res.locals.alerts in moncontroller.range: ', res.locals.alerts)
     next();

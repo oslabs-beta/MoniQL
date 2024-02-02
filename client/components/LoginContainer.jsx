@@ -37,6 +37,7 @@ const theme = createTheme({
 const LoginContainer = () => {
   const [regToggle, setRegToggle] = useState(false);
   const [selectedTab, setSelectedTab] = useState('login');
+  const [user_id, setUser_id] = useState(''); 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [uri, setUri] = useState('');
@@ -56,18 +57,16 @@ const LoginContainer = () => {
       const data = await response.json();
       console.log('data returned in handleAuth func in LoginContainer', data)
       if (!response.ok) throw new Error(data.error || 'Error from server')
-      console.log(`userID: ${data.userId}, username: ${data.username}, uri: ${data.uri} `)
+      console.log(`user_id: ${data.user_id}, username: ${data.username}, uri: ${data.uri}`)
       console.log('dbArray in handleAuth func in LoginContainer: ', data.dbArray)
-      dispatch(logInActionCreator(data.userId, data.username, data.uri));
+      dispatch(logInActionCreator(data.user_id, data.username, data.uri));
       dispatch(saveDBActionCreator(data.dbArray));
       
-
       //leaving this open for now, but here is where we will go store shit in redux state
       if (!response.ok) {
         setError(data.error || 'Error from server');
         throw new Error(data.error || 'Error from server');
       }
-      // dispatch(logInActionCreator(data.userId, data.uri));
     } catch (err) {
       console.error('IN CATCH ERROR HANDLER FOR HANDLEAUTH', err.message);
     }
