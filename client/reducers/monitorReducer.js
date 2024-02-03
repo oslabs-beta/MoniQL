@@ -1,19 +1,21 @@
 import * as types from '../constants/actionTypes';
 
 const initialState = {
-    activeMonitors: []
+  activeMonitors: []
 };
 
 const monitorReducer = (state = initialState, action) => {
   switch(action.type) {
-    case types.ADD_MONITOR:
-    console.log(action.payload)
+  case types.ADD_MONITOR:
+    console.log('payload in monitorReducer: ', action.payload)
+
     return {
       ...state,
-      activeMonitors: [...state.activeMonitors, action.payload]
+      activeMonitors: action.payload
     }
-    default:
-      return state;
+
+  default:
+    return state;
   }
 };
 

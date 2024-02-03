@@ -27,6 +27,8 @@ const NullMonitor = () => {
   });
   
 const tablesArray = useSelector((state) => state.diagram.data);
+const user_id = useSelector((state) => state.user.user_id);
+
 const [columnsArray, setColumnsArray] = useState([]);
 
 //for editing monitors with existing rules
@@ -35,12 +37,33 @@ const handleChanges = (e) => {
     setParams({ ...params, [e.target.name]: e.target.value });
 }
 
-const handleSubmit = async (e) => {
+const addMonitor = async (e) => {
   e.preventDefault();
-  console.log('this is params', params);
-  const monitorObject = {type: 'null', params: params}
-  dispatch(addMonitorActionCreator(monitorObject))
-}
+  console.log("this is params in nullMonitor", params);
+  // const monitorObject = { type: "null", params: JSON.stringify(params) };
+  const monitorObject = {type: 'null', user_id: user_id, params: params}
+  try {
+    const response = await fetch('/monitors', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(monitorObject)
+    })
+    if (!response.ok) {
+      throw new Error (`HTTP error! status: ${response.status}`);
+    }
+      const data = await response.json();
+      
+      console.log('data returned in addMonitor in null monitor component: ', data);
+      // console.log('Data Parameters',data[0].parameters);
+  
+      dispatch(addMonitorActionCreator(data))
+  
+    } catch (error) {
+      console.log('fetch error:', error);
+    }
+  }
 
 
 
@@ -150,7 +173,7 @@ return (
             type="submit"
             fullWidth
             variant="contained"
-            onClick={handleSubmit}
+            onClick={addMonitor}
             sx={{ mt: 3, mb: 2 }}
             size="small"
           >

@@ -1,8 +1,8 @@
 import * as types from '../constants/actionTypes';
 
-export const addAlertsActionCreator = (alertArray) => ({
+export const addAlertsActionCreator = (alertsArray) => ({
   type: types.ADD_ALERTS,
-  payload: alertArray
+  payload: alertsArray
 })
 
 export const deleteAlertActionCreator = (alert_id) => ({
@@ -15,9 +15,9 @@ export const updateAlertActionCreator = (alertObj) => ({
   payload: alertObj
 })
 
-export const logInActionCreator = (user, username, uri) => ({
+export const logInActionCreator = (user_id, username, uri) => ({
   type: types.LOG_IN,
-  payload: {user, username, uri}
+  payload: {user_id, username, uri}
 })
 
 export const saveDBActionCreator = (dbArray) => ({
@@ -40,7 +40,7 @@ export const selectPageActionCreator = (page) => ({
   payload: page
 })
 
-export const addMonitorActionCreator = (monitorObject) => ({
+export const addMonitorActionCreator = (monitorsArray) => ({
   type: types.ADD_MONITOR,
-  payload: monitorObject
+  payload: monitorsArray
 })
