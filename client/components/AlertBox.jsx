@@ -154,7 +154,7 @@ const AlertBox = (alertObj) => {
                 </IconButton>
                 <br/>
                 {rowsAccordionAnchorEl ? 
-                <Stack>
+                <Stack maxHeight='250px' overflow='auto'>
                     {rows ? unspooledRows.map((row, i) => <Typography key={i}>{row}</Typography>) : null}
                 </Stack>
                 : null}

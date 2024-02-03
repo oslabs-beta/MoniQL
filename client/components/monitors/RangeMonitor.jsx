@@ -33,10 +33,12 @@ const RangeMonitor = () => {
   
 const tablesArray = useSelector((state) => state.diagram.data);
 const user_id = useSelector((state) => state.user.user_id);
+const monitorsArray = useSelector((state) => state.monitor.activeMonitors);
 
 const [columnsArray, setColumnsArray] = useState([]);
 
 useEffect(() => {
+  console.log('tablesArray in rangeMon', tablesArray)
   tablesArray.forEach((table, i) => {
     if (params.table === table.table_name){
       console.log("HIT!!!!! TABLE NAME SELECTED IS ", table.tablename)
@@ -46,7 +48,7 @@ useEffect(() => {
   })
 }, [params.table, tablesArray]);
 
-const handleChanges = (e) => {  
+const handleChanges = (e) => {
   const { name, value } = e.target;
 
   // Check if the input name is 'min' or 'max' and convert the value to a number
@@ -63,7 +65,7 @@ const handleSubmit = async (e) => {
   // dispatch(addMonitorActionCreator(monitorObject))
     // make post request to server
     try {
-  const response = await fetch('/addMonitor', {
+  const response = await fetch('/monitors', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -78,7 +80,7 @@ const handleSubmit = async (e) => {
     console.log('data returned in rangeMonitor', data);
     // console.log('Data Parameters',data[0].parameters);
 
-    dispatch(addMonitorActionCreator(data))
+    dispatch(addMonitorActionCreator(data));
 
   } catch (error) {
     console.log('fetch error:', error);

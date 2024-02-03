@@ -43,7 +43,7 @@ const handleSubmit = async (e) => {
   // dispatch(addMonitorActionCreator(monitorObject))
   //make post request to server
   try {
-    const response = await fetch("addMonitor", {
+    const response = await fetch("/monitors", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

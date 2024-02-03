@@ -31,7 +31,7 @@ const user_id = useSelector((state) => state.user.user_id);
 const [columnsArray, setColumnsArray] = useState([]);
 
 //for editing monitors with existing rules
-const handleChanges = (e) => {  
+const handleChanges = (e) => {
     // console.log('THIS IS THE NAME OF THE FIELD',e.target.name, 'THIS IS THE VALUE THE USER CHOSE', e.target.value)
     setParams({ ...params, [e.target.name]: e.target.value });
 }
@@ -43,7 +43,7 @@ const handleSubmit = async (e) => {
   // dispatch(addMonitorActionCreator(monitorObject))
   //make post request to server
   try {
-    const response = await fetch("/addMonitor", {
+    const response = await fetch("/monitors", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -43,7 +43,7 @@ const addMonitor = async (e) => {
   // const monitorObject = { type: "null", params: JSON.stringify(params) };
   const monitorObject = {type: 'null', user_id: user_id, params: params}
   try {
-    const response = await fetch('/addMonitor', {
+    const response = await fetch('/monitors', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

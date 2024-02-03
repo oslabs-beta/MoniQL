@@ -42,7 +42,7 @@ const MonitorContainer = () => {
     const fetchAllMonitors = async () => {
       console.log('user_id in fetchAllMonitors in MonitorContainer', user_id);
       try {
-        const response = await fetch('/getMonitors', {
+        const response = await fetch('/monitors', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -53,6 +53,7 @@ const MonitorContainer = () => {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
+        console.log('data in fetchAllMonitors in MonitorContainer', data);
         dispatch(addMonitorActionCreator(data));
       } catch (error) {
         console.log('fetch error:', error);
