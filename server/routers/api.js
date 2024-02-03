@@ -23,6 +23,7 @@ router.post('/null', monitorController.null, (req, res) => {res.status(200).json
 
 
 router.post("/monitorObjects", userController.insertMonitor, userController.getMonitors, (req, res) => {res.status(200).json(res.locals.monitors)});
+router.delete('/monitorObjects', (req, res) => {res.status(200).json(res.locals)})
 
 
 router.post('/stats', monitorController.stats, (req, res) => {res.status(200).json(res.locals)});

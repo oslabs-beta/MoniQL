@@ -109,7 +109,6 @@ const Focus = ({children, elements}) => {
         <Handle
           type="target"
           position={Position.Left}
-          animated={true}
           style={{ borderRadius: 10 }}
         />
         <h3>{data.label}</h3>
@@ -121,7 +120,6 @@ const Focus = ({children, elements}) => {
         <Handle
           type="source"
           position={Position.Right}
-          animated={true}
           style={{ borderRadius: 10 }}
         />
       </div>
@@ -129,10 +127,42 @@ const Focus = ({children, elements}) => {
   };
 
   ///////////////////////NODE STYLE/////////////////////////
-  ////////////////////////////**********HAY STACK**********//////////////////////////////
-
-
+  ////////////////////////////**********HAY STACK**********/////////////////////////////
   const nodeTypes = useMemo(() => ({ custom: CustomNode }), []);
+
+
+  ////////////////////////////**********HAY WEIGHT/IMPORTANCE ALGO**********//////////////////////////////
+    /////*** this should go somewhere else so that we can also use in our dash WE B DRY ;) ***/////
+    //calc weight/importance of each table (by # of FKs (<< hehe))
+    const tableWeight = () => {
+      const importance = new Map();
+      data.forEach((table) => {
+        //table name = key / num of FKs (<< hehe) = value
+        importance.set(table.table_name, (table.foreign_keys || []).length);
+      });
+      console.log("IMPORTANCEeeee!!!!!!!!!!", importance);
+      return importance;
+    };
+
+
+    const sortTables = (tableWeight, fkArray) => {
+      //sorts arr by num of FKs (<< hehe) (descending)
+      return [...fkArray].sort(
+        (a, b) => tableWeight.get(b.foreign_table) - tableWeight.get(a.foreign_table)
+      );
+    };
+
+//     //our variables for rendering below (add on between add table and foreach replace data with sortedData)
+ const weightMap = tableWeight();
+ if (data[2]) console.log('FOREIGN KEYYYYYSSSSS', data[2].foreign_keys)
+//  const sortedTables = sortTables(weightMap);
+    ////////////////////////////**********HAY WEIGHT/IMPORTANCE ALGO**********//////////////////////////////
+
+    //our variables for rendering below (add on between add table and foreach replace data with sortedData)
+
+      // console.log("SORTED!!!!!!!!!!", sortedTables);
+
+
 
   useEffect(() => {
     console.log("THIS IS FOCUS DATA", data);
@@ -165,6 +195,7 @@ const Focus = ({children, elements}) => {
           //iterate thru foreign keys property of table
           if (table.foreign_keys) {
             xVal += 1;
+
             table.foreign_keys.forEach((key, j) => {
               newEdges.push({
                 id: `e${currTable}-${key.foreign_table}`,
