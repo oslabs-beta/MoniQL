@@ -34,17 +34,20 @@ const AppContainer = () => {
   /* <SideBar isSideBar={isSideBar} /> */
 
   const dispatch = useDispatch();
+
+  const user_uri = useSelector((state) => state.user.uri);
   
   useEffect(() => {
     const fetchDB = async () => {
       try {
         const requestOptions = {
-          method: "GET",
+          method: "POST",
           headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({user_uri: user_uri})
         };
         const response = await fetch("/eboshi", requestOptions);
         const data = await response.json();
-        console.log(data.dbArray);
+        console.log('dbArray in fetchDB in appContainer: ', data.dbArray);
         if (!response.ok) throw new Error(data.error || "Error from server");
         dispatch(saveDBActionCreator(data.dbArray));
       } catch (err) {
@@ -54,7 +57,7 @@ const AppContainer = () => {
     fetchDB();
   }, []);
 
-  const user = useSelector((state) => state.user.user);
+  const user_id = useSelector((state) => state.user.user_id);
 
   const getAllAlerts = async () => {
     try {
@@ -63,7 +66,7 @@ const AppContainer = () => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({user: user})
+            body: JSON.stringify({user_id: user_id})
         });
         if(!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);

@@ -46,7 +46,7 @@ userController.register = async (req, res, next) => {
           RETURNING username, user_id, (SELECT uri FROM inserted_uri);`
         
     const result = await db.query(queryText, params);
-    // console.log(result.rows)
+    console.log('rows returned in usercont.register: ', result.rows)
         
     //ensure user was registered to the db
     if (!result.rows.length) 
@@ -60,10 +60,11 @@ userController.register = async (req, res, next) => {
       
     //store username in res locals
     res.locals = {
-      userId: result.rows[0].user_id, 
+      user_id: result.rows[0].user_id, 
       username: result.rows[0].username, 
       uri: result.rows[0].uri 
     };
+    console.log('res.locals in userController.register: ', res.locals)
     return next();
   }
   catch (err) {
@@ -103,7 +104,7 @@ userController.login = async (req, res, next) => {
       WHERE users.username = $1;`;
     const params = [username];
     const { rows } = await db.query(queryText, params);
-    console.log('rows in login: ', rows);
+    console.log('rows in usercont.login: ', rows);
     if (rows.length === 0) {
       return res.status(401).json({ error: 'Username not found' });
     }
@@ -134,10 +135,10 @@ userController.login = async (req, res, next) => {
 };
 
 userController.getAlerts = async (req, res, next) => {
-  const { user } = req.body;
+  const { user_id } = req.body;
   try {
     const fetchQuery = 'SELECT * FROM alerts WHERE user_id = $1';
-    const { rows } = await db.query(fetchQuery, [user]);
+    const { rows } = await db.query(fetchQuery, [user_id]);
     const alertObjArr = [];
     for(const row of rows) {
       alertObjArr.push(row.alert_obj);
@@ -158,7 +159,7 @@ userController.addAlerts = async (req, res, next) => {
   if(!res.locals.alerts) return next();
   if(!res.locals.alerts.length) return next();
 
-  const { user, monitor } = req.body;
+  const { user_id } = req.body;
   const alertsArr = res.locals.alerts;
 
   let insertQuery = 'INSERT INTO alerts (alert_id, user_id, alert_obj) VALUES ';
@@ -171,22 +172,11 @@ userController.addAlerts = async (req, res, next) => {
   });
 
   insertQuery += queries.join(', ') + ' RETURNING *;';
-  const values = alertsArr.flatMap(alert => [alert.alert_id, user, JSON.stringify(alert)]);
+  const values = alertsArr.flatMap(alert => [alert.alert_id, user_id, JSON.stringify(alert)]);
   console.log('insertQuery in addAlerts: ', insertQuery, 'query params: ', values);
   try {
     // console.log('insertQuery in addAlerts: ', insertQuery, 'query params: ', values);
     const { rows } = await db.query(insertQuery, values);
-    // const alertObjArr = [];
-    // for(const row of rows) {
-    //   alertObjArr.push(row.alert_obj);
-    // }
-    // res.locals.alerts = alertObjArr;
-    // console.log('rows in addAlerts: ', rows);
-    // rows.forEach(row => {
-    //   row.alert_obj.alert_id = row.alert_id;
-    // })
-    // const alertObjArr = rows.map(row => row.alert_obj);
-    // res.locals.alerts = alertObjArr;
     return next();
   } catch (err) {
     return next({
@@ -255,10 +245,10 @@ userController.insertMonitor = async (req, res, next) => {
   //if conditional to skip insert if no params are provided..
   if (!req.body.params) return next();
   //I know, I know.. this is probably not great practice. Sorry King!
-  const { type, user, params } = req.body;
+  const { type, user_id, params } = req.body;
   try {
     const insertQuery = 'INSERT INTO monitors (type, user_id, parameters) VALUES ($1, $2, $3) RETURNING *;';
-    const parameters = [type, user, JSON.stringify(params)];
+    const parameters = [type, user_id, JSON.stringify(params)];
     await db.query(insertQuery, parameters);
     return next();
   } catch (err) {
@@ -271,10 +261,10 @@ userController.insertMonitor = async (req, res, next) => {
 };
 
 userController.getMonitors = async (req, res, next) => {
-  const { user } = req.body;
+  const { user_id } = req.body;
   try {
     const fetchQuery = 'SELECT * FROM monitors WHERE user_id = $1;';
-    const { rows } = await db.query(fetchQuery, [user]);
+    const { rows } = await db.query(fetchQuery, [user_id]);
     res.locals.monitors = rows;
     return next();
   } catch (err) {

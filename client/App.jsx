@@ -29,8 +29,8 @@ const App = () => {
         <div className="App">
           {/* <Sidebar isSideBar={isSideBar} /> */}
           {/* <Topbar setIsSidebar={setIsSidebar} /> */}
-          {/* { (isLoggedIn) ? <AppContainer /> : <LoginContainer /> } */}
-          <AppContainer />
+          { (isLoggedIn) ? <AppContainer /> : <LoginContainer /> }
+          {/* <AppContainer /> */}
         </div>
       </ThemeProvider>
     </ColorModeContext.Provider>

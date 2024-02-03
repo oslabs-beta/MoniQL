@@ -17,6 +17,7 @@ const VolumeMonitor = () => {
   });
 
   const tablesArray = useSelector((state) => state.diagram.data);
+  const user_id = useSelector((state) => state.user.user_id);
   const [columnsArray, setColumnsArray] = useState([]);
 
   useEffect(() => {
@@ -35,11 +36,11 @@ const VolumeMonitor = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log('this is params', params);
-    const monitorObject = {type: 'volume', params: params}
+    const monitorObject = {type: 'volume', user_id: user_id, params: params}
     // dispatch(addMonitorActionCreator(monitorObject))
       //make post request to server
     try {
-  const response = await fetch('/api/volume', {
+  const response = await fetch('addMonitor', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

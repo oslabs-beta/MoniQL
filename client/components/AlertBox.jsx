@@ -1,10 +1,11 @@
 // import react, redux, and react-redux, dispatch 
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Alert, AlertTitle, TextField, Badge, Box, Stack, Dialog, Typography, Accordion, IconButton } from '@mui/material';
+import { Button, Alert, AlertTitle, TextField, Badge, Box, Stack, useTheme, Typography, Accordion, IconButton } from '@mui/material';
 import { deleteAlertActionCreator, updateAlertActionCreator } from '../actions/actions.js';
 import StorageIcon from '@mui/icons-material/Storage';
 import dayjs from 'dayjs';
+
 
 // regex check for timestamptz
 const timestamptzRegex = /(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z)/;
@@ -16,7 +17,7 @@ const AlertBox = (alertObj) => {
 
     const dispatch = useDispatch();
     const username = useSelector((state) => state.user.username);
-    const user_id = useSelector((state) => state.user.user);
+    const user_id = useSelector((state) => state.user.user_id);
 
     const alertObjCopy = {...alertObj};
     const { alert_id, severity, table, column, rows, monitorType, anomalyType, anomalyValue, anomalyTime, detected_at, resolved_at, resolved, resolved_by, notes, display } = alertObjCopy;
@@ -63,25 +64,25 @@ const AlertBox = (alertObj) => {
         newNotesArr.push(newNote.concat(` -by ${username} at ` + dayjs().format('ddd YYYY-MM-DD hh:mm:ss a')));
 
 
-        alertObj = {
+        const updatedAlertObj = {
             ...alertObj,
             notes: newNotesArr,
         }
         handleClickOpen();
-        return updateAlert(alertObj);
+        return updateAlert(updatedAlertObj);
     }
 
     const markResolved = () => {
         if (resolved) {
             return;
         } else {
-        alertObj = {
+        const updatedAlertObj = {
             ...alertObj,
             resolved: true,
             resolved_at: dayjs().format('ddd YYYY-MM-DD hh:mm:ss a'),
             resolved_by: username
         }
-        return updateAlert(alertObj);
+        return updateAlert(updatedAlertObj);
         }
     }
 
@@ -99,11 +100,11 @@ const AlertBox = (alertObj) => {
     // will conditionally render alerts by display value (in container component)
     // should include option to display resolved alerts, too
     const handleClose = () => {
-        alertObj = {
+        const updatedAlertObj = {
             ...alertObj,
             display: false,
         }
-        return updateAlert(alertObj);
+        return updateAlert(updatedAlertObj);
     }
 
     let rowsCount = rows ? rows.length : null;
@@ -149,6 +150,7 @@ const AlertBox = (alertObj) => {
                     <Badge badgeContent={rowsCount} color="error">
                         <StorageIcon />
                     </Badge>
+                    <Typography sx={{ml: 2 }}> click to see anomalous rows </Typography>
                 </IconButton>
                 <br/>
                 {rowsAccordionAnchorEl ? 
@@ -170,30 +172,19 @@ const AlertBox = (alertObj) => {
 
     return (
         display ?
-        (<Alert severity={severity} variant="outlined" onClose={handleClose} sx={{bgcolor: 'background.paper', zIndex: 9999}}>
-            <AlertTitle>{`${monitorType} anomaly detected at ${dayjs(detected_at).format('ddd MM-DD-YYYY hh:mm:ss a')} in ${table}`}</AlertTitle>
+        (<Alert severity={severity} variant="outlined" onClose={handleClose} sx={{bgcolor: 'background.paper', zIndex: 9999, width: '97%', marginRight: 'auto', marginLeft: 'auto', maxWidth: '800px'}}>
+            <AlertTitle sx={{fontSize: 18}}>{`${monitorType} anomaly detected at ${dayjs(detected_at).format('ddd MM-DD-YYYY hh:mm:ss a')} in: `} <Typography color="primary" sx={{fontSize: 16}}>{`${table}`}</Typography> </AlertTitle>
             {column ? `Column: ${column}, ` : null}
             {anomalyType ? `Anomaly type: ${anomalyType}, ` : null}
             {anomalyValue ? `Anomaly value: ${anomalyValue}, ` : null}
             {anomalyTime ? `Anomaly time: ${dayjs(anomalyTime).format('ddd MM-DD-YYYY hh:mm:ss a')} ` : null}
-            {/* <IconButton
-                size="large"
-                aria-label={`show ${rowsCount} anomalous rows`}
-                color="inherit"
-                onClick={handleRowsAccordionToggle}
-            >
-            <Badge badgeContent={rowsCount} color="error" key="badge">
-                <StorageIcon />
-            </Badge>
-            </IconButton> */}
             <br/>
             {renderRowsAccordion}
-            {/* {RowsAccordionToggle ? `Row(s): ${unspooledRows}` : null} */}
             <br/>
             {notes.length ? `Notes: ${notes.join(', ')}` : null}
             <Button onClick={handleClickOpen}>Add Notes</Button>
             {openNotes ? (<div>
-                <TextField  fullWidth onChange={handleNewNoteInput}/>
+                <TextField onChange={handleNewNoteInput} sx={{maxWidth: '500px'}}/>
                 <Button onClick={addNotes}>Submit new notes</Button>
                 </div>) : null}
                 <br/>

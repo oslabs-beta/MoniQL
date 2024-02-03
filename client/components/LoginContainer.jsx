@@ -47,7 +47,8 @@ const LoginContainer = () => {
 
   const handleAuth = async (path) => {
     try {
-      console.log(`**************** this is your path: ${path} ****************`)
+      console.log('username: ', username, 'password: ', password, 'uri: ', uri, 'path: ', path)
+      // console.log(`**************** this is your path: ${path} ****************`)
       const requestOptions = {
         method: "POST",
         headers: {"Content-Type": "application/json"},
@@ -55,12 +56,14 @@ const LoginContainer = () => {
       };
       const response = await fetch(path, requestOptions);
       const data = await response.json();
+
       console.log('data returned in handleAuth func in LoginContainer', data)
       if (!response.ok) throw new Error(data.error || 'Error from server')
+
       console.log(`user_id: ${data.user_id}, username: ${data.username}, uri: ${data.uri}`)
       console.log('dbArray in handleAuth func in LoginContainer: ', data.dbArray)
       dispatch(logInActionCreator(data.user_id, data.username, data.uri));
-      dispatch(saveDBActionCreator(data.dbArray));
+      // dispatch(saveDBActionCreator(data.dbArray));
       
       //leaving this open for now, but here is where we will go store shit in redux state
       if (!response.ok) {
@@ -68,10 +71,11 @@ const LoginContainer = () => {
         throw new Error(data.error || 'Error from server');
       }
     } catch (err) {
-      console.error('IN CATCH ERROR HANDLER FOR HANDLEAUTH', err.message);
+      console.error('error caught in handleAuth in LoginContainer', err.message);
     }
   }
   const handleChange = (event, newValue) => {
+    setRegToggle(!regToggle);
     setSelectedTab(newValue);
   };
 

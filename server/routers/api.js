@@ -4,9 +4,13 @@ const userController = require('../controllers/userController');
 const dbController = require('../controllers/dbController');
 const monitorController = require('../controllers/monitorController');
 
-router.post('/login', userController.login, dbController.connect /* this one doesn't do anything rn */, dbController.getDB, (req, res) => {res.status(200).json(res.locals)});
+// router.post('/login', userController.login, dbController.connect /* this one doesn't do anything rn */, dbController.getDB, (req, res) => {res.status(200).json(res.locals)});
 
-router.post('/register', userController.register, /* dbcontroller.userpoolconnect,*/ (req, res) => {res.status(200).json(res.locals)});
+// router.post('/register', userController.register, /* dbcontroller.userpoolconnect,*/ (req, res) => {res.status(200).json(res.locals)});
+
+router.post('/login', userController.login, monitorController.connect, (req, res) => {res.status(200).json(res.locals)});
+
+router.post('/register', userController.register, monitorController.connect, (req, res) => {res.status(200).json(res.locals)});
 
 router.post('/people', dbController.getDB, (req, res) => {res.status(200).json(res.locals)});
 
@@ -21,7 +25,9 @@ router.post('/range', monitorController.range, userController.addAlerts, (req, r
 router.post('/null', monitorController.null, userController.addAlerts, (req, res) => {res.status(200).json(res.locals)});
 
 
-router.post('/monitorObjects', userController.insertMonitor, userController.getMonitors, (req, res) => {res.status(200).json(res.locals.monitors)});
+router.post('/addMonitor', userController.insertMonitor, (req, res) => {res.status(200).json(res.locals.monitors)});
+
+router.post('/getMonitors', userController.getMonitors, (req, res) => {res.status(200).json(res.locals.monitors)});
 
 router.post('/alerts', userController.getAlerts, (req, res) => {res.status(200).json(res.locals.allAlerts)});
 
@@ -32,5 +38,5 @@ router.post('/stats', monitorController.stats, (req, res) => {res.status(200).js
 router.post('/custom', monitorController.custom, (req, res) => {res.status(200).json(res.locals)});
 
 //this is temp for working on front end
-router.get('/eboshi', dbController.getDB, (req, res) => {res.status(200).json(res.locals)});
+router.post('/eboshi', dbController.getDB, (req, res) => {res.status(200).json(res.locals)});
 module.exports = router; 

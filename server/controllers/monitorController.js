@@ -1,8 +1,23 @@
-const { pool, userPool } = require('../models/db');
+const { pool, userPool, connectToPool } = require('../models/db');
 const { v4: uuidv4 } =  require('uuid');
 
-const db = userPool;
+const monitorController = {};
+
+// declare a variable for our connection to user db, but don't connect until log in
+let db;
 const ourDB = pool;
+
+
+// prod mode:
+monitorController.connect = async (req, res, next) => {
+  const user_uri = res.locals.uri;
+  db = await connectToPool(user_uri);
+  console.log('connected to user db in moncont.connect');
+  return next();
+};
+
+// dev mode:
+// db = userPool;
 
 /**
  * alert object shape:
@@ -46,11 +61,9 @@ const alertObjCreator = (table, monitorType, anomalyType, severity = 'error',
   }
 };
 
-const monitorController = {};
-
 monitorController.queryAll = async (req, res, next) => {
   // query tables by name using postman req.body until we connect to front end
-  const { table } = req.body;
+  const { table } = req.body.monitor.parameters;
   
   try {
     const query = `SELECT * FROM ${table} LIMIT 100`;
@@ -75,7 +88,7 @@ monitorController.volume = async (req, res, next) => {
   // ending = time to look back from (should default to now())
   // timeColumn = name of table's timestamp column (should default to 'created_at')
 
-  const { table, interval, period, ending, timeColumn } = req.body;
+  const { table, interval, period, ending, timeColumn } = req.body.monitor.parameters;
 
   try {
     const text = `SELECT time_interval, 
@@ -112,7 +125,7 @@ monitorController.fresh = async (req, res, next) => {
   // store on our db
   // on front we can display the last update for each table, let users decide if they want to set alerts 
 
-  const { table } = req.body;
+  const { table } = req.body.monitor.parameters;
 
   try {
     // query exact row count (more precise, less performant)
@@ -183,8 +196,8 @@ monitorController.range = async (req, res, next) => {
 monitorController.null = async (req, res, next) => {
   // query table by name, look for any null values
 
-  const { table } = req.body.parameters;
-  const timeColumn = req.body.parameters.timeColumn || 'created_at';
+  const { table } = req.body.monitor.parameters;
+  const timeColumn = req.body.monitor.parameters.timeColumn || 'created_at';
 
   try {
     // first, query metadata for column names
@@ -226,7 +239,7 @@ monitorController.null = async (req, res, next) => {
 // :( error: too many connections for role "rqtyhpzb" :( 
 monitorController.stats = async (req, res, next) => {
 
-  const { table, starting, ending, timeColumn } = req.body;
+  const { table, starting, ending, timeColumn } = req.body.monitor.parameters;
   let exact_row_count = null;
   if(res.locals.fresh) exact_row_count = res.locals.fresh.exact_row_count;
 
@@ -279,7 +292,7 @@ monitorController.stats = async (req, res, next) => {
 
 monitorController.custom = async (req, res, next) => {
 
-  const { customQuery } = req.body;
+  const { customQuery } = req.body.monitor.parameters;
 
   try {
     const data = await db.query(customQuery);
@@ -305,75 +318,9 @@ monitorController.custom = async (req, res, next) => {
 
 
 
-monitorController.test = async (req, res, next) => {
-  console.log("HHIHIHIHIHIHIHIHIHIHI")
-  return next()
-}
+// monitorController.test = async (req, res, next) => {
+//   console.log("HHIHIHIHIHIHIHIHIHIHI")
+//   return next()
+// }
 
 module.exports = monitorController;
-
-//   const statsQuery = `SELECT
-//   AVG( column ) AS mean,
-//   PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY  column ) AS median,
-//   MIN( column ) AS min,
-//   MAX( column ) AS max,
-//   STDDEV( column ) AS std_dev
-// FROM
-//   (SELECT generate_series(
-//       $3::timestamptz - $2::interval,
-//       $3::timestamptz,
-//       $1::interval
-//   ) AS time_interval) AS intervals
-// JOIN ${table} ON ${table}."${timeColumn}" >= intervals.time_interval
-//             AND ${table}."${timeColumn}" < intervals.time_interval + $1::interval
-// WHERE
-//   ${table}."${timeColumn}" >= $3::timestamp - $2::interval
-//   AND ${table}."${timeColumn}" <= $3::timestamp;`
-//   const values = [interval, period, ending || 'now()'];
-
-//   // iterate over columns, add each to query text
-//   const arrQueries = [];
-//   columns.map((obj) => {
-//     arrQueries.push(statsQuery.replace(/ column /g, `"${obj.column_name}"`));
-//   });
-//   console.log('arrQueries in moncont.stats: ', arrQueries);
-//   arrQueries.map(async (query) => {
-//     // :( error: too many connections for role "rqtyhpzb" :( 
-//     const data = await db.query(query, values);
-//     console.log('data in moncont.stats: ', data.rows);
-//   });
-
-
-// SELECT
-//   AVG(${timeColumn}) AS mean,
-//   PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY ${timeColumn}) AS median,
-//   MIN(${timeColumn}) AS min,
-//   MAX(${timeColumn}) AS max,
-//   STDDEV(${timeColumn}) AS std_dev
-// FROM
-//     (SELECT generate_series(
-//       $3::timestamptz - $2::interval,
-//       $3::timestamptz,
-//       $1::interval
-//     ) AS time_interval
-//   ) AS intervals 
-//   ${table}
-// WHERE
-//   $3::timestamp >= $2::timestamp - interval $1::interval
-//   AND $3::timestamp <= $2::timestamp;`
-
-  
-
-// iterate over columns, add each to query text
-// const arrQueries = [];
-// columns.map((obj) => {
-//   arrQueries.push(statsQuery.replace(/ column /g, `"${obj.column_name}"`));
-// });
-// console.log('arrQueries in moncont.stats: ', arrQueries);
-// const arrData = [];
-// arrQueries.map(
-//   setTimeout(async (query) => {
-//     const data = await db.query(query, values);
-//     console.log('data in moncont.stats: ', data.rows);
-//   }, 25)
-// );

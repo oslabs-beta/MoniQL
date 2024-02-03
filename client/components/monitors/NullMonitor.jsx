@@ -27,7 +27,7 @@ const NullMonitor = () => {
   });
   
 const tablesArray = useSelector((state) => state.diagram.data);
-const user = useSelector((state) => state.user.user);
+const user_id = useSelector((state) => state.user.user_id);
 
 const [columnsArray, setColumnsArray] = useState([]);
 
@@ -37,13 +37,13 @@ const handleChanges = (e) => {
     setParams({ ...params, [e.target.name]: e.target.value });
 }
 
-const handleSubmit = async (e) => {
+const addMonitor = async (e) => {
   e.preventDefault();
-  console.log("this is params", params);
+  console.log("this is params in nullMonitor", params);
   // const monitorObject = { type: "null", params: JSON.stringify(params) };
-  const monitorObject = {type: 'null', user: user, params: params}
+  const monitorObject = {type: 'null', user_id: user_id, params: params}
   try {
-    const response = await fetch('/monitorObjects', {
+    const response = await fetch('/addMonitor', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -55,8 +55,8 @@ const handleSubmit = async (e) => {
     }
       const data = await response.json();
       
-      console.log('DATADATADATDATADATA',data);
-      console.log('Data Parameters',data[0].parameters);
+      console.log('data returned in addMonitor in null monitor component: ', data);
+      // console.log('Data Parameters',data[0].parameters);
   
       dispatch(addMonitorActionCreator(data))
   
@@ -173,7 +173,7 @@ return (
             type="submit"
             fullWidth
             variant="contained"
-            onClick={handleSubmit}
+            onClick={addMonitor}
             sx={{ mt: 3, mb: 2 }}
             size="small"
           >
