@@ -1,6 +1,11 @@
+// React imports
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+
+// Action creators
 import { addMonitorActionCreator } from "../../actions/actions";
+
+// MUI components
 import {
   Box,
   Card,
@@ -15,6 +20,8 @@ import {
   Select,
   TextField,
 } from "@mui/material";
+
+// MUI icons
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 

@@ -1,17 +1,17 @@
-import React from 'react';
+// External libraries
+import React, {useState} from 'react';
+import { useSelector } from 'react-redux';
+import { CssBaseline, ThemeProvider } from "@mui/material";
+
+// Components
 import LoginContainer from './components/LoginContainer';
 import AppContainer from './containers/AppContainer';
-import './components/stylesheets/App.css';
-import { useSelector } from 'react-redux';
 import AlertBox from './components/AlertBox';
-
-//hay added for light/dark mode
-import { useState } from "react";
-import { ColorModeContext, useMode, tokens } from "./components/stylesheets/Themes";
-import { CssBaseline, ThemeProvider } from "@mui/material";
 import Sidebar from './components/SideBar';
 
-
+// Styles and themes
+import './components/stylesheets/App.css';
+import { ColorModeContext, useMode, tokens } from "./components/stylesheets/Themes";
 
 //for pull out drawer:
 // import Topbar from "./scenes/global/Topbar";
