@@ -1,5 +1,5 @@
 // External libraries
-import React, {useState} from 'react';
+import React, {useState}, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { CssBaseline, ThemeProvider } from "@mui/material";
 
@@ -30,8 +30,8 @@ const App = () => {
         <div className="App">
           {/* <Sidebar isSideBar={isSideBar} /> */}
           {/* <Topbar setIsSidebar={setIsSidebar} /> */}
-          {/* { (isLoggedIn) ? <AppContainer /> : <LoginContainer /> } */}
-          <AppContainer />
+          { (isLoggedIn) ? <AppContainer /> : <LoginContainer /> }
+          {/* <AppContainer /> */}
         </div>
       </ThemeProvider>
     </ColorModeContext.Provider>

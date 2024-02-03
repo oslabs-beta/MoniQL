@@ -27,22 +27,23 @@ const FreshnessMonitor = () => {
   });
   
 const tablesArray = useSelector((state) => state.diagram.data);
+const user_id = useSelector((state) => state.user.user_id);
 const [columnsArray, setColumnsArray] = useState([]);
 
 //for editing monitors with existing rules
 const handleChanges = (e) => {  
-    console.log('THIS IS THE NAME OF THE DROPDOWNLIST',e.target.name, 'THIS IS THE VALUE THE USER CHOSE', e.target.value)
+    // console.log('THIS IS THE NAME OF THE DROPDOWNLIST: ', e.target.name, 'THIS IS THE VALUE THE USER CHOSE: ', e.target.value)
     setParams({ ...params, [e.target.name]: e.target.value });
 }
 
 const handleSubmit = async (e) => {
   e.preventDefault();
-  console.log("this is params", params);
-  const monitorObject = { type: "freshness", params: params };
+  console.log("params in freshness monitor handlesubmit", params);
+  const monitorObject = { type: "freshness", user_id:user_id, params: params };
   // dispatch(addMonitorActionCreator(monitorObject))
   //make post request to server
   try {
-    const response = await fetch("/api/fresh", {
+    const response = await fetch("/monitors", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

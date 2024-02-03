@@ -26,7 +26,7 @@ const MonitorContainer = () => {
   const [selectedMonitor, setSelectedMonitor] = useState("");
   const monitors = ["Range", "Freshness", "Volume", "Null", "Custom"];
   const activeMonitors = useSelector((state) => state.monitor.activeMonitors);
-  const user = useSelector((state) => state.user.user);
+  const user_id = useSelector((state) => state.user.user_id);
   // useEffect(() => {
   //   console.log('new active monitors: ', activeMonitors);
   //   console.log('Type of activeMonitors:', typeof activeMonitors);
@@ -40,19 +40,20 @@ const MonitorContainer = () => {
   // }, [activeMonitors]);
   useEffect(() => {
     const fetchAllMonitors = async () => {
-      console.log('USERUSERUSERUSER', user);
+      console.log('user_id in fetchAllMonitors in MonitorContainer', user_id);
       try {
-        const response = await fetch('/monitorObjects', {
+        const response = await fetch('/monitors', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({user: user})
+          body: JSON.stringify({user_id: user_id})
         });
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
+        console.log('data in fetchAllMonitors in MonitorContainer', data);
         dispatch(addMonitorActionCreator(data));
       } catch (error) {
         console.log('fetch error:', error);
@@ -70,10 +71,14 @@ const MonitorContainer = () => {
       const requestOptions = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(monitor.parameters),
+        body: JSON.stringify({
+          user_id: user_id,
+          monitor: monitor
+        })
       };
       const response = await fetch(path, requestOptions);
       const data = await response.json();
+      console.log('data.alerts returned in sendQuery func in MonitorContainer', data)
 
       if (!response.ok) throw new Error(data.message || "Error from server");
       
