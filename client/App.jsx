@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import LoginContainer from './components/LoginContainer';
 import AppContainer from './containers/AppContainer';
 import './components/stylesheets/App.css';
 import { useSelector } from 'react-redux';
-import AlertBox from './components/AlertBox';
 
 //hay added for light/dark mode
 import { useState } from "react";
@@ -30,8 +29,8 @@ const App = () => {
         <div className="App">
           {/* <Sidebar isSideBar={isSideBar} /> */}
           {/* <Topbar setIsSidebar={setIsSidebar} /> */}
-          {/* { (isLoggedIn) ? <AppContainer /> : <LoginContainer /> } */}
-          <AppContainer />
+          { (isLoggedIn) ? <AppContainer /> : <LoginContainer /> }
+          {/* <AppContainer /> */}
         </div>
       </ThemeProvider>
     </ColorModeContext.Provider>

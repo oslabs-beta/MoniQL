@@ -21,6 +21,7 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 const RangeMonitor = () => {
   const dispatch = useDispatch();
+
   const [params, setParams] = useState({
     table: '',
     column: '',
@@ -31,11 +32,13 @@ const RangeMonitor = () => {
   });
   
 const tablesArray = useSelector((state) => state.diagram.data);
-const user = useSelector((state) => state.user.user);
+const user_id = useSelector((state) => state.user.user_id);
+const monitorsArray = useSelector((state) => state.monitor.activeMonitors);
 
 const [columnsArray, setColumnsArray] = useState([]);
 
 useEffect(() => {
+  console.log('tablesArray in rangeMon', tablesArray)
   tablesArray.forEach((table, i) => {
     if (params.table === table.table_name){
       console.log("HIT!!!!! TABLE NAME SELECTED IS ", table.tablename)
@@ -45,24 +48,24 @@ useEffect(() => {
   })
 }, [params.table, tablesArray]);
 
-const handleChanges = (e) => {  
+const handleChanges = (e) => {
   const { name, value } = e.target;
 
   // Check if the input name is 'min' or 'max' and convert the value to a number
   const newValue = (name === 'minValue' || name === 'maxValue') ? Number(value) : value;
 
-  console.log('THIS IS THE NAME OF THE DROPDOWNLIST', name, 'THIS IS THE VALUE THE USER CHOSE', newValue);
+  // console.log('THIS IS THE NAME OF THE DROPDOWNLIST', name, 'THIS IS THE VALUE THE USER CHOSE', newValue);
   setParams({ ...params, [name]: newValue });
 };
 
 const handleSubmit = async (e) => {
   e.preventDefault();
   // console.log('this is params', params);
-  const monitorObject = {type: 'range', user: user, params: params}
+  const monitorObject = {type: 'range', user_id: user_id, params: params}
   // dispatch(addMonitorActionCreator(monitorObject))
     // make post request to server
     try {
-  const response = await fetch('/monitorObjects', {
+  const response = await fetch('/monitors', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -74,10 +77,10 @@ const handleSubmit = async (e) => {
   }
     const data = await response.json();
     
-    console.log('DATADATADATDATADATA',data);
-    console.log('Data Parameters',data[0].parameters);
+    console.log('data returned in rangeMonitor', data);
+    // console.log('Data Parameters',data[0].parameters);
 
-    dispatch(addMonitorActionCreator(data))
+    dispatch(addMonitorActionCreator(data));
 
   } catch (error) {
     console.log('fetch error:', error);
