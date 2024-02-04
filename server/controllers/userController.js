@@ -243,13 +243,13 @@ userController.updateAlert = async (req, res, next) => {
 
 userController.insertMonitor = async (req, res, next) => {
   //if conditional to skip insert if no params are provided..
-  if (!req.body.params) return next();
+  if (!req.body.parameters) return next();
   //I know, I know.. this is probably not great practice. Sorry King!
-  const { type, user_id, params } = req.body;
+  const { type, user_id, parameters } = req.body;
   try {
     const insertQuery = 'INSERT INTO monitors (type, user_id, parameters) VALUES ($1, $2, $3) RETURNING *;';
-    const parameters = [type, user_id, JSON.stringify(params)];
-    await db.query(insertQuery, parameters);
+    const values = [type, user_id, JSON.stringify(parameters)];
+    await db.query(insertQuery, values);
     return next();
   } catch (err) {
     return next({

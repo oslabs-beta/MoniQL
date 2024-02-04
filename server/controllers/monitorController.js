@@ -22,7 +22,8 @@ monitorController.connect = async (req, res, next) => {
 /**
  * alert object shape:
  * {
- *    alert_id: number,
+ *    alert_id: uuid,
+ *    monitor_id: uuid,
  *    table: string,
  *    monitorType: string,
  *    anomalyType: string,
@@ -125,7 +126,7 @@ monitorController.fresh = async (req, res, next) => {
   // store on our db
   // on front we can display the last update for each table, let users decide if they want to set alerts 
 
-  const { table } = req.body.monitor.parameters;
+  const { table, howLongIsTooLong } = req.body.monitor.parameters;
 
   try {
     // query exact row count (more precise, less performant)
@@ -178,7 +179,7 @@ monitorController.range = async (req, res, next) => {
     console.log('anomalous rows in moncont.range: ', anomalousArray);
     if(anomalousArray.length) {
       res.locals.alerts = [];
-      res.locals.alerts.push(alertObjCreator(table, 'custom range', 'out of range', 'error', column, anomalousArray, anomalousArray[0][column], anomalousArray[0][timeColumn]));
+      res.locals.alerts.push(alertObjCreator(table, 'Range', 'out of range', 'error', column, anomalousArray, anomalousArray[0][column], anomalousArray[0][timeColumn]));
       console.log('res.locals.alerts in moncontroller.range: ', res.locals.alerts)
     }
     next();
@@ -219,7 +220,7 @@ monitorController.null = async (req, res, next) => {
     if(anomalousArray.length) {
       res.locals.alerts = [];
       for(const column in anomalousArray[0]){
-        if(anomalousArray[0][column] === null) res.locals.alerts.push(alertObjCreator(table, 'null', 'null found', 'error', column, anomalousArray, null, anomalousArray[0][timeColumn]));
+        if(anomalousArray[0][column] === null) res.locals.alerts.push(alertObjCreator(table, 'Null', 'null found', 'error', column, anomalousArray, null, anomalousArray[0][timeColumn]));
       }
     }
     console.log('res.locals in moncont.null: ', res.locals);
@@ -291,8 +292,9 @@ monitorController.stats = async (req, res, next) => {
 }
 
 monitorController.custom = async (req, res, next) => {
-
-  const { customQuery } = req.body.monitor.parameters;
+//(table, monitorType, anomalyType, severity = 'error', 
+//column, rows = null, anomalyValue, anomalyTime, notes = [])
+  const customQuery = req.body.monitor.parameters.query;
 
   try {
     const data = await db.query(customQuery);
@@ -301,7 +303,7 @@ monitorController.custom = async (req, res, next) => {
     if(anomalousArray.length) {
       res.locals.alerts = [];
       // might be better to make a different alert object for custom queries
-      res.locals.alerts.push(alertObjCreator('custom query table', 'custom query', 'custom', 'error', 'custom', anomalousArray));
+      res.locals.alerts.push(alertObjCreator('custom query table(s)', 'Custom', 'custom', 'error', 'custom', anomalousArray));
     }
     console.log('res.locals.alerts in moncontroller.range: ', res.locals.alerts)
     next();
@@ -315,12 +317,5 @@ monitorController.custom = async (req, res, next) => {
     });
   }
 };
-
-
-
-// monitorController.test = async (req, res, next) => {
-//   console.log("HHIHIHIHIHIHIHIHIHIHI")
-//   return next()
-// }
 
 module.exports = monitorController;

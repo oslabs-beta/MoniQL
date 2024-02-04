@@ -4,11 +4,13 @@ import Focus from "../components/Focus";
 import FocusBar from "../components/FocusBar";
 import Header from "../components/Header";
 import SideBar from "../components/SideBar";
+import DashboardContainer from './DashboardContainer';
 // import { theme1, theme2 } from "../public/styles/theme";
 
 const MainContainer = () => {
   return (
     <div>
+      <DashboardContainer />
       {/* <ThemeProvider theme={isThemeLight ? lightTheme : darkTheme}> */}
       <Box display="flex" flexDirection="row">
         {/* <SideBar /> */}

@@ -4,15 +4,15 @@ import AlertBox from '../components/AlertBox';
 
 const AlertContainer = () => {
 
-    const alertsArr = useSelector((state) => state.alert.alerts);
+  const alertsArr = useSelector((state) => state.alert.alerts);
 
-    let anomalies = alertsArr.map((alertObj, i) => <AlertBox key={i} {...alertObj}/>)
+  const anomalies = alertsArr.map((alertObj, i) => <AlertBox key={i} {...alertObj}/>)
 
-    return(
+  return(
     <div>
-        {anomalies}
+      {anomalies}
     </div>
-    )
+  )
 }
 
 export default AlertContainer;

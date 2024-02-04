@@ -13,21 +13,21 @@ import QueryHeader from "../components/QueryHeader";
 
 
 const SubheaderContainer = () => {
-    const page = useSelector((state) => state.app.page)
+  const page = useSelector((state) => state.app.page)
   
-    return (
-      // <Box sx={{ border: "1px solid #000" }}>
-      <Box sx={{ mt: -4, mb: 0, mr: -3, ml: 0 }}>
-        {page === "Dashboard" && <DashboardHeader />}
-        {page === "ERD" && <FocusBar />}
-        {page === "Monitors" && <MonitorHeader />}
-        {page === "Reports" && <ReportsHeader />}
-        {page === "Query" && <QueryHeader />}
-        {page === "Account" && <></>}
-        {page === "Settings" && <></>}
-        {page === "Help" && <></>}
-      </Box>
-    );
+  return (
+  // <Box sx={{ border: "1px solid #000" }}>
+    <Box sx={{ mt: -4, mb: 0, mr: -3, ml: 0 }}>
+      {page === "Dashboard" && <DashboardHeader />}
+      {page === "ERD" && <FocusBar />}
+      {page === "Monitors" && <MonitorHeader />}
+      {page === "Reports" && <ReportsHeader />}
+      {page === "Query" && <QueryHeader />}
+      {page === "Account" && <></>}
+      {page === "Settings" && <></>}
+      {page === "Help" && <></>}
+    </Box>
+  );
 }
 
 export default SubheaderContainer;

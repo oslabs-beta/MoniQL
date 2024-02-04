@@ -6,7 +6,7 @@ const initialState = {
 
 const monitorReducer = (state = initialState, action) => {
   switch(action.type) {
-  case types.ADD_MONITOR:
+  case types.ADD_MONITORS:
     console.log('payload in monitorReducer: ', action.payload)
 
     return {
