@@ -11,7 +11,7 @@ const monitorObjectCreator = (type, user_id, params) => {
   return {
     type: type,
     user_id: user_id,
-    params: params,
+    parameters: params,
   }
 }
 

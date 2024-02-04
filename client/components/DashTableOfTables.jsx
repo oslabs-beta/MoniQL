@@ -39,7 +39,8 @@ const DashTableOfTables = () => {
           numNotDismissed: 0,
           numDismissed: 0,
           numRange: 0,
-          numNull: 0
+          numNull: 0,
+          numCustom: 0
         };
         hasChanged = true;
       }
@@ -48,7 +49,6 @@ const DashTableOfTables = () => {
     if (hasChanged){
       setDashMonitorData(newDashMonitorData);
       console.log('dashMonitorData just populated', dashMonitorData)
-      //   didPopulateDashMonitorObj.current = true; 
       setDidPopulateDashMonitorObj(true);
     }
   };
@@ -65,17 +65,17 @@ const DashTableOfTables = () => {
 
     const newDashMonitorData = { ...dashMonitorData };
 
-    console.log('alerts in getDashMonitorData in dashToT', alerts)
+    // console.log('alerts in getDashMonitorData in dashToT', alerts)
     
     alerts.forEach((alertObj) => {  
       const { table, resolved, display, monitorType } = alertObj;
-      console.log('table in getDashMonitorData in dashToT', table, 'resolved', resolved, 'display', display, 'monitorType', monitorType)
+      // console.log('table in getDashMonitorData in dashToT', table, 'resolved', resolved, 'display', display, 'monitorType', monitorType)
       if(newDashMonitorData[table]) {
         newDashMonitorData[table].numAlerts++;
         resolved ? newDashMonitorData[table].numResolved++ : newDashMonitorData[table].numUnresolved++;
         display ? newDashMonitorData[table].numNotDismissed++ : newDashMonitorData[table].numDismissed++;
         newDashMonitorData[table][`num${monitorType}`]++;
-      };
+      }
     });
 
     setDashMonitorData(newDashMonitorData);
@@ -93,6 +93,7 @@ const DashTableOfTables = () => {
   // number of hidden alerts
   // number of alerts of type range
   // number of alerts of type null
+  // number of alerts of type custom
 
   const dashToTColumns = [
     { field: 'id', headerName: 'ID', width: 75},
@@ -105,6 +106,7 @@ const DashTableOfTables = () => {
     { field: 'dismissed', headerName: 'Dismissed', width: 75},
     { field: 'range', headerName: 'Range', width: 75},
     { field: 'null', headerName: 'Null', width: 75},
+    { field: 'custom', headerName: 'Custom', width: 75}
   ]; 
 
   // turn out: array of rows
@@ -125,7 +127,7 @@ const DashTableOfTables = () => {
     const newDashToTRows = [];
     for(const tableInDMD in dashMonitorData){
       const { numMonitors, numAlerts, numUnresolved, numResolved, 
-        numNotDismissed, numDismissed, numRange, numNull } = dashMonitorData[tableInDMD];
+        numNotDismissed, numDismissed, numRange, numNull, numCustom } = dashMonitorData[tableInDMD];
       console.log('tableInDMD', tableInDMD)
       console.log('dashMonitorData', dashMonitorData)
       
@@ -139,7 +141,8 @@ const DashTableOfTables = () => {
         displayed: numNotDismissed,
         dismissed: numDismissed,
         range: numRange,
-        null: numNull
+        null: numNull,
+        custom: numCustom
       });
     };
     console.log('newDashToTRows', newDashToTRows)

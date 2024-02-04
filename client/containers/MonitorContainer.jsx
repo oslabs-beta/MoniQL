@@ -18,7 +18,7 @@ import FreshnessMonitor from "../components/monitors/FreshnessMonitor";
 import VolumeMonitor from "../components/monitors/VolumeMonitor";
 import CustomMonitor from "../components/monitors/CustomMonitor";
 import NullMonitor from "../components/monitors/NullMonitor";
-import { addAlertsActionCreator, addMonitorActionCreator } from "../actions/actions";
+import { addAlertsActionCreator } from "../actions/actions";
 
 const MonitorContainer = () => {
   const dispatch = useDispatch();
@@ -57,69 +57,69 @@ const MonitorContainer = () => {
 
   return (
     <Box>
-    <Card
-      variant="outlined"
-      sx={{
-        minWidth: "70vw",
-        flexDirection: "column",
-        minHeight: "60vh",
-        padding: 3,
-        boxShadow: 3,
-        backgroundColor: "#2E2D3D",
-        borderRadius: 4,
-      }}
-    >
-      <Box sx={{ p: 2, display: 'flex', justifyContent: 'space-between' }}>
-        <Typography variant="h5" color="white">Your Monitors</Typography>
-        <Button variant="contained" size="small">CREATE NEW MONITOR</Button>
-      </Box>
-
-      <Divider sx={{ width: "100%" }} />
-
-      <Box sx={{ p: 2 }}>
-        <Typography gutterBottom variant="body2" color="white">default monitors</Typography>
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-          {monitors.map((monitor) => (
-            <Chip
-              key={monitor}
-              label={monitor}
-              color={selectedMonitor === monitor ? "primary" : "default"}
-              onClick={() => setSelectedMonitor(monitor === selectedMonitor ? "" : monitor)}
-            />
-          ))}
+      <Card
+        variant="outlined"
+        sx={{
+          minWidth: "70vw",
+          flexDirection: "column",
+          minHeight: "60vh",
+          padding: 3,
+          boxShadow: 3,
+          backgroundColor: "#2E2D3D",
+          borderRadius: 4,
+        }}
+      >
+        <Box sx={{ p: 2, display: 'flex', justifyContent: 'space-between' }}>
+          <Typography variant="h5" color="white">Your Monitors</Typography>
+          <Button variant="contained" size="small">CREATE NEW MONITOR</Button>
         </Box>
 
-        {/* Conditional Rendering for Monitors */}
-        {selectedMonitor === "Range" && <RangeMonitor />}
-        {selectedMonitor === "Freshness" && <FreshnessMonitor />}
-        {selectedMonitor === "Volume" && <VolumeMonitor />}
-        {selectedMonitor === "Null" && <NullMonitor />}
-        {selectedMonitor === "Custom" && <CustomMonitor />}
+        <Divider sx={{ width: "100%" }} />
 
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, justifyContent: 'flex-start' }}>
-          {Array.isArray(activeMonitors) && activeMonitors.map((monitor, i) => (
-            <Card key={i} sx={{ minWidth: 240, maxWidth: 240, mb: 2 }}>
-              <CardContent>
-                <Typography variant="h6">{monitor.type}</Typography>
-                {monitor.parameters && (
-                  <List>
-                    {Object.entries(monitor.parameters).map(
-                      ([key, value], index) => (
-                        <ListItem key={`${monitor.monitor_id}-${index}`}>
-                          <strong>{key}:</strong> {value != null ? value.toString() : 'N/A'}
-                        </ListItem>
-                      )
-                    )}
-                  </List>
-                )}
-                <Button onClick={() => sendQuery(monitor)}>fire me</Button>
-              </CardContent>
-            </Card>
-          ))}
+        <Box sx={{ p: 2 }}>
+          <Typography gutterBottom variant="body2" color="white">default monitors</Typography>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+            {monitors.map((monitor) => (
+              <Chip
+                key={monitor}
+                label={monitor}
+                color={selectedMonitor === monitor ? "primary" : "default"}
+                onClick={() => setSelectedMonitor(monitor === selectedMonitor ? "" : monitor)}
+              />
+            ))}
+          </Box>
+
+          {/* Conditional Rendering for Monitors */}
+          {selectedMonitor === "Range" && <RangeMonitor />}
+          {selectedMonitor === "Freshness" && <FreshnessMonitor />}
+          {selectedMonitor === "Volume" && <VolumeMonitor />}
+          {selectedMonitor === "Null" && <NullMonitor />}
+          {selectedMonitor === "Custom" && <CustomMonitor />}
+
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, justifyContent: 'flex-start' }}>
+            {Array.isArray(activeMonitors) && activeMonitors.map((monitor, i) => (
+              <Card key={i} sx={{ minWidth: 240, maxWidth: 240, mb: 2 }}>
+                <CardContent>
+                  <Typography variant="h6">{monitor.type}</Typography>
+                  {monitor.parameters && (
+                    <List>
+                      {Object.entries(monitor.parameters).map(
+                        ([key, value], index) => (
+                          <ListItem key={`${monitor.monitor_id}-${index}`}>
+                            <strong>{key}:</strong> {value != null ? value.toString() : 'N/A'}
+                          </ListItem>
+                        )
+                      )}
+                    </List>
+                  )}
+                  <Button onClick={() => sendQuery(monitor)}>fire me</Button>
+                </CardContent>
+              </Card>
+            ))}
+          </Box>
         </Box>
-      </Box>
-    </Card>
-  </Box>
+      </Card>
+    </Box>
   );
 };
 

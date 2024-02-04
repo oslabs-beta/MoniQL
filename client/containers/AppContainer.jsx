@@ -86,23 +86,23 @@ const AppContainer = () => {
 
   const getAllAlerts = async () => {
     try {
-        const response = await fetch('/alerts', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({user_id: user_id})
-        });
-        if(!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        console.log('data in getallalerts in alertcontainer: ', data);
-        dispatch(addAlertsActionCreator(data));
+      const response = await fetch('/alerts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({user_id: user_id})
+      });
+      if(!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log('data in getallalerts in alertcontainer: ', data);
+      dispatch(addAlertsActionCreator(data));
     } catch (error) {
-        console.log('fetch error:', error);
+      console.log('fetch error:', error);
     }
-};
+  };
 
   useEffect(() => {
     getAllAlerts();
