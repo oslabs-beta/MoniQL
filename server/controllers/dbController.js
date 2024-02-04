@@ -35,7 +35,8 @@ dbController.getDB = async (req, res, next) => {
     const { user_uri } = req.body;
     db = await connectToPool(user_uri);
     
-    const query = `SELECT
+    const query = `
+    SELECT
     table_info.table_name,
     table_info.columns,
     fk_info.foreign_keys
@@ -90,6 +91,7 @@ LEFT JOIN
 ON 
     table_info.table_name = fk_info.table_name;
 `
+
     const results = await db.query(query);
     // console.log('*********results in getDB: ', results)
     res.locals.dbArray = results.rows
