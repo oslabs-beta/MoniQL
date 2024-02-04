@@ -100,6 +100,7 @@ const AlertBox = (alertObj) => {
   // will conditionally render alerts by display value (in container component)
   // should include option to display resolved alerts, too
   const handleClose = () => {
+    if(!resolved) return;
     const updatedAlertObj = {
       ...alertObj,
       display: false,
