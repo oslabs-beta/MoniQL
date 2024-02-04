@@ -16,6 +16,7 @@ import {
   TextField,
 } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import monitorObjectCreator from "./monitorObjectCreator";
 
 
 const NullMonitor = () => {
@@ -41,7 +42,7 @@ const addMonitor = async (e) => {
   e.preventDefault();
   console.log("this is params in nullMonitor", params);
   // const monitorObject = { type: "null", params: JSON.stringify(params) };
-  const monitorObject = {type: 'null', user_id: user_id, params: params}
+  const monitorObject = monitorObjectCreator('null', user_id, params);
   try {
     const response = await fetch('/monitors', {
       method: 'POST',

@@ -16,6 +16,7 @@ import {
   TextField,
 } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import monitorObjectCreator from "./monitorObjectCreator";
 
 
 const FreshnessMonitor = () => {
@@ -39,7 +40,7 @@ const handleChanges = (e) => {
 const handleSubmit = async (e) => {
   e.preventDefault();
   console.log("params in freshness monitor handlesubmit", params);
-  const monitorObject = { type: "freshness", user_id: user_id, params: params };
+  const monitorObject = monitorObjectCreator('freshness', user_id, params);
   // dispatch(addMonitorActionCreator(monitorObject))
   //make post request to server
   try {

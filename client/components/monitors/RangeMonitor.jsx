@@ -17,6 +17,7 @@ import {
   NumberInput,
 } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import monitorObjectCreator from "./monitorObjectCreator";
 
 
 const RangeMonitor = () => {
@@ -61,7 +62,7 @@ const handleChanges = (e) => {
 const handleSubmit = async (e) => {
   e.preventDefault();
   // console.log('this is params', params);
-  const monitorObject = {type: 'range', user_id: user_id, params: params}
+  const monitorObject = monitorObjectCreator('range', user_id, params);
   // dispatch(addMonitorActionCreator(monitorObject))
     // make post request to server
     try {
@@ -139,7 +140,7 @@ return (
                 backgroundColor: "white",
                 borderRadius: "5px",
                 width: "100%",
-              color: "hotpink",
+                color: "hotpink",
                   input: { color: "hotpink" },
                 }}
               >

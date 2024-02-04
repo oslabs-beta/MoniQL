@@ -16,6 +16,7 @@ import {
   TextField,
 } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import monitorObjectCreator from "./monitorObjectCreator";
 
 
 const CustomMonitor = () => {
@@ -39,7 +40,7 @@ const handleChanges = (e) => {
 const handleSubmit = async (e) => {
   e.preventDefault();
   console.log("this is params", params);
-  const monitorObject = { type: "custom", user_id: user_id, params: params };
+  const monitorObject = monitorObjectCreator('custom', user_id, params);
   // dispatch(addMonitorActionCreator(monitorObject))
   //make post request to server
   try {
