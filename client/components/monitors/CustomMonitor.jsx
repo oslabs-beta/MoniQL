@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addMonitorActionCreator } from "../../actions/actions";
+import { addMonitorsActionCreator } from "../../actions/actions";
 import {
   Box,
   Card,
@@ -40,8 +40,8 @@ const handleChanges = (e) => {
 const handleSubmit = async (e) => {
   e.preventDefault();
   console.log("this is params", params);
-  const monitorObject = monitorObjectCreator('custom', user_id, params);
-  // dispatch(addMonitorActionCreator(monitorObject))
+  const monitorObject = monitorObjectCreator('Custom', user_id, params);
+
   //make post request to server
   try {
     const response = await fetch("/monitors", {
@@ -56,6 +56,8 @@ const handleSubmit = async (e) => {
     }
     const data = await response.json();
     console.log(data);
+
+    dispatch(addMonitorsActionCreator(data));
   } catch (error) {
     console.log("fetch error:", error);
   }

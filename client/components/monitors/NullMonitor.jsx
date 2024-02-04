@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addMonitorActionCreator } from "../../actions/actions";
+import { addMonitorsActionCreator } from "../../actions/actions";
 import {
   Box,
   Card,
@@ -42,7 +42,7 @@ const addMonitor = async (e) => {
   e.preventDefault();
   console.log("this is params in nullMonitor", params);
   // const monitorObject = { type: "null", params: JSON.stringify(params) };
-  const monitorObject = monitorObjectCreator('null', user_id, params);
+  const monitorObject = monitorObjectCreator('Null', user_id, params);
   try {
     const response = await fetch('/monitors', {
       method: 'POST',
@@ -59,7 +59,7 @@ const addMonitor = async (e) => {
       console.log('data returned in addMonitor in null monitor component: ', data);
       // console.log('Data Parameters',data[0].parameters);
   
-      dispatch(addMonitorActionCreator(data))
+      dispatch(addMonitorsActionCreator(data))
   
     } catch (error) {
       console.log('fetch error:', error);

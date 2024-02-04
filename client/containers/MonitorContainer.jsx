@@ -26,42 +26,6 @@ const MonitorContainer = () => {
   const monitors = ["Range", "Freshness", "Volume", "Null", "Custom"];
   const activeMonitors = useSelector((state) => state.monitor.activeMonitors);
   const user_id = useSelector((state) => state.user.user_id);
-  // useEffect(() => {
-  //   console.log('new active monitors: ', activeMonitors);
-  //   console.log('Type of activeMonitors:', typeof activeMonitors);
-  //   console.log('Is activeMonitors an array:', Array.isArray(activeMonitors));
-    
-  //   if (activeMonitors.length > 0) {
-  //     console.log('First monitor parameters:', activeMonitors[0].parameters);
-  //   } else {
-  //     console.log('activeMonitors is empty or not loaded');
-  //   }
-  // }, [activeMonitors]);
-  useEffect(() => {
-    const fetchAllMonitors = async () => {
-      console.log('user_id in fetchAllMonitors in MonitorContainer', user_id);
-      try {
-        const response = await fetch('/monitors', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({user_id: user_id})
-        });
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        console.log('data in fetchAllMonitors in MonitorContainer', data);
-        dispatch(addMonitorActionCreator(data));
-      } catch (error) {
-        console.log('fetch error:', error);
-      }
-    };
-  
-    fetchAllMonitors();  
-  }, []);
-
 
   const sendQuery = async (monitor) => {
     try {

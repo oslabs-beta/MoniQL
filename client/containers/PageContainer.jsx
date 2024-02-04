@@ -2,7 +2,7 @@ import React from 'react';
 import ErdVisualizerContainer from './ErdVisualizerContainer';
 import MonitorContainer from './MonitorContainer'
 import ReportContainer from './ReportContainer'
-import QueryContainer from './QueryContainer'
+import QueryContainer from './QueryContainer';
 import { useSelector } from 'react-redux';
 import { Box } from '@mui/system';
 import LoginContainer from '../components/LoginContainer';

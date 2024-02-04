@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 
 //TEMPORARY IMPORTS
 import { useDispatch, useSelector } from "react-redux";
-import { saveDBActionCreator, addAlertsActionCreator } from "../actions/actions";
+import { saveDBActionCreator, addAlertsActionCreator, addMonitorsActionCreator } from "../actions/actions";
 import AlertBox from "../components/AlertBox";
 //END TEMPORARY IMPORTS
 
@@ -58,6 +58,31 @@ const AppContainer = () => {
   }, []);
 
   const user_id = useSelector((state) => state.user.user_id);
+
+  const fetchAllMonitors = async () => {
+    console.log('user_id in fetchAllMonitors in MonitorContainer', user_id);
+    try {
+      const response = await fetch('/monitors', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({user_id: user_id})
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log('data in fetchAllMonitors in AppContainer', data);
+      dispatch(addMonitorsActionCreator(data));
+    } catch (error) {
+      console.log('fetch error:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAllMonitors();  
+  }, []);
 
   const getAllAlerts = async () => {
     try {

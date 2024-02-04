@@ -22,7 +22,8 @@ monitorController.connect = async (req, res, next) => {
 /**
  * alert object shape:
  * {
- *    alert_id: number,
+ *    alert_id: uuid,
+ *    monitor_id: uuid,
  *    table: string,
  *    monitorType: string,
  *    anomalyType: string,
@@ -178,7 +179,7 @@ monitorController.range = async (req, res, next) => {
     console.log('anomalous rows in moncont.range: ', anomalousArray);
     if(anomalousArray.length) {
       res.locals.alerts = [];
-      res.locals.alerts.push(alertObjCreator(table, 'custom range', 'out of range', 'error', column, anomalousArray, anomalousArray[0][column], anomalousArray[0][timeColumn]));
+      res.locals.alerts.push(alertObjCreator(table, 'Range', 'out of range', 'error', column, anomalousArray, anomalousArray[0][column], anomalousArray[0][timeColumn]));
       console.log('res.locals.alerts in moncontroller.range: ', res.locals.alerts)
     }
     next();
@@ -219,7 +220,7 @@ monitorController.null = async (req, res, next) => {
     if(anomalousArray.length) {
       res.locals.alerts = [];
       for(const column in anomalousArray[0]){
-        if(anomalousArray[0][column] === null) res.locals.alerts.push(alertObjCreator(table, 'null', 'null found', 'error', column, anomalousArray, null, anomalousArray[0][timeColumn]));
+        if(anomalousArray[0][column] === null) res.locals.alerts.push(alertObjCreator(table, 'Null', 'null found', 'error', column, anomalousArray, null, anomalousArray[0][timeColumn]));
       }
     }
     console.log('res.locals in moncont.null: ', res.locals);

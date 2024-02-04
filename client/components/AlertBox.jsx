@@ -116,9 +116,11 @@ const AlertBox = (alertObj) => {
         let rowString = '• ';
         for(let key in rows[row]){
             if(checkTimestamptz(rows[row][key])){
-                rows[row][key] = dayjs(rows[row][key]).format('ddd YYYY-MM-DD hh:mm:ss a');
+                const timestampLegible = dayjs(rows[row][key]).format('ddd YYYY-MM-DD hh:mm:ss a');
+                rowString += `${key}: ${timestampLegible}, `;
+            } else {
+                rowString += `${key}: ${rows[row][key]}, `;
             }
-            rowString += `${key}: ${rows[row][key]}, `;
         }
         rowString = rowString.trim().slice(0, -1);
         showRows.push(rowString);
