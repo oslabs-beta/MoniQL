@@ -48,7 +48,7 @@ const DashTableOfTables = () => {
 
     if (hasChanged){
       setDashMonitorData(newDashMonitorData);
-      console.log('dashMonitorData just populated', dashMonitorData)
+      // console.log('dashMonitorData just populated', dashMonitorData)
       setDidPopulateDashMonitorObj(true);
     }
   };
@@ -128,8 +128,8 @@ const DashTableOfTables = () => {
     for(const tableInDMD in dashMonitorData){
       const { numMonitors, numAlerts, numUnresolved, numResolved, 
         numNotDismissed, numDismissed, numRange, numNull, numCustom } = dashMonitorData[tableInDMD];
-      console.log('tableInDMD', tableInDMD)
-      console.log('dashMonitorData', dashMonitorData)
+      // console.log('tableInDMD', tableInDMD)
+      // console.log('dashMonitorData', dashMonitorData)
       
       newDashToTRows.push({
         id: id++,

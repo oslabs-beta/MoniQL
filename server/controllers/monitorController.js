@@ -126,7 +126,7 @@ monitorController.fresh = async (req, res, next) => {
   // store on our db
   // on front we can display the last update for each table, let users decide if they want to set alerts 
 
-  const { table } = req.body.monitor.parameters;
+  const { table, howLongIsTooLong } = req.body.monitor.parameters;
 
   try {
     // query exact row count (more precise, less performant)
