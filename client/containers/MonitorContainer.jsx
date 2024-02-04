@@ -18,7 +18,7 @@ import FreshnessMonitor from "../components/monitors/FreshnessMonitor";
 import VolumeMonitor from "../components/monitors/VolumeMonitor";
 import CustomMonitor from "../components/monitors/CustomMonitor";
 import NullMonitor from "../components/monitors/NullMonitor";
-import { addAlertsActionCreator, addMonitorActionCreator } from "../actions/actions";
+import { addAlertsActionCreator } from "../actions/actions";
 
 const MonitorContainer = () => {
   const dispatch = useDispatch();
@@ -26,42 +26,6 @@ const MonitorContainer = () => {
   const monitors = ["Range", "Freshness", "Volume", "Null", "Custom"];
   const activeMonitors = useSelector((state) => state.monitor.activeMonitors);
   const user_id = useSelector((state) => state.user.user_id);
-  // useEffect(() => {
-  //   console.log('new active monitors: ', activeMonitors);
-  //   console.log('Type of activeMonitors:', typeof activeMonitors);
-  //   console.log('Is activeMonitors an array:', Array.isArray(activeMonitors));
-    
-  //   if (activeMonitors.length > 0) {
-  //     console.log('First monitor parameters:', activeMonitors[0].parameters);
-  //   } else {
-  //     console.log('activeMonitors is empty or not loaded');
-  //   }
-  // }, [activeMonitors]);
-  useEffect(() => {
-    const fetchAllMonitors = async () => {
-      console.log('user_id in fetchAllMonitors in MonitorContainer', user_id);
-      try {
-        const response = await fetch('/monitors', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({user_id: user_id})
-        });
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        console.log('data in fetchAllMonitors in MonitorContainer', data);
-        dispatch(addMonitorActionCreator(data));
-      } catch (error) {
-        console.log('fetch error:', error);
-      }
-    };
-  
-    fetchAllMonitors();  
-  }, []);
-
 
   const sendQuery = async (monitor) => {
     try {
@@ -110,7 +74,7 @@ const MonitorContainer = () => {
         {/* <Button variant="contained" size="small">CREATE NEW MONITOR</Button> */}
       </Box>
 
-      <Divider sx={{ width: "100%" }} />
+        <Divider sx={{ width: "100%" }} />
 
       <Box sx={{ p: 2 }}>
         <Typography gutterBottom variant="body2" color="white">default monitors</Typography>
@@ -125,12 +89,12 @@ const MonitorContainer = () => {
           ))}
         </Box>
 
-        {/* Conditional Rendering for Monitors */}
-        {selectedMonitor === "Range" && <RangeMonitor />}
-        {selectedMonitor === "Freshness" && <FreshnessMonitor />}
-        {selectedMonitor === "Volume" && <VolumeMonitor />}
-        {selectedMonitor === "Null" && <NullMonitor />}
-        {selectedMonitor === "Custom" && <CustomMonitor />}
+          {/* Conditional Rendering for Monitors */}
+          {selectedMonitor === "Range" && <RangeMonitor />}
+          {selectedMonitor === "Freshness" && <FreshnessMonitor />}
+          {selectedMonitor === "Volume" && <VolumeMonitor />}
+          {selectedMonitor === "Null" && <NullMonitor />}
+          {selectedMonitor === "Custom" && <CustomMonitor />}
 
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, justifyContent: 'flex-start' }}>
           {Array.isArray(activeMonitors) && activeMonitors.map((monitor, i) => (
