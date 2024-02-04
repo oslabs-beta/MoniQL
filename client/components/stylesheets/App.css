@@ -19,7 +19,7 @@ body,
   font-family: "Source Sans Pro", sans-serif;
   background-color: #222130;
   /* background-image: url(https://img.freepik.com/free-vector/blurred-abstract-background-design_1107-169.jpg?w=2000&t=st=1706200718~exp=1706201318~hmac=6998d8adb64a2ea68c5f75f354698c93c53991a6bd012012fa955b8c73718976); */
-background-image: url(https://i.pinimg.com/originals/60/15/9f/60159f45955be086e295dd9400ceee86.jpg);
+/* background-image: url(https://i.pinimg.com/originals/60/15/9f/60159f45955be086e295dd9400ceee86.jpg); */
 /* background-image: url(https://i.pinimg.com/originals/60/15/9f/60159f45955be086e295dd9400ceee86.jpg); */
 /* background-image: url(https://i.pinimg.com/originals/60/15/9f/60159f45955be086e295dd9400ceee86.jpg); */
   /* opacity: 0.75; */
@@ -69,13 +69,14 @@ body:before {
   overflow: scroll;
   color: #e0e0e0;
   overflow: hidden; 
-  background: rgba( 255, 255, 255, 0.25 );
-backdrop-filter: blur( 4px );
--webkit-backdrop-filter: blur( 4px );
+  /* background: rgba( 255, 255, 255, 0.25 ); */
+  background: rgba(255, 255, 255, 0.1);
+backdrop-filter: blur( 10px );
+-webkit-backdrop-filter: blur( 4x );
 border-radius: 10px;
 border: 1px solid rgba( 255, 255, 255, 0.18 );
 /* box-shadow: 0px 0px 23px 8px rgba(227,214,255,0.08); */
-box-shadow: 
+/* box-shadow: 
 inset 0 0 50px #fff,      
     inset 20px 0 80px #f0f,  
     inset -20px 0 80px #0ff, 
@@ -83,7 +84,7 @@ inset 0 0 50px #fff,
     inset -20px 0 300px #0ff,  
  0 0 20px #fff,            
     -5px 0 30px #f0f,        
-    5px 0 30px #0ff;
+    5px 0 30px #0ff; */
 }
 .react-flow__edge {
   /* filter: blur(1px); */
@@ -110,7 +111,8 @@ inset 0 0 50px #fff,
   margin-top: .3rem;
   margin-bottom: 1rem;
   font-size: 16px;
-  color: #ff1673;
+  /* color: #ff1673; */
+  color: white;
   /* text-shadow: 1px 1px 5px #41373b; */
   border-bottom: .3px solid #e0e0e0bb;
   line-height: 2.1rem;

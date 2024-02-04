@@ -7,7 +7,6 @@ import {
   Container,
   Button,
   Divider,
-  Stack,
   Typography,
   CardContent,
   List,
@@ -108,14 +107,14 @@ const MonitorContainer = () => {
     >
       <Box sx={{ p: 2, display: 'flex', justifyContent: 'space-between' }}>
         <Typography variant="h5" color="white">Your Monitors</Typography>
-        <Button variant="contained" size="small">CREATE NEW MONITOR</Button>
+        {/* <Button variant="contained" size="small">CREATE NEW MONITOR</Button> */}
       </Box>
 
       <Divider sx={{ width: "100%" }} />
 
       <Box sx={{ p: 2 }}>
         <Typography gutterBottom variant="body2" color="white">default monitors</Typography>
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, margin: 3 }}>
           {monitors.map((monitor) => (
             <Chip
               key={monitor}
@@ -135,7 +134,7 @@ const MonitorContainer = () => {
 
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, justifyContent: 'flex-start' }}>
           {Array.isArray(activeMonitors) && activeMonitors.map((monitor, i) => (
-            <Card key={i} sx={{ minWidth: 240, maxWidth: 240, mb: 2 }}>
+            <Card key={i} sx={{ minWidth: 240, maxWidth: 240, mt:4, mb:4, mr:4 }}>
               <CardContent>
                 <Typography variant="h6">{monitor.type}</Typography>
                 {monitor.parameters && (

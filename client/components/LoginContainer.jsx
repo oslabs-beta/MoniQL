@@ -141,16 +141,16 @@ const LoginContainer = () => {
               onChange={(e) => setUsername(e.target.value)}
               autoFocus
               sx={{
-                input: { color: "hotpink" },
+                input: { color: "#6870fa" },
                 // backgroundColor: "#3B3B4B",
                 backgroundColor: "#e0e0e0",
                 borderRadius: "5px",
               }}
               InputLabelProps={{
-                style: { color: "hotpink" },
+                style: { color: "#6870fa" },
               }}
               InputProps={{
-                style: { color: "hotpink" },
+                style: { color: "#6870fa" },
               }}
             />
             <Typography color="error" variant="body2">
@@ -160,24 +160,25 @@ const LoginContainer = () => {
               margin="normal"
               required
               fullWidth
+              type="password"
               label="password"
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               sx={{
-                input: { color: "hotpink" },
+                input: { color: "#6870fa" },
                 // backgroundColor: "#3B3B4B",
                 backgroundColor: "#e0e0e0",
                 borderRadius: "5px",
               }}
               InputLabelProps={{
-                style: { color: "hotpink" },
+                style: { color: "#6870fa" },
               }}
               InputProps={{
-                style: { color: "hotpink" },
+                style: { color: "#6870fa" },
               }}
             />
-            <TextField
+            {(selectedTab === 'register') &&<TextField
               margin="normal"
               required
               fullWidth
@@ -186,18 +187,18 @@ const LoginContainer = () => {
               value={uri}
               onChange={(e) => setUri(e.target.value)}
               sx={{
-                input: { color: "hotpink" },
+                input: { color: "#6870fa" },
                 // backgroundColor: "#3B3B4B",
                 backgroundColor: "#e0e0e0",
                 borderRadius: "5px",
               }}
               InputLabelProps={{
-                style: { color: "hotpink" },
+                style: { color: "#6870fa" },
               }}
               InputProps={{
-                style: { color: "hotpink" },
+                style: { color: "#6870fa" },
               }}
-            />
+            />}
             <Button
               onClick={() =>
                 regToggle ? handleAuth("/register") : handleAuth("/login")

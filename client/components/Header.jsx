@@ -55,6 +55,7 @@ const Header = () => {
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
+  
 
   const alertsArr = useSelector((state) => state.alert.alerts);
   React.useEffect(() => {

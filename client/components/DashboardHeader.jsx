@@ -28,7 +28,7 @@ const DashboardHeader = () => {
       <Box m="30px">
         <SubHeader
           title="Dashboard"
-          subtitle="Hi, welcome to your dashboard  ʕ ⊃･ ◡ ･ ʔ⊃ ━☆ﾟ.*･｡*☆"
+          // subtitle="Hi, welcome to your dashboard  ʕ ⊃･ ◡ ･ ʔ⊃ ━☆ﾟ.*･｡*☆"
         />
       </Box>
     </div>
