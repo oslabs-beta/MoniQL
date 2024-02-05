@@ -8,6 +8,9 @@ const AlertContainer = () => {
 
   const anomalies = alertsArr.map((alertObj, i) => <AlertBox key={i} {...alertObj}/>)
 
+  // pull from state - alert.filterBy
+  // filter anomalies thusly
+
   return(
     <div>
       {anomalies}

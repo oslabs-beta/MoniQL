@@ -8,7 +8,7 @@ import QueryContainer from './QueryContainer';
 import FocusBar from '../components/FocusBar';
 import MonitorHeader from '../components/MonitorHeader';  
 import DashboardHeader from "../components/DashboardHeader";  
-import ReportsHeader from "../components/ReportsHeader";  
+import ReportsHeader from "../components/AlertsHeader";  
 import QueryHeader from "../components/QueryHeader";  
 
 
