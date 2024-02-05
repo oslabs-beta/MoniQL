@@ -12,8 +12,8 @@ import Sidebar from './components/SideBar';
 // Styles and themes
 import './components/stylesheets/App.css';
 import { ColorModeContext, useMode, tokens } from "./components/stylesheets/Themes";
-import { CssBaseline, ThemeProvider } from "@mui/material";
-import Sidebar from './components/SideBar';
+// import { CssBaseline, ThemeProvider } from "@mui/material";
+// import Sidebar from './components/SideBar';
 import LandingContainer from './containers/LandingContainer';
 
 
