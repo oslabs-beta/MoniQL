@@ -170,7 +170,7 @@ const SideBar = () => {
               // transform: { rotate: '90deg'}
               sx={{ display: { xs: "none", sm: "block" } }}
             >
-              hide_n_go_SQL
+              moniQL
             </Typography>
           </Box>
           <Toolbar />

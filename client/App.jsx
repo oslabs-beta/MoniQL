@@ -1,15 +1,20 @@
-import React, { useEffect } from 'react';
+// External libraries
+import React, {useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { CssBaseline, ThemeProvider } from "@mui/material";
+
+// Components
 import LoginContainer from './components/LoginContainer';
 import AppContainer from './containers/AppContainer';
-import './components/stylesheets/App.css';
-import { useSelector } from 'react-redux';
-
-//hay added for light/dark mode
-import { useState } from "react";
-import { ColorModeContext, useMode, tokens } from "./components/stylesheets/Themes";
-import { CssBaseline, ThemeProvider } from "@mui/material";
+import AlertBox from './components/AlertBox';
 import Sidebar from './components/SideBar';
 
+// Styles and themes
+import './components/stylesheets/App.css';
+import { ColorModeContext, useMode, tokens } from "./components/stylesheets/Themes";
+// import { CssBaseline, ThemeProvider } from "@mui/material";
+// import Sidebar from './components/SideBar';
+import LandingContainer from './containers/LandingContainer';
 
 
 //for pull out drawer:
@@ -29,7 +34,7 @@ const App = () => {
         <div className="App">
           {/* <Sidebar isSideBar={isSideBar} /> */}
           {/* <Topbar setIsSidebar={setIsSidebar} /> */}
-          { (isLoggedIn) ? <AppContainer /> : <LoginContainer /> }
+          { (isLoggedIn) ? <AppContainer /> : <LandingContainer /> }
           {/* <AppContainer /> */}
         </div>
       </ThemeProvider>

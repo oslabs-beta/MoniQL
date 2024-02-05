@@ -1,23 +1,38 @@
-import * as React from "react";
-import { styled, alpha } from "@mui/material/styles";
-import { Drawer, AppBar, Box, Toolbar, IconButton, InputBase, Badge, 
-  MenuItem, Menu, createTheme, ThemeProvider, Divider, useTheme } from '@mui/material';
-import Typography from "@mui/material/Typography";
-import SearchIcon from "@mui/icons-material/Search";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import MailIcon from "@mui/icons-material/Mail";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import MoreIcon from "@mui/icons-material/MoreVert";
-import { useSelector } from "react-redux";
-import AlertBox from "./AlertBox";
+import * as React from 'react';
+import { useDispatch } from 'react-redux';
+import { logOutActionCreator } from '../actions/actions';
+import { styled, alpha } from '@mui/material/styles';
+import {
+  Drawer,
+  AppBar,
+  Box,
+  Toolbar,
+  IconButton,
+  InputBase,
+  Badge,
+  MenuItem,
+  Menu,
+  createTheme,
+  ThemeProvider,
+  Divider,
+  useTheme,
+} from '@mui/material';
+import Typography from '@mui/material/Typography';
+import SearchIcon from '@mui/icons-material/Search';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import MailIcon from '@mui/icons-material/Mail';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import MoreIcon from '@mui/icons-material/MoreVert';
+import { useSelector } from 'react-redux';
+import AlertBox from './AlertBox';
 //////////////////////hay added for light/dark mode/////////////////////
-import { ColorModeContext, tokens } from "./stylesheets/Themes";
-import { useContext } from "react";
-import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
-import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
-import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
-import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
+import { ColorModeContext, tokens } from './stylesheets/Themes';
+import { useContext } from 'react';
+import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
+import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
+import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 //////////////////////hay added for light/dark mode/////////////////////
 
 // const theme = createTheme({
@@ -36,8 +51,8 @@ import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 //   },
 // });
 
-
 const Header = () => {
+  const dispatch = useDispatch();
   //////////////////////hay added for light/dark mode/////////////////////
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -56,35 +71,39 @@ const Header = () => {
     setAnchorEl(null);
   };
 
+  const handleSignOut = () => {
+    dispatch(logOutActionCreator())
+  };
+
   const alertsArr = useSelector((state) => state.alert.alerts);
   React.useEffect(() => {
     setAlertsCount(
       alertsArr.filter((alertObj) => alertObj.display).length
-      );
+    );
   }, [alertsArr]);
 
   const [alertsCount, setAlertsCount] = React.useState(alertsArr.length);
 
-  const menuId = "primary-search-account-menu";
+  const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
       anchorOrigin={{
-        vertical: "top",
-        horizontal: "right",
+        vertical: 'top',
+        horizontal: 'right',
       }}
       id={menuId}
       keepMounted
       transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
+        vertical: 'top',
+        horizontal: 'right',
       }}
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Sign out</MenuItem>
+      <MenuItem onClick={handleSignOut}>Sign out</MenuItem>
     </Menu>
   );
 
@@ -92,28 +111,34 @@ const Header = () => {
 
   const handleAlertsDrawerToggle = () => {
     setAlertsDrawerToggle(!alertsDrawerToggle);
-  }
+  };
 
   let anomalies = alertsArr.sort((a, b) => b.anomalyTime - a.anomalyTime);
-  anomalies = anomalies.map((alertObj, i) => <AlertBox key={i} {...alertObj}/>);
+  anomalies = anomalies.map((alertObj, i) => (
+    <AlertBox key={i} {...alertObj} />
+  ));
 
   const renderAlertsDrawer = (
-    <Drawer anchor='right' open={alertsDrawerToggle} onClose={handleAlertsDrawerToggle}>
-      <Box sx={{width: 350}}>
-      <IconButton
-                size="large"
-                aria-label={`show ${alertsCount} new alerts`}
-                color="inherit"
-                onClick={handleAlertsDrawerToggle}
-              >
-                <Badge badgeContent={alertsCount} color="error">
-                  <NotificationsIcon />
-                </Badge>
-              </IconButton>
+    <Drawer
+      anchor='right'
+      open={alertsDrawerToggle}
+      onClose={handleAlertsDrawerToggle}
+    >
+      <Box sx={{ width: 350 }}>
+        <IconButton
+          size='large'
+          aria-label={`show ${alertsCount} new alerts`}
+          color='inherit'
+          onClick={handleAlertsDrawerToggle}
+        >
+          <Badge badgeContent={alertsCount} color='error'>
+            <NotificationsIcon />
+          </Badge>
+        </IconButton>
         {anomalies}
       </Box>
     </Drawer>
-  )
+  );
 
   return (
     // <ThemeProvider theme={theme}>
@@ -121,30 +146,30 @@ const Header = () => {
       <Toolbar sx={{ ml: 15 }}>
         <Box sx={{ flexGrow: 1 }} />
         <IconButton onClick={colorMode.toggleColorMode}>
-          {theme.palette.mode === "dark" ? (
+          {theme.palette.mode === 'dark' ? (
             <DarkModeOutlinedIcon />
           ) : (
             <LightModeOutlinedIcon />
           )}
         </IconButton>
         <IconButton
-          size="large"
+          size='large'
           aria-label={`show ${alertsCount} new alerts`}
-          color="inherit"
+          color='inherit'
           onClick={handleAlertsDrawerToggle}
         >
-          <Badge badgeContent={alertsCount} color="error">
+          <Badge badgeContent={alertsCount} color='error'>
             <NotificationsOutlinedIcon />
           </Badge>
         </IconButton>
         <IconButton
-          size="large"
-          edge="end"
-          aria-label="account of current user"
+          size='large'
+          edge='end'
+          aria-label='account of current user'
           aria-controls={menuId}
-          aria-haspopup="true"
+          aria-haspopup='true'
           onClick={handleProfileMenuOpen}
-          color="inherit"
+          color='inherit'
         >
           <PersonOutlinedIcon />
         </IconButton>
@@ -152,7 +177,7 @@ const Header = () => {
       {renderAlertsDrawer}
       {renderMenu}
     </Box>
-//  </ThemeProvider>
+  //  </ThemeProvider>
   );
 };
 

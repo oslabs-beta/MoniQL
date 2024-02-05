@@ -17,19 +17,22 @@ const initialState = {
 };
 
 const userReducer = (state = initialState, action) => {
-  switch(action.type) {
-  case types.LOG_IN:
-
-    return {
-      ...state,
-      user_id: action.payload.user_id,
-      username: action.payload.username,
-      uri: action.payload.uri,
-      isLoggedIn: true,
-    }
-
-  default:
-    return state;
+  switch (action.type) {
+    case types.LOG_IN:
+      return {
+        ...state,
+        user_id: action.payload.user_id,
+        username: action.payload.username,
+        uri: action.payload.uri,
+        isLoggedIn: true,
+      };
+    case types.LOG_OUT:
+      return {
+        ...state,
+        isLoggedIn: false,
+      };
+    default:
+      return state;
   }
 };
 
