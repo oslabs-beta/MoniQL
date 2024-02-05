@@ -4,6 +4,7 @@ const initialState = {
   data: [],
   focusTable: null,
   depth: 6,
+  tablesWeightsObj: {},
 };
 
 const diagramReducer = (state = initialState, action) => {
@@ -26,6 +27,13 @@ const diagramReducer = (state = initialState, action) => {
       ...state,
       depth: action.payload,
     }
+
+  case types.ADD_TABLE_WEIGHTS:
+    return{
+      ...state,
+      tablesWeightsObj: action.payload,
+    }
+
   default:
     return state;
   }

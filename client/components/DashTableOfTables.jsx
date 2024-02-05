@@ -1,15 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useStore } from 'react-redux';
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
 
 const DashTableOfTables = () => {
+  const store = useStore();
 
   const monitors = useSelector((state) => state.monitor.activeMonitors);
   const alerts = useSelector((state) => state.alert.alerts);
 
   const [dashMonitorData, setDashMonitorData] = useState({});
   const [dashToTRows, setdashToTRows] = useState([]);
+  const [tablesWeightsObj, setTablesWeightsObj] = useState(null);
 
   const [didPopulateDashMonitorObj, setDidPopulateDashMonitorObj] = useState(false);
   const [didGetDashMonitorData, setDidGetDashMonitorData] = useState(false);
@@ -18,20 +20,19 @@ const DashTableOfTables = () => {
   // pull out data -- how many monitors are looking at each table
   // table on monitor object: monitorObj.params.table
 
-  // let didPopulateDashMonitorObj = useRef(false);
-
   const populateDashMonitorObj = () => {
     const newDashMonitorData = { ...dashMonitorData };
     let hasChanged = false;
 
     monitors.forEach((monitorObj) => {
-      console.log('monitorObj in popDMDO in dashToT', monitorObj)
+      // console.log('monitorObj in popDMDO in dashToT', monitorObj)
       const table = monitorObj.parameters.table;
       if (newDashMonitorData[table]) {
         newDashMonitorData[table].numMonitors++;
         hasChanged = true;
       } else {
         newDashMonitorData[table] = {
+          numDownstream: 0,
           numMonitors: 1,
           numAlerts: 0,
           numUnresolved: 0,
@@ -98,6 +99,7 @@ const DashTableOfTables = () => {
   const dashToTColumns = [
     { field: 'id', headerName: 'ID', width: 75},
     { field: 'table', headerName: 'Table', width: 150},
+    { field: 'downstream', headerName: 'Downstream', width: 75},
     { field: 'monitors', headerName: 'Monitors', width: 75},
     { field: 'alerts', headerName: 'Alerts', width: 75},
     { field: 'unresolved', headerName: 'Unresolved', width: 75},
@@ -123,17 +125,22 @@ const DashTableOfTables = () => {
   // number of alerts of type null
 
   const populateDashToTRows = () => {
-    let id = 1;
+    // if(!tablesWeightsObj) return;
+    console.log('popDToTR called')
+    console.log('tablesWeightsObj in DToT: ', tablesWeightsObj);
+    console.log('dashMonitorData in DToT: ', dashMonitorData)
+    // let id = 1;
     const newDashToTRows = [];
     for(const tableInDMD in dashMonitorData){
       const { numMonitors, numAlerts, numUnresolved, numResolved, 
-        numNotDismissed, numDismissed, numRange, numNull, numCustom } = dashMonitorData[tableInDMD];
+        numNotDismissed, numDismissed, numRange, numNull, numCustom, numDownstream } = dashMonitorData[tableInDMD];
       // console.log('tableInDMD', tableInDMD)
       // console.log('dashMonitorData', dashMonitorData)
       
       newDashToTRows.push({
-        id: id++,
+        // id: id++,
         table: tableInDMD,
+        downstream: numDownstream,
         monitors: numMonitors,
         alerts: numAlerts,
         unresolved: numUnresolved,
@@ -144,19 +151,46 @@ const DashTableOfTables = () => {
         null: numNull,
         custom: numCustom
       });
-    };
+    }
+    // sort in descending order of numDownstream
+    newDashToTRows.sort((a, b) => {
+      return b.downstream - a.downstream;
+    });
+
+    newDashToTRows.forEach((row, i) => {
+      row.id = i + 1;
+    });
+
     console.log('newDashToTRows', newDashToTRows)
     setdashToTRows(newDashToTRows);
   };
 
   useEffect(() => {
-    // console.log('alerts in useEff in dashToT', alerts)
-    if(didPopulateDashMonitorObj) getDashMonitorData();
+    if(Object.keys(dashMonitorData).length) getDashMonitorData();
   }, [didPopulateDashMonitorObj, alerts]);
 
   useEffect(() => {
-    if(didGetDashMonitorData) populateDashToTRows();
-  }, [didGetDashMonitorData, dashMonitorData]);
+    if (didGetDashMonitorData){
+      const tablesWeightsObj = store.getState().diagram.tablesWeightsObj;
+      setTablesWeightsObj(tablesWeightsObj);
+    }
+  }, [didGetDashMonitorData]);
+
+  useEffect(() => {
+    console.log('tablesWeightsObj updated: ', tablesWeightsObj)
+  }, [tablesWeightsObj]);
+
+  useEffect(() => {
+    if(didGetDashMonitorData && tablesWeightsObj){
+      // console.log('tablesWeightsObj in getDashMonitorData in dashToT', tablesWeightsObj)
+      for(const tableInTablesWeightsObj in tablesWeightsObj){
+        if(dashMonitorData[tableInTablesWeightsObj]){
+          dashMonitorData[tableInTablesWeightsObj].numDownstream = tablesWeightsObj[tableInTablesWeightsObj];
+        }
+      }
+      populateDashToTRows();
+    }
+  }, [didGetDashMonitorData, tablesWeightsObj]);
 
 
   return (

@@ -13,6 +13,6 @@ const monitorObjectCreator = (type, user_id, params) => {
     user_id: user_id,
     parameters: params,
   }
-}
+};
 
 export default monitorObjectCreator;
