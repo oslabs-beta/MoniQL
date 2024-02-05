@@ -95,10 +95,10 @@ const Header = () => {
   }
 
   let anomalies = alertsArr.sort((a, b) => b.anomalyTime - a.anomalyTime);
-  anomalies = anomalies.map((alertObj, i) => <AlertBox key={i * 2} {...alertObj}/>);
+  anomalies = anomalies.map((alertObj, i) => <AlertBox key={i} {...alertObj}/>);
 
   const renderAlertsDrawer = (
-    <Drawer anchor='right' open={alertsDrawerToggle}>
+    <Drawer anchor='right' open={alertsDrawerToggle} onClose={handleAlertsDrawerToggle}>
       <Box sx={{width: 350}}>
       <IconButton
                 size="large"

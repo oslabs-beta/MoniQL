@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 
 //TEMPORARY IMPORTS
 import { useDispatch, useSelector } from "react-redux";
-import { saveDBActionCreator } from "../actions/actions";
+import { saveDBActionCreator, addAlertsActionCreator, addMonitorsActionCreator } from "../actions/actions";
 import AlertBox from "../components/AlertBox";
 //END TEMPORARY IMPORTS
 
@@ -34,16 +34,20 @@ const AppContainer = () => {
   /* <SideBar isSideBar={isSideBar} /> */
 
   const dispatch = useDispatch();
+
+  const user_uri = useSelector((state) => state.user.uri);
+  
   useEffect(() => {
     const fetchDB = async () => {
       try {
         const requestOptions = {
-          method: "GET",
+          method: "POST",
           headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({user_uri: user_uri})
         };
         const response = await fetch("/eboshi", requestOptions);
         const data = await response.json();
-        console.log(data.dbArray);
+        console.log('dbArray in fetchDB in appContainer: ', data.dbArray);
         if (!response.ok) throw new Error(data.error || "Error from server");
         dispatch(saveDBActionCreator(data.dbArray));
       } catch (err) {
@@ -51,6 +55,57 @@ const AppContainer = () => {
       }
     };
     fetchDB();
+  }, []);
+
+  const user_id = useSelector((state) => state.user.user_id);
+
+  const fetchAllMonitors = async () => {
+    console.log('user_id in fetchAllMonitors in MonitorContainer', user_id);
+    try {
+      const response = await fetch('/monitors', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({user_id: user_id})
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log('data in fetchAllMonitors in AppContainer', data);
+      dispatch(addMonitorsActionCreator(data));
+    } catch (error) {
+      console.log('fetch error:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAllMonitors();  
+  }, []);
+
+  const getAllAlerts = async () => {
+    try {
+      const response = await fetch('/alerts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({user_id: user_id})
+      });
+      if(!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log('data in getallalerts in alertcontainer: ', data);
+      dispatch(addAlertsActionCreator(data));
+    } catch (error) {
+      console.log('fetch error:', error);
+    }
+  };
+
+  useEffect(() => {
+    getAllAlerts();
   }, []);
 
   return (
