@@ -77,7 +77,9 @@ const Header = () => {
 
   const alertsArr = useSelector((state) => state.alert.alerts);
   React.useEffect(() => {
-    setAlertsCount(alertsArr.filter((alertObj) => alertObj.display).length);
+    setAlertsCount(
+      alertsArr.filter((alertObj) => alertObj.display).length
+    );
   }, [alertsArr]);
 
   const [alertsCount, setAlertsCount] = React.useState(alertsArr.length);
@@ -175,7 +177,7 @@ const Header = () => {
       {renderAlertsDrawer}
       {renderMenu}
     </Box>
-    //  </ThemeProvider>
+  //  </ThemeProvider>
   );
 };
 

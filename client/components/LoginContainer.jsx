@@ -1,11 +1,23 @@
-import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { logInActionCreator, saveDBActionCreator } from '../actions/actions';
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { logInActionCreator, saveDBActionCreator } from "../actions/actions";
 //mui imports below:
-import { Roboto, Container, Switch, Link, Box, TextField, Typography, Button, Tab, Tabs } from '@mui/material';
+import {
+  Roboto,
+  Container,
+  Switch,
+  Link,
+  Box,
+  TextField,
+  Typography,
+  Button,
+  Tab,
+  Tabs,
+  IconButton,
+} from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 // import { CssBaseline } from '@material-ui/core';
-
+import CloseIcon from "@mui/icons-material/Close";
 
 const theme = createTheme({
   typography: {
@@ -31,54 +43,67 @@ const theme = createTheme({
   },
 });
 
-
-
-
-const LoginContainer = () => {
+const LoginContainer = ({ closeLogin }) => {
   const [regToggle, setRegToggle] = useState(false);
-  const [selectedTab, setSelectedTab] = useState('login');
-  const [user_id, setUser_id] = useState(''); 
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [uri, setUri] = useState('');
-  const [error, setError] = useState(''); 
+  const [selectedTab, setSelectedTab] = useState("login");
+  const [user_id, setUser_id] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [uri, setUri] = useState("");
+  const [error, setError] = useState("");
 
   const dispatch = useDispatch();
 
   const handleAuth = async (path) => {
     try {
-      console.log('username: ', username, 'password: ', password, 'uri: ', uri, 'path: ', path)
+      console.log(
+        "username: ",
+        username,
+        "password: ",
+        password,
+        "uri: ",
+        uri,
+        "path: ",
+        path
+      );
       // console.log(`**************** this is your path: ${path} ****************`)
       const requestOptions = {
         method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({ username, password, uri })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password, uri }),
       };
       const response = await fetch(path, requestOptions);
       const data = await response.json();
 
-      console.log('data returned in handleAuth func in LoginContainer', data)
-      if (!response.ok) throw new Error(data.error || 'Error from server')
+      console.log("data returned in handleAuth func in LoginContainer", data);
+      if (!response.ok) throw new Error(data.error || "Error from server");
 
-      console.log(`user_id: ${data.user_id}, username: ${data.username}, uri: ${data.uri}`)
-      console.log('dbArray in handleAuth func in LoginContainer: ', data.dbArray)
+      console.log(
+        `user_id: ${data.user_id}, username: ${data.username}, uri: ${data.uri}`
+      );
+      console.log(
+        "dbArray in handleAuth func in LoginContainer: ",
+        data.dbArray
+      );
       dispatch(logInActionCreator(data.user_id, data.username, data.uri));
       // dispatch(saveDBActionCreator(data.dbArray));
-      
+
       //leaving this open for now, but here is where we will go store shit in redux state
       if (!response.ok) {
-        setError(data.error || 'Error from server');
-        throw new Error(data.error || 'Error from server');
+        setError(data.error || "Error from server");
+        throw new Error(data.error || "Error from server");
       }
     } catch (err) {
-      console.error('error caught in handleAuth in LoginContainer', err.message);
+      console.error(
+        "error caught in handleAuth in LoginContainer",
+        err.message
+      );
     }
-  }
+  };
   const handleChange = (event, newValue) => {
     setRegToggle(!regToggle);
     setSelectedTab(newValue);
   };
-
 
   return (
     <ThemeProvider theme={theme}>
@@ -108,6 +133,17 @@ const LoginContainer = () => {
           //   boxShadow: 3,
           // }}
         >
+          {/* <div style={{ position: 'relative' }}> */}
+          <IconButton
+            edge="start"
+            color="secondary"
+            onClick={closeLogin}
+            aria-label="close"
+            style={{ position: "absolute", top: 2, left: 15 }}
+          >
+            <CloseIcon fontSize="small" />
+          </IconButton>
+          {/* </div> */}
           <Typography color="white" component="h1" variant="h5">
             Sign In
           </Typography>
@@ -154,7 +190,7 @@ const LoginContainer = () => {
               }}
             />
             <Typography color="error" variant="body2">
-            {/* {error} username does not exist */}
+              {/* {error} username does not exist */}
             </Typography>
             <TextField
               margin="normal"
@@ -209,7 +245,7 @@ const LoginContainer = () => {
               sx={{ mt: 3, mb: 2 }}
             >
               {/* {regToggle ? "Register" : "Sign in"} */}
-              {selectedTab === 'login' ? "Log In" : "Sign Up"}
+              {selectedTab === "login" ? "Log In" : "Sign Up"}
             </Button>
           </Box>
         </Box>
@@ -218,8 +254,4 @@ const LoginContainer = () => {
   );
 };
 
-
 export default LoginContainer;
-
-
-  

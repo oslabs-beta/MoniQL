@@ -12,6 +12,10 @@ import Sidebar from './components/SideBar';
 // Styles and themes
 import './components/stylesheets/App.css';
 import { ColorModeContext, useMode, tokens } from "./components/stylesheets/Themes";
+import { CssBaseline, ThemeProvider } from "@mui/material";
+import Sidebar from './components/SideBar';
+import LandingContainer from './containers/LandingContainer';
+
 
 //for pull out drawer:
 // import Topbar from "./scenes/global/Topbar";
@@ -30,7 +34,7 @@ const App = () => {
         <div className="App">
           {/* <Sidebar isSideBar={isSideBar} /> */}
           {/* <Topbar setIsSidebar={setIsSidebar} /> */}
-          { (isLoggedIn) ? <AppContainer /> : <LoginContainer /> }
+          { (isLoggedIn) ? <AppContainer /> : <LandingContainer /> }
           {/* <AppContainer /> */}
         </div>
       </ThemeProvider>
