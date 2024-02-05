@@ -26,7 +26,7 @@ const AlertBox = (alertObj) => {
     try {
       const requestOptions = {
         method: method,
-        headers: { "Content-Type": "application/json" },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           user_id: user_id,
           alertObj: alertObj
@@ -37,7 +37,7 @@ const AlertBox = (alertObj) => {
       //   console.log('data.alerts returned in queryAlerts func in alertBox', data);
         
       if (!response.ok) {
-        throw new Error("Error from server in queryAlerts");
+        throw new Error('Error from server in queryAlerts');
       } else {
         method === 'PUT' ? dispatch(updateAlertActionCreator(alertObj)) : 
           dispatch(deleteAlertActionCreator(alertObj.alert_id));
@@ -50,11 +50,8 @@ const AlertBox = (alertObj) => {
     
   const updateAlert = (alertObj) => {
     queryAlerts('PUT', alertObj);
+    dispatch(updateAlertActionCreator(alertObj));
   };
-
-  const deleteAlert = (alert_id) => {
-    queryAlerts('DELETE', {alert_id});
-  }
 
   const addNotes = () => {
 
@@ -143,7 +140,7 @@ const AlertBox = (alertObj) => {
   const renderRowsAccordion = (
     <div style={{display: 'inline-block'}}>
       <Accordion anchorEl={rowsAccordionAnchorEl} open={Boolean(rowsAccordionAnchorEl)} onClose={handleRowsAccordionToggle}>
-        <Box sx={{width: "100%"}}>
+        <Box sx={{width: '100%'}}>
           <IconButton
             size="large"
             aria-label={`show ${rowsCount} anomalous rows`}
@@ -176,7 +173,9 @@ const AlertBox = (alertObj) => {
   return (
     display ?
       (<Alert severity={severity} variant="outlined" onClose={handleClose} sx={{bgcolor: 'background.paper', zIndex: 9999, width: '97%', marginRight: 'auto', marginLeft: 'auto', maxWidth: '800px'}}>
-        <AlertTitle sx={{fontSize: 18}}>{`${monitorType} anomaly detected at ${dayjs(detected_at).format('ddd MM-DD-YYYY hh:mm:ss a')} in: `} <Typography color="primary" sx={{fontSize: 16}}>{`${table}`}</Typography> </AlertTitle>
+        <AlertTitle sx={{fontSize: 18}}>{`${monitorType} anomaly detected at ${dayjs(detected_at).format('ddd MM-DD-YYYY hh:mm:ss a')} in: `} 
+          <Typography color="primary" sx={{fontSize: 16}}>{`${table}`}</Typography> 
+        </AlertTitle>
         {column ? `Column: ${column}, ` : null}
         {anomalyType ? `Anomaly type: ${anomalyType}, ` : null}
         {anomalyValue ? `Anomaly value: ${anomalyValue}, ` : null}

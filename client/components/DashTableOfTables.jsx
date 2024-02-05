@@ -189,7 +189,7 @@ const DashTableOfTables = () => {
       }
       populateDashToTRows();
     }
-  }, [didGetDashMonitorData, tablesWeightsObj]);
+  }, [didGetDashMonitorData, tablesWeightsObj, alerts]);
 
   return (
     <Box sx={{ height: 400, width: '100%', backgroundColor: '#6870fa', color: 'FAF9F6'}}>
@@ -205,3 +205,20 @@ const DashTableOfTables = () => {
 };
 
 export default DashTableOfTables;
+
+/*
+<FormControl fullWidth>
+  <InputLabel id="demo-simple-select-label">Age</InputLabel>
+  <Select
+    labelId="demo-simple-select-label"
+    id="demo-simple-select"
+    value={age}
+    label="Age"
+    onChange={handleChange}
+  >
+    <MenuItem value={10}>Ten</MenuItem>
+    <MenuItem value={20}>Twenty</MenuItem>
+    <MenuItem value={30}>Thirty</MenuItem>
+  </Select>
+</FormControl>
+*/

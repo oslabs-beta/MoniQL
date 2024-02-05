@@ -1,6 +1,7 @@
 import React from 'react';
 import ErdVisualizerContainer from './ErdVisualizerContainer';
 import MonitorContainer from './MonitorContainer'
+import AlertContainer from './AlertContainer';
 import ReportContainer from './ReportContainer'
 import QueryContainer from './QueryContainer';
 import { useSelector } from 'react-redux';
@@ -15,22 +16,22 @@ const PageContainer = () => {
   return (
     <Box
       sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "stretch",
-        width: "auto",
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'stretch',
+        width: 'auto',
         ml: 6,
         overflow: 'auto'
       }}
     >
-      {page === "Dashboard" && <MainContainer />}
-      {page === "ERD" && <ErdVisualizerContainer />}
-      {page === "Monitors" && <MonitorContainer />}
-      {page === "Reports" && <ReportContainer />}
-      {page === "Query" && <QueryContainer />}
-      {page === "Account" && <></>}
-      {page === "Settings" && <></>}
-      {page === "Help" && <></>}
+      {page === 'Dashboard' && <MainContainer />}
+      {page === 'ERD' && <ErdVisualizerContainer />}
+      {page === 'Monitors' && <MonitorContainer />}
+      {page === 'Alerts' && <ReportContainer />}
+      {page === 'Query' && <QueryContainer />}
+      {page === 'Account' && <></>}
+      {page === 'Settings' && <></>}
+      {page === 'Help' && <></>}
     </Box>
   );
 }

@@ -13,7 +13,7 @@ const DashAlertLineChart = () => {
   // date on alert object: alertObj.detected_at
   const days = [];
   // populate days array with today and each of the past 6 days, in order, with dates
-  for (let i = 7; i > 0; i--) {
+  for (let i = 6; i >= 0; i--) {
     days.push(dayjs().subtract(i, 'day').format('YYYY-MM-DD'));
   }
 

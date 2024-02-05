@@ -9,15 +9,15 @@ const ourDB = pool;
 
 
 // prod mode:
-monitorController.connect = async (req, res, next) => {
-  const user_uri = res.locals.uri;
-  db = await connectToPool(user_uri);
-  console.log('connected to user db in moncont.connect');
-  return next();
-};
+// monitorController.connect = async (req, res, next) => {
+//   const user_uri = res.locals.uri;
+//   db = await connectToPool(user_uri);
+//   console.log('connected to user db in moncont.connect');
+//   return next();
+// };
 
 // dev mode:
-// db = userPool;
+db = userPool;
 
 /**
  * alert object shape:
@@ -292,8 +292,6 @@ monitorController.stats = async (req, res, next) => {
 }
 
 monitorController.custom = async (req, res, next) => {
-//(table, monitorType, anomalyType, severity = 'error', 
-//column, rows = null, anomalyValue, anomalyTime, notes = [])
   const customQuery = req.body.monitor.parameters.query;
 
   try {
