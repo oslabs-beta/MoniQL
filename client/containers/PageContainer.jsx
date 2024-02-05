@@ -18,8 +18,9 @@ const PageContainer = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "stretch",
-        width: "100%",
-        ml: 9,
+        width: "auto",
+        ml: 6,
+        overflow: 'auto'
       }}
     >
       {page === "Dashboard" && <MainContainer />}

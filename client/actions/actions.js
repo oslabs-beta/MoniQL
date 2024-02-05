@@ -20,6 +20,10 @@ export const logInActionCreator = (user_id, username, uri) => ({
   payload: {user_id, username, uri}
 })
 
+export const logOutActionCreator = () => ({
+  type: types.LOG_OUT
+})
+
 export const saveDBActionCreator = (dbArray) => ({
   type: types.SAVE_DB,
   payload: dbArray
@@ -43,4 +47,9 @@ export const selectPageActionCreator = (page) => ({
 export const addMonitorsActionCreator = (monitorsArray) => ({
   type: types.ADD_MONITORS,
   payload: monitorsArray
+})
+
+export const addTableWeightsActionCreator = (tableWeightsObj) => ({
+  type: types.ADD_TABLE_WEIGHTS,
+  payload: tableWeightsObj
 })
