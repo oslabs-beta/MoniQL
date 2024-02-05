@@ -20,6 +20,10 @@ export const logInActionCreator = (user_id, username, uri) => ({
   payload: {user_id, username, uri}
 })
 
+export const logOutActionCreator = () => ({
+  type: types.LOG_OUT
+})
+
 export const saveDBActionCreator = (dbArray) => ({
   type: types.SAVE_DB,
   payload: dbArray

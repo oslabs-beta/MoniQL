@@ -32,7 +32,7 @@ body,
   overflow-y: auto;
   /* cursor: url("https://cur.cursors-4u.net/food/foo-3/foo265.png"), auto; */
   /* url("https://cur.cursors-4u.net/symbols/sym-1/sym20.cur"), auto; seastar*/
-  cursor: url("https://cur.cursors-4u.net/nature/nat-1/nat48.cur"), auto; 
+  /* cursor: url("https://cur.cursors-4u.net/nature/nat-1/nat48.cur"), auto;  */
   /* url("https://cur.cursors-4u.net/cursors/cur-2/cur113.cur"), auto; */
 }
 body:before {

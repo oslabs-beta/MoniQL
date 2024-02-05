@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   Box,
   Card,
@@ -11,40 +11,46 @@ import {
   CardContent,
   List,
   ListItem,
-} from "@mui/material";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import RangeMonitor from "../components/monitors/RangeMonitor";
-import FreshnessMonitor from "../components/monitors/FreshnessMonitor";
-import VolumeMonitor from "../components/monitors/VolumeMonitor";
-import CustomMonitor from "../components/monitors/CustomMonitor";
-import NullMonitor from "../components/monitors/NullMonitor";
-import { addAlertsActionCreator } from "../actions/actions";
+  useTheme,
+} from '@mui/material';
+import tokens from '../components/stylesheets/Themes';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import RangeMonitor from '../components/monitors/RangeMonitor';
+import FreshnessMonitor from '../components/monitors/FreshnessMonitor';
+import VolumeMonitor from '../components/monitors/VolumeMonitor';
+import CustomMonitor from '../components/monitors/CustomMonitor';
+import NullMonitor from '../components/monitors/NullMonitor';
+import { addAlertsActionCreator } from '../actions/actions';
 
 const MonitorContainer = () => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   const dispatch = useDispatch();
-  const [selectedMonitor, setSelectedMonitor] = useState("");
-  const monitors = ["Range", "Freshness", "Volume", "Null", "Custom"];
+  const [selectedMonitor, setSelectedMonitor] = useState('');
+  const monitors = ['Range', 'Freshness', 'Volume', 'Null', 'Custom'];
   const activeMonitors = useSelector((state) => state.monitor.activeMonitors);
   const user_id = useSelector((state) => state.user.user_id);
 
   const sendQuery = async (monitor) => {
     try {
       const path = `/${monitor.type}`;
-      console.log('FIRED!', monitor.type, ' ', monitor.parameters)
+      console.log('FIRED!', monitor.type, ' ', monitor.parameters);
       const requestOptions = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           user_id: user_id,
-          monitor: monitor
-        })
+          monitor: monitor,
+        }),
       };
       const response = await fetch(path, requestOptions);
       const data = await response.json();
-      console.log('data.alerts returned in sendQuery func in MonitorContainer', data)
+      console.log(
+        'data.alerts returned in sendQuery func in MonitorContainer',
+        data
+      );
 
-      if (!response.ok) throw new Error(data.message || "Error from server");
-      
+      if (!response.ok) throw new Error(data.message || 'Error from server');
 
       //below we will send the alert object to redux state with a dispatch/action
       if (data.alerts && data.alerts.length) {
@@ -57,78 +63,99 @@ const MonitorContainer = () => {
 
   return (
     <Box>
-    <Card
-      variant="outlined"
-      sx={{
-        minWidth: "70vw",
-        flexDirection: "column",
-        minHeight: "60vh",
-        padding: 3,
-        boxShadow: 3,
-        backgroundColor: "#2E2D3D",
-        borderRadius: 4,
-      }}
-    >
-      <Box sx={{ p: 2, display: 'flex', justifyContent: 'space-between' }}>
-        <Typography variant="h5" color="white">Your Monitors</Typography>
-        {/* <Button variant="contained" size="small">CREATE NEW MONITOR</Button> */}
-      </Box>
-
-        <Divider sx={{ width: "100%" }} />
-
-      <Box sx={{ p: 2 }}>
-        <Typography gutterBottom variant="body2" color="white">default monitors</Typography>
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, margin: 3 }}>
-          {monitors.map((monitor) => (
-            <Chip
-              key={monitor}
-              label={monitor}
-              color={selectedMonitor === monitor ? "primary" : "default"}
-              onClick={() => setSelectedMonitor(monitor === selectedMonitor ? "" : monitor)}
-            />
-          ))}
+      <Card
+        variant='outlined'
+        sx={{
+          minWidth: '70vw',
+          flexDirection: 'column',
+          minHeight: '60vh',
+          padding: 3,
+          boxShadow: 3,
+          backgroundColor: '#2E2D3D',
+          borderRadius: 4,
+        }}
+      >
+        <Box sx={{ p: 2, display: 'flex', justifyContent: 'space-between' }}>
+          <Typography variant='h5' color={colors.grey[100]}>
+            Your Monitors
+          </Typography>
+          {/* <Button variant="contained" size="small">CREATE NEW MONITOR</Button> */}
         </Box>
+
+        <Divider sx={{ width: '100%' }} />
+
+        <Box sx={{ p: 2 }}>
+          <Typography gutterBottom variant='body2' color={colors.grey[100]}>
+            default monitors
+          </Typography>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, margin: 3 }}>
+            {monitors.map((monitor) => (
+              <Chip
+                key={monitor}
+                label={monitor}
+                color={selectedMonitor === monitor ? 'primary' : 'default'}
+                onClick={() =>
+                  setSelectedMonitor(monitor === selectedMonitor ? '' : monitor)
+                }
+              />
+            ))}
+          </Box>
 
           {/* Conditional Rendering for Monitors */}
-          {selectedMonitor === "Range" && <RangeMonitor />}
-          {selectedMonitor === "Freshness" && <FreshnessMonitor />}
-          {selectedMonitor === "Volume" && <VolumeMonitor />}
-          {selectedMonitor === "Null" && <NullMonitor />}
-          {selectedMonitor === "Custom" && <CustomMonitor />}
-
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, justifyContent: 'flex-start' }}>
-          {Array.isArray(activeMonitors) && activeMonitors.map((monitor, i) => (
-            <Card key={i} sx={{ minWidth: 240, maxWidth: 240, mt:4, mb:4, mr:4 }}>
-              <CardContent>
-                <Typography variant="h6">{monitor.type}</Typography>
-                {monitor.parameters && (
-                  <List>
-                    {Object.entries(monitor.parameters).map(
-                      ([key, value], index) => (
-                        <ListItem key={`${monitor.monitor_id}-${index}`}>
-                          <strong>{key}:</strong> {value != null ? value.toString() : 'N/A'}
-                        </ListItem>
-                      )
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
+            {selectedMonitor === 'Range' && <RangeMonitor />}
+            {selectedMonitor === 'Freshness' && <FreshnessMonitor />}
+            {selectedMonitor === 'Volume' && <VolumeMonitor />}
+            {selectedMonitor === 'Null' && <NullMonitor />}
+            {selectedMonitor === 'Custom' && <CustomMonitor />}
+          </Box>
+          <Box
+            sx={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: 2,
+              justifyContent: 'flex-start',
+            }}
+          >
+            {Array.isArray(activeMonitors) &&
+              activeMonitors.map((monitor, i) => (
+                <Card
+                  key={i}
+                  sx={{ minWidth: 240, maxWidth: 240, mt: 4, mb: 4, mr: 4 }}
+                >
+                  <CardContent>
+                    <Typography variant='h6' color={colors.grey[100]}>
+                      {monitor.type}
+                    </Typography>
+                    {monitor.parameters && (
+                      <List>
+                        {Object.entries(monitor.parameters).map(
+                          ([key, value], index) => (
+                            <ListItem key={`${monitor.monitor_id}-${index}`}>
+                              <strong>{key}:</strong>{' '}
+                              {value != null ? value.toString() : 'N/A'}
+                            </ListItem>
+                          )
+                        )}
+                      </List>
                     )}
-                  </List>
-                )}
-                <Button onClick={() => sendQuery(monitor)}>fire me</Button>
-              </CardContent>
-            </Card>
-          ))}
+                    <Button onClick={() => sendQuery(monitor)}>fire me</Button>
+                  </CardContent>
+                </Card>
+              ))}
+          </Box>
         </Box>
-      </Box>
-    </Card>
-  </Box>
+      </Card>
+    </Box>
   );
 };
 
 export default MonitorContainer;
 
-
 //Old styling for cards... I simplified it as part of debiugging but its 1am and I don't want to restyle rn :(
 
-{/* <Stack direction="row" spacing={2}>
+{
+  /* <Stack direction="row" spacing={2}>
 {activeMonitors.map((monitor, i) => (
  
   <Card key={i} sx={{ minWidth: 240 }}>
@@ -147,4 +174,5 @@ export default MonitorContainer;
     </CardContent>
   </Card>
 ))}
-</Stack> */}
+</Stack> */
+}

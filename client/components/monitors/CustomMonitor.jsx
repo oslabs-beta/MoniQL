@@ -19,7 +19,9 @@ import {
   MenuItem,
   Select,
   TextField,
+  useTheme
 } from "@mui/material";
+import tokens from "../stylesheets/Themes";
 
 // MUI icons
 import AddCircleIcon from "@mui/icons-material/AddCircle";
@@ -33,7 +35,10 @@ const CustomMonitor = () => {
     frequency: '',
     description: ''
   });
-  
+  //color themes
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+
   const tablesArray = useSelector((state) => state.diagram.data);
   const user_id = useSelector((state) => state.user.user_id);
   const [columnsArray, setColumnsArray] = useState([]);
@@ -72,7 +77,7 @@ const CustomMonitor = () => {
 
   return (
     <div>
-      <Box display="flex" justifyContent="center" alignItems="center">
+      <Box display="flex" justifyContent="center" alignItems="center" >
         <Card
           variant="outlined"
           sx={{
@@ -82,13 +87,13 @@ const CustomMonitor = () => {
             justifyContent: "center",
             padding: 3,
             boxShadow: 3,
-            backgroundColor: "rgba(255, 255, 255, 0.7)",
+            backgroundColor: "rgba(0, 0, 255, 0.7)",
             borderRadius: 4,
           }}
         >
           <FormControl sx={{ m: 1, minWidth: 200 }}>
             <Box sx={{ p: 2 }}>
-              <Typography variant="h5" color="white">
+              <Typography variant="h5" color={colors.grey[100]}>
               Create New Custom Monitor
               </Typography>
               <Divider />
@@ -109,17 +114,9 @@ const CustomMonitor = () => {
                 value={params.frequency}
                 onChange={handleChanges}
                 sx={{
-                  backgroundColor: "white",
                   borderRadius: "5px",
                   width: "30%",
-
-                  input: { color: "hotpink" },
-                }}
-                InputLabelProps={{
-                  style: { color: "hotpink" },
-                }}
-                InputProps={{
-                  style: { color: "hotpink" },
+                  backgroundColor: "rgba(255, 255, 255, 0.7)"
                 }}
               />
               <FormHelperText>
@@ -186,6 +183,7 @@ const CustomMonitor = () => {
               onClick={handleSubmit}
               sx={{ mt: 3, mb: 2 }}
               size="small"
+              disabled={!params.frequency}
             >
             Submit
             </Button>
