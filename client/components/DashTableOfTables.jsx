@@ -189,7 +189,7 @@ const DashTableOfTables = () => {
       }
       populateDashToTRows();
     }
-  }, [didGetDashMonitorData, tablesWeightsObj]);
+  }, [didGetDashMonitorData, tablesWeightsObj, alerts]);
 
   return (
     <Box sx={{ height: 400, width: '100%', backgroundColor: '#6870fa', color: 'FAF9F6'}}>

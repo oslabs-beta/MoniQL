@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   Box,
   Card,
@@ -11,19 +11,19 @@ import {
   CardContent,
   List,
   ListItem,
-} from "@mui/material";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import RangeMonitor from "../components/monitors/RangeMonitor";
-import FreshnessMonitor from "../components/monitors/FreshnessMonitor";
-import VolumeMonitor from "../components/monitors/VolumeMonitor";
-import CustomMonitor from "../components/monitors/CustomMonitor";
-import NullMonitor from "../components/monitors/NullMonitor";
-import { addAlertsActionCreator } from "../actions/actions";
+} from '@mui/material';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import RangeMonitor from '../components/monitors/RangeMonitor';
+import FreshnessMonitor from '../components/monitors/FreshnessMonitor';
+import VolumeMonitor from '../components/monitors/VolumeMonitor';
+import CustomMonitor from '../components/monitors/CustomMonitor';
+import NullMonitor from '../components/monitors/NullMonitor';
+import { addAlertsActionCreator } from '../actions/actions';
 
 const MonitorContainer = () => {
   const dispatch = useDispatch();
-  const [selectedMonitor, setSelectedMonitor] = useState("");
-  const monitors = ["Range", "Freshness", "Volume", "Null", "Custom"];
+  const [selectedMonitor, setSelectedMonitor] = useState('');
+  const monitors = ['Range', 'Freshness', 'Volume', 'Null', 'Custom'];
   const activeMonitors = useSelector((state) => state.monitor.activeMonitors);
   const user_id = useSelector((state) => state.user.user_id);
 
@@ -32,8 +32,8 @@ const MonitorContainer = () => {
       const path = `/${monitor.type}`;
       console.log('FIRED!', monitor.type, ' ', monitor.parameters)
       const requestOptions = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           user_id: user_id,
           monitor: monitor
@@ -43,7 +43,7 @@ const MonitorContainer = () => {
       const data = await response.json();
       console.log('data.alerts returned in sendQuery func in MonitorContainer', data)
 
-      if (!response.ok) throw new Error(data.message || "Error from server");
+      if (!response.ok) throw new Error(data.message || 'Error from server');
       
 
       //below we will send the alert object to redux state with a dispatch/action
@@ -55,17 +55,21 @@ const MonitorContainer = () => {
     }
   };
 
+  useEffect(() => {
+    setSelectedMonitor('');
+  }, [activeMonitors]);
+
   return (
     <Box>
       <Card
         variant="outlined"
         sx={{
-          minWidth: "70vw",
-          flexDirection: "column",
-          minHeight: "60vh",
+          minWidth: '70vw',
+          flexDirection: 'column',
+          minHeight: '60vh',
           padding: 3,
           boxShadow: 3,
-          backgroundColor: "#2E2D3D",
+          backgroundColor: '#2E2D3D',
           borderRadius: 4,
         }}
       >
@@ -74,7 +78,7 @@ const MonitorContainer = () => {
           <Button variant="contained" size="small">CREATE NEW MONITOR</Button>
         </Box>
 
-        <Divider sx={{ width: "100%" }} />
+        <Divider sx={{ width: '100%' }} />
 
         <Box sx={{ p: 2 }}>
           <Typography gutterBottom variant="body2" color="white">default monitors</Typography>
@@ -83,18 +87,18 @@ const MonitorContainer = () => {
               <Chip
                 key={monitor}
                 label={monitor}
-                color={selectedMonitor === monitor ? "primary" : "default"}
-                onClick={() => setSelectedMonitor(monitor === selectedMonitor ? "" : monitor)}
+                color={selectedMonitor === monitor ? 'primary' : 'default'}
+                onClick={() => setSelectedMonitor(monitor === selectedMonitor ? '' : monitor)}
               />
             ))}
           </Box>
 
           {/* Conditional Rendering for Monitors */}
-          {selectedMonitor === "Range" && <RangeMonitor />}
-          {selectedMonitor === "Freshness" && <FreshnessMonitor />}
-          {selectedMonitor === "Volume" && <VolumeMonitor />}
-          {selectedMonitor === "Null" && <NullMonitor />}
-          {selectedMonitor === "Custom" && <CustomMonitor />}
+          {selectedMonitor === 'Range' && <RangeMonitor />}
+          {selectedMonitor === 'Freshness' && <FreshnessMonitor />}
+          {selectedMonitor === 'Volume' && <VolumeMonitor />}
+          {selectedMonitor === 'Null' && <NullMonitor />}
+          {selectedMonitor === 'Custom' && <CustomMonitor />}
 
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, justifyContent: 'flex-start' }}>
             {Array.isArray(activeMonitors) && activeMonitors.map((monitor, i) => (
