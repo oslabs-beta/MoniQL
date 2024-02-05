@@ -126,10 +126,10 @@ const DashTableOfTables = () => {
 
   const populateDashToTRows = () => {
     // if(!tablesWeightsObj) return;
-    console.log('popDToTR called')
-    console.log('tablesWeightsObj in DToT: ', tablesWeightsObj);
-    console.log('dashMonitorData in DToT: ', dashMonitorData)
-    // let id = 1;
+    // console.log('popDToTR called')
+    // console.log('tablesWeightsObj in DToT: ', tablesWeightsObj);
+    // console.log('dashMonitorData in DToT: ', dashMonitorData)
+
     const newDashToTRows = [];
     for(const tableInDMD in dashMonitorData){
       const { numMonitors, numAlerts, numUnresolved, numResolved, 
@@ -138,7 +138,6 @@ const DashTableOfTables = () => {
       // console.log('dashMonitorData', dashMonitorData)
       
       newDashToTRows.push({
-        // id: id++,
         table: tableInDMD,
         downstream: numDownstream,
         monitors: numMonitors,
