@@ -26,9 +26,12 @@ const DashAlertBarChart = () => {
       <BarChart
         // xAxisDataKey="status"
         // yAxisDataKey="alerts"
+        yAxis={[{
+          label: 'alerts',
+        }]}
         xAxis={[
           { 
-            value: 'alerts by status',
+            label: 'alert status',
             scaleType: 'band',
             data: ['unresolved', 'resolved', 'not dismissed', 'dismissed']
           }]}

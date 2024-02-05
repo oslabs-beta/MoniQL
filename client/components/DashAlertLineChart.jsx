@@ -42,10 +42,14 @@ const DashAlertLineChart = () => {
       <LineChart
         xAxisDataKey="date"
         yAxisDataKey="alerts"
+        yAxis={[{
+          label: 'alerts',
+        }]}
         xAxis={[
           { 
-            data: [0, 1, 2, 3, 4, 5, 6],
-            value: 'days'
+            scaleType: 'point',
+            data: days, //[-6, -5, -4, -3, -2, -1, 0],
+            label: 'date',
           }]}
         series={[
           { 
