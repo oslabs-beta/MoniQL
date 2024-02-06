@@ -1,6 +1,6 @@
 import React, { useRef, useMemo, useEffect, useState, memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addTableWeightsActionCreator } from '../actions/actions';
+import { addTablesWeightsActionCreator } from '../actions/actions';
 import ReactFlow, {
   MiniMap,
   Controls,
@@ -87,8 +87,7 @@ const Focus = ({ children, elements }) => {
   const dispatch = useDispatch();
 
   ///////////////////////NODE STYLE/////////////////////////
-  ////////////////////////////**********HAY STACK**********//////////////////////////////
-
+  
   const nodeStyle = {
     width: '150px', // Fixed width
     height: '200px', // Fixed height
@@ -131,7 +130,6 @@ const Focus = ({ children, elements }) => {
   };
 
   ///////////////////////NODE STYLE/////////////////////////
-  ////////////////////////////**********HAY STACK**********//////////////////////////////
 
   const nodeTypes = useMemo(() => ({ custom: CustomNode }), []);
 
@@ -157,7 +155,7 @@ const Focus = ({ children, elements }) => {
 
       if(tableWeightNotCalledYet) {
         const importanceObj = Object.fromEntries(importance);
-        dispatch(addTableWeightsActionCreator(importanceObj));
+        dispatch(addTablesWeightsActionCreator(importanceObj));
         tableWeightNotCalledYet.current = false;
         console.log('dispatched table weights: ', importanceObj);
       }
@@ -234,7 +232,7 @@ const Focus = ({ children, elements }) => {
   }, [data, focusTable, focusDepth]); // runs whenever `data` or `currNode` changes
 
   return (
-    <div style={{ width: '100vw', height: '100vh' }}>
+    <div style={{ width: '85vw', height: '70vh'}}>
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -245,6 +243,8 @@ const Focus = ({ children, elements }) => {
       >
         {/* <Background color="#2A2A43" /> */}
         <Background color="#0D0221" />
+        <MiniMap />
+        <Controls />
       </ReactFlow>
     </div>
   );

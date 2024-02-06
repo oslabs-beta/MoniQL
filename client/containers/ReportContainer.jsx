@@ -3,11 +3,11 @@ import AlertContainer from './AlertContainer';
 
 const ReportContainer = () => {
 
-    return(
+  return(
     <div>
-        <AlertContainer/>
+      <AlertContainer/>
     </div>
-    )
+  )
 }
 
 export default ReportContainer;

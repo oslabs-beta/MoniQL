@@ -9,7 +9,7 @@ import ReactFlow, {
   addEdge,
 } from 'reactflow';
 
- //must import reactflow css for visualizer to work
+//must import reactflow css for visualizer to work
 import 'reactflow/dist/style.css';
 
 const ErdVisualizer = () => {
@@ -22,7 +22,6 @@ const ErdVisualizer = () => {
   //this is where we will map over the data and create nodes
   //edges will ALSObe created here
   useEffect(() => {
-    console.log("THIS IS BERD DATA", data)
     const newNodes = [];
     const newEdges = [];
 
@@ -43,8 +42,6 @@ const ErdVisualizer = () => {
         data: { label },
       });
 
-      //jdfkljfdsjflksd
-
       if (table.foreign_keys) {
         table.foreign_keys.forEach((fk) =>
           newEdges.push({
@@ -64,7 +61,7 @@ const ErdVisualizer = () => {
   //   [setEdges]
   // );
   return (
-    <div style={{ width: "100vw", height: "100vh" }}>
+    <div style={{ width: '100vw', height: '100vh' }}>
       <h1>BERD VIZISUALMALIZERATOR 3000</h1>
       <ReactFlow
         nodes={nodes}
@@ -72,12 +69,11 @@ const ErdVisualizer = () => {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         // onConnect={onConnect}
-        
       >
-      <MiniMap />
-      <Controls />
-      <Background />
-    </ReactFlow>
+        <MiniMap />
+        <Controls />
+        <Background />
+      </ReactFlow>
     </div>
   );
 };

@@ -28,7 +28,7 @@ const diagramReducer = (state = initialState, action) => {
       depth: action.payload,
     }
 
-  case types.ADD_TABLE_WEIGHTS:
+  case types.ADD_TABLES_WEIGHTS:
     return{
       ...state,
       tablesWeightsObj: action.payload,

@@ -2,7 +2,7 @@ import React from 'react';
 import { LineChart } from '@mui/x-charts/LineChart';
 import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
-import { Box } from '@mui/material';
+import { Box, Divider } from '@mui/material';
 
 const DashAlertLineChart = () => {
 
@@ -13,7 +13,7 @@ const DashAlertLineChart = () => {
   // date on alert object: alertObj.detected_at
   const days = [];
   // populate days array with today and each of the past 6 days, in order, with dates
-  for (let i = 7; i > 0; i--) {
+  for (let i = 6; i >= 0; i--) {
     days.push(dayjs().subtract(i, 'day').format('YYYY-MM-DD'));
   }
 
@@ -38,28 +38,47 @@ const DashAlertLineChart = () => {
 
 
   return (
-    <Box sx={{backgroundColor: '#6870fa', color: 'FAF9F6'}}>
+    <Box
+      sx={{
+        backgroundColor: "#6870fa",
+        borderRadius: 4,
+        m: 1,
+      }}
+    >
+      <h2 style={{ marginLeft: "1rem" }}>alerts by date</h2>
+      <Divider sx={{ width: "100%", mb: 1 }} />
+
       <LineChart
         xAxisDataKey="date"
         yAxisDataKey="alerts"
-        yAxis={[{
-          label: 'alerts',
-        }]}
+        yAxis={[
+          {
+            label: "alerts",
+          },
+        ]}
         xAxis={[
-          { 
-            scaleType: 'point',
+          {
+            scaleType: "point",
             data: days, //[-6, -5, -4, -3, -2, -1, 0],
-            label: 'date',
-          }]}
+            label: "date",
+          },
+        ]}
         series={[
-          { 
-            data: alertsByDay, 
-          }]}
+          {
+            data: alertsByDay,
+          },
+        ]}
         width={500}
         height={300}
+        sx={{
+          backgroundColor: "#6870fa",
+          color: "FAF9F6",
+          borderRadius: 4,
+          width: "45%",
+        }}
       />
     </Box>
-  )
+  );
 };
 
 export default DashAlertLineChart;

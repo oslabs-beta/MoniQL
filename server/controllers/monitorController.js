@@ -292,8 +292,6 @@ monitorController.stats = async (req, res, next) => {
 }
 
 monitorController.custom = async (req, res, next) => {
-//(table, monitorType, anomalyType, severity = 'error', 
-//column, rows = null, anomalyValue, anomalyTime, notes = [])
   const customQuery = req.body.monitor.parameters.query;
 
   try {
