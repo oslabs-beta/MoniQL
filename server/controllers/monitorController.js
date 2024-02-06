@@ -199,6 +199,7 @@ monitorController.range = async (req, res, next) => {
     }
     if (!isScheduledCall) return next();
   } catch(err) {
+    console.log('&%&%&%&%&&% WE IN THE CATCH BLOCK!!! &%&%&%%&%&%&%&%&%')
     if (isScheduledCall) throw err;
     return next({
       log: `error in monitorController.range: ${err}`,
@@ -245,7 +246,7 @@ monitorController.null = async (req, res, next) => {
       }
       if (isScheduledCall) return alerts
       res.locals.alerts = alerts;
-      return next()
+      if (!isScheduledCall) return next()
     }
     console.log('res.locals in moncont.null: ', res.locals);
     next();
@@ -332,7 +333,7 @@ monitorController.custom = async (req, res, next) => {
       res.locals.alerts = alerts;
     }
     console.log('res.locals.alerts in moncontroller.range: ', res.locals.alerts)
-    return next();
+    if (!isScheduledCall) return next();
   } catch(err) {
     return next({
       log: `error in monitorController.custom: ${err}`,
@@ -361,14 +362,21 @@ monitorController.scheduleMonitors = async (req, res, next) => {
       console.log('TYPE:', type.toLowerCase())
       const monitorFunction = monitorController[type.toLowerCase()]
       
-      cron.schedule(cronExpression, () => {
+      // Calculate delay based on index to stagger execution
+      const delay = i * 2000; // 2 seconds apart for each monitor
+
+      cron.schedule(cronExpression, async () => {
         console.log(`Executing task for ${type}-type monitor with frequency: ${parameters.frequency} minutes`)
         // monitorController.test(req)
+
+        // Delay the execution of the task
+        await new Promise(resolve => setTimeout(resolve, delay));
+
         const getAlerts = async () => {
           try {
             const alerts = await monitorFunction(req, null, null)
             console.log(`Executed ${type}-type monitor. Results:`, alerts);
-            if (alerts.length) {
+            if (alerts.length && alerts !== undefined) {
               const io = getIo();
               io.to(user_id.toString()).emit('alert', alerts)
             }
