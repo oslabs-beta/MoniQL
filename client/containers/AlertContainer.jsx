@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux'; 
 import AlertBox from '../components/AlertBox';
+import {
+  Box,
+} from "@mui/material";
 
 const AlertContainer = () => {
   const alerts = useSelector((state) => state.alert.alerts);
@@ -27,11 +30,13 @@ const AlertContainer = () => {
   // pull from state - alert.filterBy
   // filter anomalies thusly
 
-  return(
-    <div>
-      {anomalies}
-    </div>
-  )
+  return (
+    <Box sx={{
+      ml: '1%'
+    }}>
+      <div>{anomalies}</div>
+    </Box>
+  );
 }
 
 export default AlertContainer;

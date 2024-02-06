@@ -121,6 +121,13 @@ const Header = () => {
       anchor='right'
       open={alertsDrawerToggle}
       onClose={handleAlertsDrawerToggle}
+      sx={{
+        '& .MuiDrawer-paper': {
+          width: 350,
+          boxSizing: 'border-box',
+          backgroundColor: 'black'
+        },
+      }}
     >
       <Box sx={{ width: 350 }}>
         <IconButton

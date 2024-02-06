@@ -78,15 +78,15 @@ const CustomMonitor = () => {
         <Card
           variant="outlined"
           sx={{
-            width: "25vw",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
+            width: '25vw',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
             padding: 3,
             boxShadow: 3,
             borderRadius: 4,
-            backgoundColor: "#6870fa",
+            backgoundColor: '#6870fa',
           }}
         >
           <FormControl sx={{ m: 1, minWidth: 200 }}>
@@ -113,8 +113,8 @@ const CustomMonitor = () => {
                 onChange={handleChanges}
                 color="secondary"
                 sx={{
-                  borderRadius: "5px",
-                  width: "60%",
+                  borderRadius: '5px',
+                  width: '60%',
                   // backgroundColor: 'rgba(255, 255, 255, 0.7)'
                 }}
               />
@@ -134,8 +134,8 @@ const CustomMonitor = () => {
                 onChange={handleChanges}
                 color="secondary"
                 sx={{
-                  borderRadius: "5px",
-                  width: "100%",
+                  borderRadius: '5px',
+                  width: '100%',
                 }}
               />
               <FormHelperText>
@@ -156,8 +156,8 @@ const CustomMonitor = () => {
                 color="secondary"
                 sx={{
                   // bakgroundColor: 'white',
-                  borderRadius: "5px",
-                  width: "100%",
+                  borderRadius: '5px',
+                  width: '100%',
                 }}
               />
               <FormHelperText>

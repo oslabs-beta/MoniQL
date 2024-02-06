@@ -49,6 +49,7 @@ const MonitorContainer = () => {
   //   // Exit the editing mode
   //   setEditingMonitor(null);
   // };
+
   const handleSaveChanges = (updatedMonitor) => {
     setNewActiveMonitors((prevMonitors) =>
       prevMonitors.map((monitor) =>
@@ -80,6 +81,7 @@ const MonitorContainer = () => {
     } catch (error) {
       console.error('Error updating monitor', error);
     }
+
   };
 
   //*** for editing monitors with existing rules ***//
@@ -124,10 +126,11 @@ const MonitorContainer = () => {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'flex-start',
+        marginLeft: '10px'
       }}
     >
       <Card
-        variant="outlined"
+        variant='outlined'
         sx={{
           minWidth: '30vw',
           flexDirection: 'column',
@@ -179,33 +182,39 @@ const MonitorContainer = () => {
                           alignItems: 'row',
                         }}
                       >
+
                         <Typography fontSize='16px' color={colors.grey[100]}>
                           table:{' '}
                           <Typography
                             fontSize='19px'
                             color="secondary"
                             display="inline"
-                          >
+        >
                             {monitor.parameters.table}
                           </Typography>{' '}
                           | type:{' '}
                           <Typography
+
                             fontSize='19px'
                             color="secondary"
                             display="inline"
+
                           >
                             {monitor.type}
                           </Typography>
-                        </Typography>
+                          </Typography>
                         <Box>
 
                           <Button onClick={() => setEditingMonitor(monitor)}>
-                          Edit
+                            Edit
+
                           </Button>
                           <Button onClick={() => sendQuery(monitor)}>
                             fire me
                           </Button>
+
                         </Box>
+
                       </Box>
                       <Divider sx={{ width: '100%' }} />
                       {/* logic to go into monitor editor */}
@@ -227,7 +236,7 @@ const MonitorContainer = () => {
                                   key={`${monitor.monitor_id}-${index}`}
                                 >
                                   {index !== 1 && (
-                                    <Divider orientation="vertical" flexItem />
+                                    <Divider orientation='vertical' flexItem />
                                   )}
                                   <ListItem>
                                     <ListItemText
@@ -253,7 +262,7 @@ const MonitorContainer = () => {
       <Box sx={{ p: 2, marginTop: '-15px' }}>
         {/* Conditional Rendering for Monitors */}
         <Card
-          variant="outlined"
+          variant='outlined'
           sx={{
             minWidth: '30vw', // Adjust this as needed
             flexDirection: 'column',
@@ -265,8 +274,9 @@ const MonitorContainer = () => {
           }}
         >
           <Box sx={{ p: 2, display: 'flex', justifyContent: 'space-between' }}>
-            <Typography variant="h5" color={colors.grey[100]}>
-              Create new monitors
+
+            <Typography variant='h5' color={colors.grey[100]}>
+              Create New Monitor
             </Typography>
           </Box>
           <Divider sx={{ width: '100%' }} />
