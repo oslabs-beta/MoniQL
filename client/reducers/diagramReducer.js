@@ -5,6 +5,7 @@ const initialState = {
   focusTable: null,
   depth: 6,
   tablesWeightsObj: {},
+  dashDisplayAlertsTimeRange: [new Date() - 1000 * 60 * 60 * 24 * 7, Date.now()],
 };
 
 const diagramReducer = (state = initialState, action) => {
@@ -32,6 +33,12 @@ const diagramReducer = (state = initialState, action) => {
     return{
       ...state,
       tablesWeightsObj: action.payload,
+    }
+
+  case types.UPDATE_DASH_DISPLAY_TIME_RANGE:
+    return {
+      ...state,
+      dashDisplayAlertsTimeRange: action.payload,
     }
 
   default:

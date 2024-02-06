@@ -9,15 +9,15 @@ const ourDB = pool;
 
 
 // prod mode:
-monitorController.connect = async (req, res, next) => {
-  const user_uri = res.locals.uri;
-  db = await connectToPool(user_uri);
-  console.log('connected to user db in moncont.connect');
-  return next();
-};
+// monitorController.connect = async (req, res, next) => {
+//   const user_uri = res.locals.uri;
+//   db = await connectToPool(user_uri);
+//   console.log('connected to user db in moncont.connect');
+//   return next();
+// };
 
 // dev mode:
-// db = userPool;
+db = userPool;
 
 /**
  * alert object shape:

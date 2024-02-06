@@ -16,16 +16,16 @@ const pool = new Pool({
   connectionString: pgUri
 });
 
-// comment out for dev mode
-// const userPool = new Pool({
-//   connectionString: userUri
-// });
+// uncomment for dev mode
+const userPool = new Pool({
+  connectionString: userUri
+});
 
 
 module.exports = {
   connectToPool,
   pool,
-  // userPool,
+  userPool,
   query: (text, params, callback) => {
     console.log('executed query', text);
     return pool.query(text, params, callback);

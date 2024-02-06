@@ -68,3 +68,8 @@ export const displayMonitorsActionCreator = (monitorsArray) => ({
   type: types.DISPLAY_MONITORS,
   payload: monitorsArray
 })
+
+export const updateDashDisplayTimeRangeActionCreator = (timeRange) => ({
+  type: types.UPDATE_DASH_DISPLAY_TIME_RANGE,
+  payload: timeRange
+})
