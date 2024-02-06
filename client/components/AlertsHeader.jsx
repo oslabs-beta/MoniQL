@@ -120,89 +120,81 @@ const AlertsHeader = () => {
           // subtitle="Anomalous rows detected below..."
         />
 
-        <Box sx={{ display: 'flex', flexDirection: 'row', minWidth: 120 }}>
-          <FormControl sx={{ mr: 4, minWidth: 350 }} h>
-            <InputLabel id='table-select-label'>Table Name</InputLabel>
-            <Select
-              labelId='table-select-label'
-              value={selectedTable}
-              label='Table'
-              onChange={(e) => setSelectedTable(e.target.value)}
-              sx={{
-                backgroundColor: '#2E2D3D',
-                borderRadius: '5px',
-              }}
-            >
-              {tablesWithAlerts.map((table, index) => (
-                <MenuItem key={index} value={table}>
-                  {table}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <FormControl sx={{ mr: 4, minWidth: 200 }}>
-            <InputLabel id='column-select-label'>Column Name</InputLabel>
-            <Select
-              labelId='column-select-label'
-              value={selectedColumn}
-              label='Column'
-              onChange={(e) => setSelectedColumn(e.target.value)}
-              sx={{
-                backgroundColor: '#2E2D3D',
-                borderRadius: '5px',
-              }}
-            >
-              {columnsOnTablesWithAlerts[selectedTable] &&
-                columnsOnTablesWithAlerts[selectedTable].map(
-                  (column, index) => (
-                    <MenuItem key={index} value={column}>
-                      {column}
-                    </MenuItem>
-                  )
-                )}
-            </Select>
-          </FormControl>
-          <FormControl sx={{ mr: 4, minWidth: 200 }}>
-            <InputLabel id='monitor-type-select-label'>Monitor Type</InputLabel>
-            <Select
-              labelId='monitor-type-select-label'
-              value={selectedMonitorType}
-              label='Monitor Type'
-              onChange={(e) => setSelectedMonitorType(e.target.value)}
-              sx={{
-                backgroundColor: '#2E2D3D',
-                borderRadius: '5px',
-              }}
-            >
-              {monitorTypes.map((monitorType, index) => (
-                <MenuItem key={index} value={monitorType}>
-                  {monitorType}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <Chip
-            label='Reset Filters'
-            onClick={() => {
-              setSelectedTable('');
-              setSelectedColumn('');
-              setSelectedMonitorType('');
-              setShowResolved(true);
-              setShowDismissed(true);
-            }}
-            size='large'
-            sx={{
-              fontSize: '1.2em',
-              mt: 1,
-            }}
-          />
+        <Box sx={{ display: 'flex', flexDirection: 'column', minWidth: 120 }}>
+          <Box sx={{ display: 'flex', flexDirection: 'row', minWidth: 120 }}>
+            <FormControl sx={{ mr: 4, minWidth: 350 }} h>
+              <InputLabel id='table-select-label'>Table Name</InputLabel>
+              <Select
+                labelId='table-select-label'
+                value={selectedTable}
+                label='Table'
+                onChange={(e) => setSelectedTable(e.target.value)}
+                sx={{
+                  backgroundColor: '#2E2D3D',
+                  borderRadius: '5px',
+                }}
+              >
+                {tablesWithAlerts.map((table, index) => (
+                  <MenuItem key={index} value={table}>
+                    {table}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl sx={{ mr: 4, minWidth: 200 }}>
+              <InputLabel id='column-select-label'>Column Name</InputLabel>
+              <Select
+                labelId='column-select-label'
+                value={selectedColumn}
+                label='Column'
+                onChange={(e) => setSelectedColumn(e.target.value)}
+                sx={{
+                  backgroundColor: '#2E2D3D',
+                  borderRadius: '5px',
+                }}
+              >
+                {columnsOnTablesWithAlerts[selectedTable] &&
+                  columnsOnTablesWithAlerts[selectedTable].map(
+                    (column, index) => (
+                      <MenuItem key={index} value={column}>
+                        {column}
+                      </MenuItem>
+                    )
+                  )}
+              </Select>
+            </FormControl>
+            <FormControl sx={{ mr: 4, minWidth: 200 }}>
+              <InputLabel id='monitor-type-select-label'>
+                Monitor Type
+              </InputLabel>
+              <Select
+                labelId='monitor-type-select-label'
+                value={selectedMonitorType}
+                label='Monitor Type'
+                onChange={(e) => setSelectedMonitorType(e.target.value)}
+                sx={{
+                  backgroundColor: '#2E2D3D',
+                  borderRadius: '5px',
+                }}
+              >
+                {monitorTypes.map((monitorType, index) => (
+                  <MenuItem key={index} value={monitorType}>
+                    {monitorType}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
           <Box
             sx={{
               display: 'flex',
-              flexDirection: 'column',
             }}
           >
-            <FormControl>
+            <FormControl
+              sx={{
+                marginTop: 1, // Adjust this value as needed
+              }}
+            >
               {/* <InputLabel>Display Resolved Alerts</InputLabel> */}
               <FormControlLabel
                 control={
@@ -216,7 +208,11 @@ const AlertsHeader = () => {
                 // </Switch>
               />
             </FormControl>
-            <FormControl>
+            <FormControl
+              sx={{
+                marginTop: 1, // Adjust this value as needed
+              }}
+            >
               {/* <InputLabel>Display Dismissed Alerts</InputLabel> */}
               <FormControlLabel
                 control={
@@ -230,8 +226,23 @@ const AlertsHeader = () => {
                 // </Switch>
               />
             </FormControl>
+            <Chip
+              label='Reset Filters'
+              onClick={() => {
+                setSelectedTable('');
+                setSelectedColumn('');
+                setSelectedMonitorType('');
+                setShowResolved(true);
+                setShowDismissed(true);
+              }}
+              size='large'
+              sx={{
+                fontSize: '1.2em',
+                mt: 2,
+                ml: 3,
+              }}
+            />
           </Box>
-          
         </Box>
       </Box>
     </div>
