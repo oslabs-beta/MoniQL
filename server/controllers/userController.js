@@ -144,7 +144,7 @@ userController.getAlerts = async (req, res, next) => {
       alertObjArr.push(row.alert_obj);
     }
     res.locals.allAlerts = alertObjArr;
-    console.log('alertObjArr in getAlerts: ', alertObjArr);
+    // console.log('alertObjArr in getAlerts: ', alertObjArr);
     return next();
   } catch (err) {
     return next({
@@ -261,11 +261,16 @@ userController.insertMonitor = async (req, res, next) => {
 };
 
 userController.getMonitors = async (req, res, next) => {
-  const { user_id } = req.body;
+  
+  // const { user_id } = req.body;
+  console.log('!@!@!@!@!@!@!@!@!@!@!@!@', res.locals)
+  const { user_id } = req.body.user_id ? req.body : res.locals ;
+  console.log('USERID!!!!!', user_id)
   try {
     const fetchQuery = 'SELECT * FROM monitors WHERE user_id = $1;';
     const { rows } = await db.query(fetchQuery, [user_id]);
     res.locals.monitors = rows;
+  
     return next();
   } catch (err) {
     return next({
