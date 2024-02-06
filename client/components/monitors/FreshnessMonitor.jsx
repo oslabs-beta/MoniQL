@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { addMonitorsActionCreator } from "../../actions/actions";
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { addMonitorsActionCreator } from '../../actions/actions';
 import {
   Box,
   Card,
@@ -14,10 +14,9 @@ import {
   MenuItem,
   Select,
   TextField,
-} from "@mui/material";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import monitorObjectCreator from "./monitorObjectCreator";
-
+} from '@mui/material';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import monitorObjectCreator from './monitorObjectCreator';
 
 const FreshnessMonitor = () => {
   const dispatch = useDispatch();
@@ -25,30 +24,30 @@ const FreshnessMonitor = () => {
     table: '',
     frequency: '',
     description: '',
-    howLongIsTooLong: ''
+    howLongIsTooLong: '',
   });
-  
+
   const tablesArray = useSelector((state) => state.diagram.data);
   const user_id = useSelector((state) => state.user.user_id);
   const [columnsArray, setColumnsArray] = useState([]);
 
   //for editing monitors with existing rules
-  const handleChanges = (e) => {  
+  const handleChanges = (e) => {
     // console.log('THIS IS THE NAME OF THE DROPDOWNLIST: ', e.target.name, 'THIS IS THE VALUE THE USER CHOSE: ', e.target.value)
     setParams({ ...params, [e.target.name]: e.target.value });
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("params in freshness monitor handlesubmit", params);
+    console.log('params in freshness monitor handlesubmit', params);
     const monitorObject = monitorObjectCreator('Freshness', user_id, params);
 
     //make post request to server
     try {
-      const response = await fetch("/monitors", {
-        method: "POST",
+      const response = await fetch('/monitors', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(monitorObject),
       });
@@ -60,40 +59,70 @@ const FreshnessMonitor = () => {
 
       dispatch(addMonitorsActionCreator(data));
     } catch (error) {
-      console.log("fetch error:", error);
+      console.log('fetch error:', error);
     }
-  }
+  };
 
   return (
     <div>
       <Box display="flex" justifyContent="center" alignItems="center">
         <Card
           variant="outlined"
-          sx={{ width: "50vw", display: "flex", flexDirection: "column",
-            justifyContent: "center", padding: 3, boxShadow: 3,
-            backgroundColor: "rgba(255, 255, 255, 0.7)", borderRadius: 4 }}>
+          sx={{
+            width: '25vw',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            padding: 3,
+            boxShadow: 3,
+            backgroundColor: 'primary',
+            borderRadius: 4,
+          }}
+        >
           <FormControl sx={{ m: 1, minWidth: 200 }}>
             <Box sx={{ p: 2 }}>
-              <Typography variant="h5" color="white">Create New Freshness Monitor</Typography>
+              <Typography variant="h5" color="white">
+                New Freshness Monitor
+              </Typography>
               <Divider />
             </Box>
-            <Stack direction="column" spacing={1} alignItems="center" justifyContent="left">
-            
+            <Stack
+              direction="column"
+              spacing={1}
+              alignItems="center"
+              justifyContent="left"
+            >
               {/* TABLE SELECT */}
-              <Select
-                required
-                id="select-table"
-                value={params.table}
-                name='table'
-                onChange={handleChanges}
-                sx={{ backgroundColor: "white", borderRadius: "5px", width: '30%' }}>
-                {tablesArray.map((item, index) => (
-                  <MenuItem key={index} value={item.table_name}>{item.table_name}</MenuItem>
-                ))}
-              </Select>
-              <FormHelperText>Select table to monitor</FormHelperText>
+              <FormControl sx={{ flex: 1, minWidth: '40%', mr: '1rem' }}>
+                <InputLabel id="table-name" style={{ color: '#4cceac' }}>
+                  Table Name
+                </InputLabel>
+
+                <Select
+                  label="Table Name"
+                  labelId="table-name"
+                  required
+                  id="select-table"
+                  value={params.table}
+                  name="table"
+                  onChange={handleChanges}
+                  color="secondary"
+                  sx={{
+                    borderRadius: '5px',
+                    width: '100%',
+                  }}
+                >
+                  {tablesArray.map((item, index) => (
+                    <MenuItem key={index} value={item.table_name}>
+                      {item.table_name}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <FormHelperText>Select table to monitor</FormHelperText>
+              </FormControl>
 
               {/* Frequency Input */}
+
               <TextField
                 required
                 id="frequency"
@@ -102,17 +131,15 @@ const FreshnessMonitor = () => {
                 name="frequency"
                 value={params.frequency}
                 onChange={handleChanges}
-                sx={{ backgroundColor: "white", borderRadius: "5px", width: '30%',  input: { color: "hotpink" },
-               
-                }}
-                InputLabelProps={{
-                  style: { color: "hotpink" },
-                }}
-                InputProps={{
-                  style: { color: "hotpink" },
+                color="secondary"
+                sx={{
+                  borderRadius: '5px',
+                  width: '60%',
                 }}
               />
-              <FormHelperText>Enter the frequency (in hours) for the monitor to run</FormHelperText>
+              <FormHelperText>
+                Enter the frequency (in hours) for the monitor to run
+              </FormHelperText>
 
               {/* Define Anomalous Input */}
               <TextField
@@ -123,17 +150,16 @@ const FreshnessMonitor = () => {
                 name="howLongIsTooLong"
                 value={params.howLongIsTooLong}
                 onChange={handleChanges}
-                sx={{ backgroundColor: "white", borderRadius: "5px", width: '30%',  input: { color: "hotpink" },
-               
-                }}
-                InputLabelProps={{
-                  style: { color: "hotpink" },
-                }}
-                InputProps={{
-                  style: { color: "hotpink" },
+                color="secondary"
+                sx={{
+                  borderRadius: '5px',
+                  width: '60%',
                 }}
               />
-              <FormHelperText>After how many hours with no updates would you like to fire an alert?</FormHelperText>
+              <FormHelperText>
+                After how many hours with no updates would you like to fire an
+                alert?
+              </FormHelperText>
 
               {/* Description Input */}
               <TextField
@@ -145,10 +171,15 @@ const FreshnessMonitor = () => {
                 name="description"
                 value={params.description}
                 onChange={handleChanges}
-                sx={{ backgroundColor: "white", borderRadius: "5px", width: '100%' }}
+                color="secondary"
+                sx={{
+                  borderRadius: '5px',
+                  width: '100%',
+                }}
               />
-              <FormHelperText>Enter a description for the monitor</FormHelperText>
-
+              <FormHelperText>
+                Enter a description for the monitor
+              </FormHelperText>
             </Stack>
             <Button
               type="submit"
@@ -157,14 +188,15 @@ const FreshnessMonitor = () => {
               onClick={handleSubmit}
               sx={{ mt: 3, mb: 2 }}
               size="small"
+              color="secondary"
             >
-            Submit
+              Submit
             </Button>
           </FormControl>
         </Card>
       </Box>
     </div>
   );
-}
+};
 
 export default FreshnessMonitor;
