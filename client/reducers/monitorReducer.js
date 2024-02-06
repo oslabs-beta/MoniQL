@@ -6,6 +6,9 @@ const initialState = {
 };
 
 const monitorReducer = (state = initialState, action) => {
+  let updatedMonitors;
+  let updatedDisplayMonitors;
+
   switch(action.type) {
   case types.ADD_MONITORS:
     console.log('payload in monitorReducer: ', action.payload)
@@ -22,6 +25,31 @@ const monitorReducer = (state = initialState, action) => {
       ...state,
       displayMonitors: action.payload
     }
+
+  case types.UPDATE_MONITOR:
+
+    updatedMonitors = state.activeMonitors.slice();
+    updatedMonitors = updatedMonitors.map((monitor) => {
+      if (monitor.monitor_id === action.payload.monitor_id) {
+        return action.payload;
+      }
+      return monitor;
+    });
+      
+    updatedDisplayMonitors = state.activeMonitors.slice();
+    updatedDisplayMonitors = updatedDisplayMonitors.map((monitor) => {
+      if (monitor.monitor_id === action.payload.monitor_id) {
+        return action.payload;
+      }
+      return monitor;
+    });
+  
+    return {
+      ...state,
+      activeMonitors: updatedMonitors,
+      displayMonitors: updatedDisplayMonitors
+    }
+
 
   default:
     return state;

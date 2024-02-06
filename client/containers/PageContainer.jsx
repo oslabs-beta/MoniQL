@@ -6,22 +6,21 @@ import ReportContainer from './ReportContainer'
 import QueryContainer from './QueryContainer';
 import { useSelector } from 'react-redux';
 import { Box } from '@mui/system';
-import LoginContainer from '../components/LoginContainer';
+import LoginContainer from '../components/Login';
 import MainContainer from './MainContainer';
 
 const PageContainer = () => {
-  
-  const page = useSelector((state) => state.app.page)
-  
+  const page = useSelector((state) => state.app.page);
+
   return (
     <Box
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'stretch',
-        width: 'auto',
-        ml: 6,
-        overflow: 'auto'
+        alignItems: 'flex-start',
+        width: '100%',
+        ml: 3,
+        overflow: 'auto',
       }}
     >
       {page === 'Dashboard' && <MainContainer />}
@@ -34,6 +33,6 @@ const PageContainer = () => {
       {page === 'Help' && <></>}
     </Box>
   );
-}
+};
 
-export default PageContainer
+export default PageContainer;

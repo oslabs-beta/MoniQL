@@ -95,7 +95,7 @@ const AlertsHeader = () => {
       <Box m="30px">
         <SubHeader
           title="Alerts"
-          subtitle="Anomalous rows detected below..."
+          // subtitle="Anomalous rows detected below..."
         />
       </Box>
       <Box>

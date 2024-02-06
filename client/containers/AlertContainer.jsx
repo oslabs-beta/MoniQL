@@ -12,10 +12,8 @@ const AlertContainer = () => {
   useEffect(() => {
     const sortedAlerts = displayAlertsArrFromState.sort((a, b) => new Date(b.detected_at) - new Date(a.detected_at));
     setDisplayAlertsArr(sortedAlerts);
-    console.log('sortedAlerts in alertContainer: ', sortedAlerts)
     const anomaliesAsComponents = sortedAlerts.map((alertObj, i) => <AlertBox key={i} {...alertObj}/>);
     setAnomalies(anomaliesAsComponents);
-    console.log('anomalies in alertContainer: ', anomaliesAsComponents)
   }, [alerts, displayAlertsArrFromState]);
 
   // allow user to filter alerts by

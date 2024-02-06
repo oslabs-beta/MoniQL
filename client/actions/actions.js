@@ -49,6 +49,11 @@ export const addMonitorsActionCreator = (monitorsArray) => ({
   payload: monitorsArray
 })
 
+export const updateMonitorActionCreator = (monitorObj) => ({
+  type: types.UPDATE_MONITOR,
+  payload: monitorObj
+})
+
 export const addTablesWeightsActionCreator = (tablesWeightsObj) => ({
   type: types.ADD_TABLES_WEIGHTS,
   payload: tablesWeightsObj

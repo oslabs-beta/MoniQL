@@ -1,18 +1,19 @@
-import React from "react";
-import DashTableOfTables from "../components/DashTableOfTables";
-import DashAlertLineChart from "../components/DashAlertLineChart";
-import DashAlertBarChart from "../components/DashAlertBarChart";
+import React from 'react';
+import DashTableOfTables from '../components/DashTableOfTables';
+import DashAlertLineChart from '../components/DashAlertLineChart';
+import DashAlertBarChart from '../components/DashAlertBarChart';
+import Box from '@mui/material/Box'
 
 const DashboardContainer = () => {
-
   return (
-    <div>
-      <h1>Dashboard</h1>
-      <DashAlertLineChart />  
-      <DashAlertBarChart />
+    <Box sx={{opacity: "80%"}}>
+      <Box sx={{ display: 'flex' }}>
+        <DashAlertLineChart />
+        <DashAlertBarChart />
+      </Box>
       <DashTableOfTables />
-    </div>
-  )
+    </Box >
+  );
 };
 
 export default DashboardContainer;

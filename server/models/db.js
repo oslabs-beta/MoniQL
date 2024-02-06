@@ -17,15 +17,15 @@ const pool = new Pool({
 });
 
 // comment out for dev mode
-const userPool = new Pool({
-  connectionString: userUri
-});
+// const userPool = new Pool({
+//   connectionString: userUri
+// });
 
 
 module.exports = {
   connectToPool,
   pool,
-  userPool,
+  // userPool,
   query: (text, params, callback) => {
     console.log('executed query', text);
     return pool.query(text, params, callback);

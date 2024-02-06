@@ -80,7 +80,7 @@ const Header = () => {
     setAlertsCount(displayAlerts.length);
   }, [displayAlerts]);
 
-  const [alertsCount, setAlertsCount] = React.useState(displayAlerts.length);
+  const [alertsCount, setAlertsCount] = React.useState(0);
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (

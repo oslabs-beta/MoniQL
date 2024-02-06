@@ -164,7 +164,6 @@ const DashTableOfTables = () => {
       row.id = i + 1;
     });
 
-    console.log('newDashToTRows', newDashToTRows)
     setdashToTRows(newDashToTRows);
   };
 
@@ -181,9 +180,9 @@ const DashTableOfTables = () => {
   //   }
   // }, [didGetDashMonitorData]);
 
-  useEffect(() => {
-    console.log('tablesWeightsObj updated: ', tablesWeightsObj)
-  }, [tablesWeightsObj]);
+  // useEffect(() => {
+  //   console.log('tablesWeightsObj updated: ', tablesWeightsObj)
+  // }, [tablesWeightsObj]);
 
   useEffect(() => {
     if(didGetDashMonitorData && tablesWeightsObj){
@@ -234,20 +233,3 @@ const DashTableOfTables = () => {
 };
 
 export default DashTableOfTables;
-
-/*
-<FormControl fullWidth>
-  <InputLabel id="demo-simple-select-label">Age</InputLabel>
-  <Select
-    labelId="demo-simple-select-label"
-    id="demo-simple-select"
-    value={age}
-    label="Age"
-    onChange={handleChange}
-  >
-    <MenuItem value={10}>Ten</MenuItem>
-    <MenuItem value={20}>Twenty</MenuItem>
-    <MenuItem value={30}>Thirty</MenuItem>
-  </Select>
-</FormControl>
-*/

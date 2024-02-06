@@ -23,11 +23,14 @@ import {
 } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { selectPageActionCreator } from '../actions/actions';
+
 //icons
-//dashboard 
+//dashboard
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import HomeIcon from '@mui/icons-material/Home';
-
+//alerts
+import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
+import { NearbyErrorOutlined } from '@mui/icons-material';
 //ERD
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import AccountTreeOutlinedIcon from '@mui/icons-material/AccountTreeOutlined';
@@ -104,13 +107,13 @@ const listItems = [
     listText: 'Monitors',
   },
   {
-    listIcon: <AssessmentOutlinedIcon sx={{ fontSize: 25 }} />,
+    listIcon: <NearbyErrorOutlined sx={{ fontSize: 25 }} />,
     listText: 'Alerts',
   },
-  {
-    listIcon: <QueryStatsOutlinedIcon sx={{ fontSize: 25 }} />,
-    listText: 'Query',
-  },
+  // {
+  //   listIcon: <QueryStatsOutlinedIcon sx={{ fontSize: 25 }} />,
+  //   listText: "Query",
+  // },
 ];
 
 const hackLogo = {
@@ -138,13 +141,13 @@ const SideBar = () => {
     <div>
       {/* <Box sx={{ display: "flex" }}> */}
       <Drawer
-        variant="permanent"
-        about="left"
+        variant='permanent'
+        about='left'
         //BOX SHADOW
         sx={{
           flexShrink: 0,
           width: drawerWidth,
-          ['& .MuiDrawer-paper']: {
+          [`& .MuiDrawer-paper`]: {
             width: drawerWidth,
             boxSizing: 'border-box',
             backgroundColor: '#2A2A43',
@@ -162,27 +165,27 @@ const SideBar = () => {
           <AutoAwesomeIcon sx={{ mt: 3, color: '#4cceac' }} />
 
           <Typography
-            align="center"
-            variant="h6"
+            align='center'
+            variant='h6'
             noWrap
-            color="#a4a9fc"
-            component="div"
+            color='#a4a9fc'
+            component='div'
             // transform: { rotate: '90deg'}
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
-              moniQL
+            MoniQL
           </Typography>
         </Box>
         <Toolbar />
-        <Box display="flex" flexDirection="column" height="100%">
+        <Box display='flex' flexDirection='column' height='100%'>
           <Box>
             <List>
               {listItems.map((item, index) => (
                 <ListItem
-                  className="listItem"
+                  className='listItem'
                   key={index}
                   // disablePadding
-                  sx={{ display: 'block', mb: 1, mt: 1 }}
+                  sx={{ display: 'block', mb: 1, mt: index === 0 ? 12 : 1 }}
                 >
                   <ListItemButton
                     sx={{
@@ -194,12 +197,12 @@ const SideBar = () => {
                     onClick={() => handleClick(item)}
                   >
                     <Box
-                      display="flex"
-                      flexDirection="column"
-                      alignItems="center"
+                      display='flex'
+                      flexDirection='column'
+                      alignItems='center'
                     >
                       <ListItemIcon
-                        className="listItem"
+                        className='listItem'
                         style={{
                           color: item === selectedItem ? '#6870fa' : 'white',
                         }}
@@ -214,11 +217,9 @@ const SideBar = () => {
                       <ListItemText
                         primary={
                           <Typography
-                            align="center"
-                            fontSize="14px"
-                            color={
-                              item === selectedItem ? '#6870fa' : 'white'
-                            }
+                            align='center'
+                            fontSize='14px'
+                            color={item === selectedItem ? '#6870fa' : 'white'}
                           >
                             {item.listText}
                           </Typography>
@@ -230,9 +231,9 @@ const SideBar = () => {
               ))}
             </List>
           </Box>
-          <Box mt="auto" align="center" sx={{ mb: 5 }}>
+          <Box mt='auto' align='center' sx={{ mb: 5 }}>
             <IconButton
-              label="Settings"
+              label='Settings'
               sx={{
                 justifyContent: 'center',
                 '&:hover': {

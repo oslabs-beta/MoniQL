@@ -37,6 +37,7 @@ const NullMonitor = () => {
     // console.log('THIS IS THE NAME OF THE DROPDOWNLIST',e.target.name, 'THIS IS THE VALUE THE USER CHOSE', e.target.value)
     setParams({ ...params, [e.target.name]: e.target.value });
   }
+  
 
   const addMonitor = async (e) => {
     e.preventDefault();
@@ -74,39 +75,39 @@ const NullMonitor = () => {
         <Card
           variant="outlined"
           sx={{
-            width: '50vw',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
+            width: "25vw",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
             padding: 3,
             boxShadow: 3,
-            backgroundColor: 'rgba(255, 255, 255, 0.7)',
             borderRadius: 4,
           }}
         >
           <FormControl sx={{ m: 1, minWidth: 200 }}>
             <Box sx={{ p: 2 }}>
               <Typography variant="h5" color="white">
-              Create New Null Monitor
+                New Null Monitor
               </Typography>
               <Divider />
             </Box>
             <Box display="flex" justifyContent="space-between">
-              <FormControl sx={{ flex: 1, minWidth: '40%', mr: '1rem' }}>
-                <InputLabel style={{ color: 'hotpink' }}>Table Name</InputLabel>
+              <FormControl sx={{ flex: 1, minWidth: "40%", mr: "1rem" }}>
+                <InputLabel id="table-name" style={{ color: "#4cceac" }}>
+                  Table Name
+                </InputLabel>
                 {/* TABLE SELECT */}
                 <Select
+                  label="Table Name"
+                  labelId="table-name"
                   required
                   id="select-table"
                   value={params.table}
                   name="table"
                   onChange={handleChanges}
                   sx={{
-                    backgroundColor: 'white',
-                    borderRadius: '5px',
-                    width: '100%',
-                    color: 'hotpink',
-                    input: { color: 'hotpink' },
+                    borderRadius: "5px",
+                    width: "100%",
                   }}
                 >
                   {tablesArray.map((item, index) => (
@@ -118,7 +119,7 @@ const NullMonitor = () => {
                 <FormHelperText>Select table to monitor</FormHelperText>
               </FormControl>
               {/* Frequency Input */}
-              <FormControl sx={{ flex: 1, minWidth: '40%' }}>
+              <FormControl sx={{ flex: 1, minWidth: "40%" }}>
                 <TextField
                   required
                   id="frequency"
@@ -127,21 +128,14 @@ const NullMonitor = () => {
                   name="frequency"
                   value={params.frequency}
                   onChange={handleChanges}
+                  color="secondary"
                   sx={{
-                    backgroundColor: 'white',
-                    borderRadius: '5px',
-                    width: '100%',
-                    input: { color: 'hotpink' },
-                  }}
-                  InputLabelProps={{
-                    style: { color: 'hotpink' },
-                  }}
-                  InputProps={{
-                    style: { color: 'hotpink' },
+                    borderRadius: "5px",
+                    width: "100%",
                   }}
                 />
                 <FormHelperText>
-              Enter the frequency (in hours) for the monitor to run
+                  Enter the frequency (in hours) for the monitor to run
                 </FormHelperText>
               </FormControl>
             </Box>
@@ -155,21 +149,14 @@ const NullMonitor = () => {
               name="description"
               value={params.description}
               onChange={handleChanges}
+              color="secondary"
               sx={{
-                backgroundColor: 'white',
-                borderRadius: '5px',
-                width: '100%',
-                input: { color: 'hotpink' },
-              }}
-              InputLabelProps={{
-                style: { color: 'hotpink' },
-              }}
-              InputProps={{
-                style: { color: 'hotpink' },
+                borderRadius: "5px",
+                width: "100%",
               }}
             />
             <FormHelperText>Enter a description for the monitor</FormHelperText>
-       
+
             <Button
               type="submit"
               fullWidth
@@ -177,8 +164,9 @@ const NullMonitor = () => {
               onClick={addMonitor}
               sx={{ mt: 3, mb: 2 }}
               size="small"
+              color="secondary"
             >
-            Submit
+              Submit
             </Button>
           </FormControl>
         </Card>
