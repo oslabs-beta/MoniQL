@@ -11,6 +11,19 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
+import * as React from 'react';
+import { useState } from 'react';
+import Box from '@mui/material/Box';
+import Drawer from '@mui/material/Drawer';
+import Toolbar from '@mui/material/Toolbar';
+import List from '@mui/material/List';
+import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
+import InboxIcon from '@mui/icons-material/MoveToInbox';
+import MailIcon from '@mui/icons-material/Mail';
 import {
   AppBar,
   createTheme,
@@ -20,6 +33,9 @@ import {
   useTheme,
   IconButton,
   Button,
+} from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { selectPageActionCreator } from '../actions/actions';
 } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { selectPageActionCreator } from '../actions/actions';
@@ -33,7 +49,12 @@ import { NearbyErrorOutlined } from '@mui/icons-material';
 //ERD
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import AccountTreeOutlinedIcon from '@mui/icons-material/AccountTreeOutlined';
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
+import AccountTreeOutlinedIcon from '@mui/icons-material/AccountTreeOutlined';
 //monitor Outlined
+import InsightsIcon from '@mui/icons-material/Insights';
+import AutoGraphOutlinedIcon from '@mui/icons-material/AutoGraphOutlined';
+import AutoGraphIcon from '@mui/icons-material/AutoGraph';
 import InsightsIcon from '@mui/icons-material/Insights';
 import AutoGraphOutlinedIcon from '@mui/icons-material/AutoGraphOutlined';
 import AutoGraphIcon from '@mui/icons-material/AutoGraph';
@@ -41,12 +62,20 @@ import AutoGraphIcon from '@mui/icons-material/AutoGraph';
 import MonitorHeartIcon from '@mui/icons-material/MonitorHeart';
 import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
 import AssessmentIcon from '@mui/icons-material/Assessment';
+import MonitorHeartIcon from '@mui/icons-material/MonitorHeart';
+import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
+import AssessmentIcon from '@mui/icons-material/Assessment';
 //query
+import QueryStatsOutlinedIcon from '@mui/icons-material/QueryStatsOutlined';
+import QueryStatsIcon from '@mui/icons-material/QueryStats';
 import QueryStatsOutlinedIcon from '@mui/icons-material/QueryStatsOutlined';
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
 //light/dark mode
 import LightModeIcon from '@mui/icons-material/LightMode';
+import LightModeIcon from '@mui/icons-material/LightMode';
 //settings
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import SettingsIcon from '@mui/icons-material/Settings';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import SettingsIcon from '@mui/icons-material/Settings';
 //logo
@@ -54,8 +83,14 @@ import GradeIcon from '@mui/icons-material/Grade';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import CastleIcon from '@mui/icons-material/Castle';
 import BubbleChartIcon from '@mui/icons-material/BubbleChart';
+import GradeIcon from '@mui/icons-material/Grade';
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import CastleIcon from '@mui/icons-material/Castle';
+import BubbleChartIcon from '@mui/icons-material/BubbleChart';
 
 //////////////////////hay added for light/dark mode/////////////////////
+import tokens from './stylesheets/Themes';
+import { ProSidebar, Menu, MenuItem } from 'react-pro-sidebar';
 import tokens from './stylesheets/Themes';
 import { ProSidebar, Menu, MenuItem } from 'react-pro-sidebar';
 
@@ -96,13 +131,16 @@ const listItems = [
   {
     listIcon: <HomeOutlinedIcon sx={{ fontSize: 25 }} />,
     listText: 'Dashboard',
+    listText: 'Dashboard',
   },
   {
     listIcon: <AccountTreeOutlinedIcon sx={{ fontSize: 25 }} />,
     listText: 'ERD',
+    listText: 'ERD',
   },
   {
     listIcon: <AutoGraphOutlinedIcon sx={{ fontSize: 25 }} />,
+    listText: 'Monitors',
     listText: 'Monitors',
   },
   {
@@ -117,6 +155,7 @@ const listItems = [
 
 const hackLogo = {
   listIcon: <CastleIcon sx={{ fontSize: 35 }} />,
+  listText: 'Query',
   listText: 'Query',
 };
 

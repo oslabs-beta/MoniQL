@@ -1,7 +1,8 @@
 import React from 'react';
 import ErdVisualizerContainer from './ErdVisualizerContainer';
-import MonitorContainer from './MonitorContainer';
-import ReportContainer from './ReportContainer';
+import MonitorContainer from './MonitorContainer'
+import AlertContainer from './AlertContainer';
+import ReportContainer from './ReportContainer'
 import QueryContainer from './QueryContainer';
 import { useSelector } from 'react-redux';
 import { Box } from '@mui/system';

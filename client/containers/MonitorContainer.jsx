@@ -29,6 +29,7 @@ const MonitorContainer = () => {
   const [selectedMonitor, setSelectedMonitor] = useState('');
   const monitors = ['Range', 'Freshness', 'Volume', 'Null', 'Custom'];
   const activeMonitors = useSelector((state) => state.monitor.activeMonitors);
+  const displayMonitors = useSelector((state) => state.monitor.displayMonitors);
   const user_id = useSelector((state) => state.user.user_id);
 
   //*** for editing monitors with existing rules ***//
@@ -77,7 +78,7 @@ const MonitorContainer = () => {
       const data = await response.json();
       console.log(
         'data.alerts returned in sendQuery func in MonitorContainer',
-        data
+        data.alerts
       );
 
       if (!response.ok) throw new Error(data.message || 'Error from server');
@@ -90,6 +91,10 @@ const MonitorContainer = () => {
       throw new Error(error);
     }
   };
+
+  useEffect(() => {
+    setSelectedMonitor('');
+  }, [activeMonitors]);
 
   return (
     <Box

@@ -1,6 +1,6 @@
 import React, { useRef, useMemo, useEffect, useState, memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addTableWeightsActionCreator } from '../actions/actions';
+import { addTablesWeightsActionCreator } from '../actions/actions';
 import ReactFlow, {
   MiniMap,
   Controls,
@@ -155,7 +155,7 @@ const Focus = ({ children, elements }) => {
 
       if(tableWeightNotCalledYet) {
         const importanceObj = Object.fromEntries(importance);
-        dispatch(addTableWeightsActionCreator(importanceObj));
+        dispatch(addTablesWeightsActionCreator(importanceObj));
         tableWeightNotCalledYet.current = false;
         console.log('dispatched table weights: ', importanceObj);
       }

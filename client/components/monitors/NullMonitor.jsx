@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addMonitorsActionCreator } from '../../actions/actions';
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { addMonitorsActionCreator } from '../../actions/actions';
 import {
   Box,
   Card,
@@ -17,6 +20,9 @@ import {
 } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import monitorObjectCreator from './monitorObjectCreator';
+} from '@mui/material';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import monitorObjectCreator from './monitorObjectCreator';
 
 
 const NullMonitor = () => {
@@ -29,18 +35,25 @@ const NullMonitor = () => {
   
   const tablesArray = useSelector((state) => state.diagram.data);
   const user_id = useSelector((state) => state.user.user_id);
+  const tablesArray = useSelector((state) => state.diagram.data);
+  const user_id = useSelector((state) => state.user.user_id);
 
+  const [columnsArray, setColumnsArray] = useState([]);
   const [columnsArray, setColumnsArray] = useState([]);
 
   //for editing monitors with existing rules
   const handleChanges = (e) => {  
     console.log('THIS IS THE NAME OF THE DROPDOWNLIST',e.target.name, 'THIS IS THE VALUE THE USER CHOSE', e.target.value)
+  //for editing monitors with existing rules
+  const handleChanges = (e) => {  
+    // console.log('THIS IS THE NAME OF THE DROPDOWNLIST',e.target.name, 'THIS IS THE VALUE THE USER CHOSE', e.target.value)
     setParams({ ...params, [e.target.name]: e.target.value });
+  }
   }
 
   const addMonitor = async (e) => {
     e.preventDefault();
-    console.log('this is params in nullMonitor', params);
+    // console.log("this is params in nullMonitor", params);
     // const monitorObject = { type: "null", params: JSON.stringify(params) };
     const monitorObject = monitorObjectCreator('Null', user_id, params);
     try {
@@ -56,7 +69,7 @@ const NullMonitor = () => {
       }
       const data = await response.json();
       
-      console.log('data returned in addMonitor in null monitor component: ', data);
+      // console.log('data returned in addMonitor in null monitor component: ', data);
       // console.log('Data Parameters',data[0].parameters);
   
       dispatch(addMonitorsActionCreator(data))
