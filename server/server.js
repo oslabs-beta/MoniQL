@@ -9,27 +9,20 @@ const { init } = require('./socket.js')
 const PORT = 3000;
 const app = express();
 
+//we create this wrapper for our express server using Node's native http module in order to use Socket.io
+//This is because 
 const server = http.createServer(app);
 const io = init(server)
 
 app.use(cors({origin: '*'}));
+
 app.use(express.json());
 
 app.use(express.static(path.resolve(__dirname, '../client')));
 
 app.use('/', apiRouter);
 
-io.on('connection', (socket) => {
-  
-  socket.on('register', ({ user_id }) => {
-    socket.join(user_id.toString());
-    console.log(`User with ID: ${user_id} has joined their room.`);
-  });
 
-  socket.on('disconnect', () => {
-    console.log('User disconnected');
-  });
-});
 
 
 app.use((err, req, res, next) => {

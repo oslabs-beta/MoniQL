@@ -61,17 +61,17 @@ const AppContainer = () => {
   const user_id = useSelector((state) => state.user.user_id);
 
   useEffect(() => {
+    fetchAllMonitors();
+    getAllAlerts();
     if (user_id) {
       const socket = io('http://localhost:3000');
-
       socket.on('connect', () => {
         socket.emit('register', { user_id: user_id });
       });
-      
       socket.on('alert', (alerts) => {
-        console.log('()_()()_() SOCKET.IO IN SERVER RECIEVED ALERTS ()_()()_()):', alerts);
+        console.log('(人´∀｀).☆.。.: SOCKET.IO IN APPCONTAINER RECIEVED ALERTS :.。.☆.(´∀`人)', alerts);
+        dispatch(addAlertsActionCreator(alerts));
       });
-    
 
       return () => {
         socket.disconnect();
@@ -80,26 +80,26 @@ const AppContainer = () => {
   }, [user_id])
 
 
-  // const fetchAllMonitors = async () => {
-  //   console.log('user_id in fetchAllMonitors in MonitorContainer', user_id);
-  //   try {
-  //     const response = await fetch('/monitors', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json'
-  //       },
-  //       body: JSON.stringify({user_id: user_id})
-  //     });
-  //     if (!response.ok) {
-  //       throw new Error(`HTTP error! status: ${response.status}`);
-  //     }
-  //     const data = await response.json();
-  //     console.log('data in fetchAllMonitors in AppContainer', data);
-  //     dispatch(addMonitorsActionCreator(data));
-  //   } catch (error) {
-  //     console.log('fetch error:', error);
-  //   }
-  // };
+  const fetchAllMonitors = async () => {
+    console.log('user_id in fetchAllMonitors in MonitorContainer', user_id);
+    try {
+      const response = await fetch('/getMonitors', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({user_id: user_id})
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log('data in fetchAllMonitors in AppContainer', data);
+      dispatch(addMonitorsActionCreator(data));
+    } catch (error) {
+      console.log('fetch error:', error);
+    }
+  };
 
   // useEffect(() => {
   //   fetchAllMonitors();  

@@ -212,10 +212,11 @@ monitorController.range = async (req, res, next) => {
 
 monitorController.null = async (req, res, next) => {
   // query table by name, look for any null values
-
-  const { table } = req.body.monitor.parameters;
-  const timeColumn = req.body.monitor.parameters.timeColumn || 'created_at';
-
+  const isScheduledCall = !req.hasOwnProperty('body')
+  const params = isScheduledCall ? req.parameters : req.body.monitor.parameters
+  const { table, timeColumn = 'created_at' } = params;
+  // const timeColumn = req.body.monitor.parameters.timeColumn || 'created_at';
+  if (req.body) console.log('req.body in moncontroller.null: ', req.body)
   try {
     // first, query metadata for column names
     // returns array of objects like {column_name: 'name'}
@@ -233,11 +234,18 @@ monitorController.null = async (req, res, next) => {
 
     const data = await db.query(query);
     const anomalousArray = data.rows;
+
+    
     if(anomalousArray.length) {
-      res.locals.alerts = [];
+      const alerts = []
       for(const column in anomalousArray[0]){
-        if(anomalousArray[0][column] === null) res.locals.alerts.push(alertObjCreator(table, 'Null', 'null found', 'error', column, anomalousArray, null, anomalousArray[0][timeColumn]));
+        if(anomalousArray[0][column] === null) {
+          alerts.push(alertObjCreator(table, 'Null', 'null found', 'error', column, anomalousArray, null, anomalousArray[0][timeColumn]));
+        }
       }
+      if (isScheduledCall) return alerts
+      res.locals.alerts = alerts;
+      return next()
     }
     console.log('res.locals in moncont.null: ', res.locals);
     next();
@@ -310,19 +318,21 @@ monitorController.stats = async (req, res, next) => {
 monitorController.custom = async (req, res, next) => {
 //(table, monitorType, anomalyType, severity = 'error', 
 //column, rows = null, anomalyValue, anomalyTime, notes = [])
-  const customQuery = req.body.monitor.parameters.query;
+  const isScheduledCall = !req.hasOwnProperty('body')
+  const customQuery = isScheduledCall ? req.parameters.query : req.body.monitor.parameters.query;
 
   try {
     const data = await db.query(customQuery);
     const anomalousArray = data.rows;
     console.log('anomalous rows in moncont.range: ', anomalousArray);
     if(anomalousArray.length) {
-      res.locals.alerts = [];
+      const alerts = [alertObjCreator('custom query table(s)', 'Custom', 'custom', 'error', 'custom', anomalousArray)];
       // might be better to make a different alert object for custom queries
-      res.locals.alerts.push(alertObjCreator('custom query table(s)', 'Custom', 'custom', 'error', 'custom', anomalousArray));
+      if (isScheduledCall) return alerts;
+      res.locals.alerts = alerts;
     }
     console.log('res.locals.alerts in moncontroller.range: ', res.locals.alerts)
-    next();
+    return next();
   } catch(err) {
     return next({
       log: `error in monitorController.custom: ${err}`,

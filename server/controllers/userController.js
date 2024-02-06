@@ -249,7 +249,10 @@ userController.insertMonitor = async (req, res, next) => {
   try {
     const insertQuery = 'INSERT INTO monitors (type, user_id, parameters) VALUES ($1, $2, $3) RETURNING *;';
     const values = [type, user_id, JSON.stringify(parameters)];
-    await db.query(insertQuery, values);
+    const { rows } = await db.query(insertQuery, values);
+    console.log('MONITOR RETURNED FROM INSERTING INTO DB!!!:', rows)
+    res.locals.monitors = rows
+    res.locals.user_id = rows[0].user_id
     return next();
   } catch (err) {
     return next({
