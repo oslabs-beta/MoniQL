@@ -188,6 +188,7 @@ const AlertsHeader = () => {
           <Box
             sx={{
               display: 'flex',
+              mt: 1
             }}
           >
             <FormControl
