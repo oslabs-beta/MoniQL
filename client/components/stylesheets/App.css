@@ -17,9 +17,12 @@ body,
   height: 100%;
   width: 100%;
   font-family: "Source Sans Pro", sans-serif;
-  background-color: #222130;
+  /* background-color: #222130; */
+  background-color: #1d1c25;
   /* background-image: url(https://img.freepik.com/free-vector/blurred-abstract-background-design_1107-169.jpg?w=2000&t=st=1706200718~exp=1706201318~hmac=6998d8adb64a2ea68c5f75f354698c93c53991a6bd012012fa955b8c73718976); */
 /* background-image: url(https://i.pinimg.com/originals/60/15/9f/60159f45955be086e295dd9400ceee86.jpg); */
+
+
   /* opacity: 0.75; */
   background-repeat: no-repeat;
   background-size: cover;

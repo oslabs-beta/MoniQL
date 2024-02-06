@@ -1,8 +1,9 @@
 import * as types from '../constants/actionTypes';
 
 const initialState = {
-  page: 'Dashboard'
-}
+  // page: 'Dashboard'
+  page: 'Alerts'
+};
 
 const appReducer = (state = initialState, action)  => {
   switch (action.type) {

@@ -1,7 +1,7 @@
 // import react, redux, and react-redux, dispatch 
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Alert, AlertTitle, TextField, Badge, Box, Stack, useTheme, Typography, Accordion, IconButton } from '@mui/material';
+import { Button, Alert, AlertTitle, TextField, Badge, Box, Stack, useTheme, Divider, Typography, Accordion, IconButton } from '@mui/material';
 import { deleteAlertActionCreator, updateAlertActionCreator } from '../actions/actions.js';
 import StorageIcon from '@mui/icons-material/Storage';
 import dayjs from 'dayjs';
@@ -170,34 +170,81 @@ const AlertBox = (alertObj) => {
   //     )
   // }
 
-  return (
-    display ?
-      (<Alert severity={severity} variant="outlined" onClose={handleClose} sx={{bgcolor: 'background.paper', zIndex: 9999, width: '97%', marginRight: 'auto', marginLeft: 'auto', maxWidth: '800px'}}>
-        <AlertTitle sx={{fontSize: 18}}>{`${monitorType} anomaly detected at ${dayjs(detected_at).format('ddd MM-DD-YYYY hh:mm:ss a')} in: `} 
-          <Typography color="primary" sx={{fontSize: 16}}>{`${table}`}</Typography> 
+  return display ? (
+    <Alert
+      severity="warning"
+      // variant="outlined"
+      onClose={handleClose}
+      sx={{
+        // bgcolor: "background.paper",
+        backgroundColor: "#2E2D3D",
+
+        zIndex: 9999,
+        width: "100%",
+        // marginRight: "auto",
+        // marginLeft: "auto",
+        maxWidth: "900px",
+        margin: "1rem",
+        borderRadius: "4",
+        // borderColor: "#6870fa",
+        // padding: "1rem",
+      }}
+    >
+        <AlertTitle sx={{ fontSize: 16, color: "white" }}>
+          <Typography color="secondary" sx={{ fontSize: 19 }} display="inline">
+            {monitorType}
+          </Typography>{" "}
+          anomaly detected in{" "}
+          <Typography color="secondary" sx={{ fontSize: 19 }} display="inline">
+            {`${table}`}{" "}
+          </Typography>
+          on{" "}
+          <Typography color="secondary" sx={{ fontSize: 19 }} display="inline">
+            {dayjs(detected_at).format("ddd MM-DD-YYYY")}{" "}
+          </Typography>
+          at{" "}
+          <Typography color="secondary" sx={{ fontSize: 19 }} display="inline">
+            {dayjs(detected_at).format("hh:mm:ss a")}{" "}
+          </Typography>
         </AlertTitle>
-        {column ? `Column: ${column}, ` : null}
-        {anomalyType ? `Anomaly type: ${anomalyType}, ` : null}
-        {anomalyValue ? `Anomaly value: ${anomalyValue}, ` : null}
-        {anomalyTime ? `Anomaly time: ${dayjs(anomalyTime).format('ddd MM-DD-YYYY hh:mm:ss a')} ` : null}
-        <br/>
-        {renderRowsAccordion}
-        <br/>
-        {notes.length ? `Notes: ${notes.join(', ')}` : null}
+        <Divider sx={{ width: "100%", mb: 1 }} />
+        <Typography color="white" sx={{ fontSize: 14 }} display="inline">
+          {column ? `Column: ${column}, ` : null}
+          {anomalyType ? `Anomaly type: ${anomalyType}, ` : null}
+          {anomalyValue ? `Anomaly value: ${anomalyValue}, ` : null}
+          {anomalyTime
+            ? `Anomaly time: ${dayjs(anomalyTime).format(
+                "ddd MM-DD-YYYY hh:mm:ss a"
+              )} `
+            : null}
+        </Typography>
+        <Box sx={{ marginTop: 1 }}>{renderRowsAccordion}</Box>
+        <Typography color="white" sx={{ fontSize: 14 }} display="inline">
+          {notes.length ? `Notes: ${notes.join(", ")}` : null}
+        </Typography>
         <Button onClick={handleClickOpen}>Add Notes</Button>
-        {openNotes ? (<div>
-          <TextField onChange={handleNewNoteInput} sx={{maxWidth: '500px'}}/>
-          <Button onClick={addNotes}>Submit new notes</Button>
-        </div>) : null}
-        <br/>
-            alert id: {alert_id}
+        {openNotes ? (
+          <div>
+            <TextField
+              onChange={handleNewNoteInput}
+              sx={{ maxWidth: "500px" }}
+            />
+            <Button onClick={addNotes}>Submit new notes</Button>
+          </div>
+        ) : null}
+        <br />
+        <Typography color="white" sx={{ fontSize: 14 }} display="inline">
+          alert id: {alert_id}
+        </Typography>
         <Button onClick={markResolved}>Mark resolved</Button>
-        <br/>
-        {/* {resolved ? `Resolved at ${resolved_at} by ${resolved_by}` : null} */}
-        {resolved ? `Resolved at ${resolved_at} by ${username}` : null}
-        {/* <Button onClick={handleDeleteButton}>Delete alert</Button> */}
-      </Alert>) : null 
-  )
+        <br />
+        <Typography color="white" sx={{ fontSize: 14 }} display="inline">
+          {/* {resolved ? `Resolved at ${resolved_at} by ${resolved_by}` : null} */}
+          {resolved ? `Resolved at ${resolved_at} by ${username}` : null}
+          {/* <Button onClick={handleDeleteButton}>Delete alert</Button> */}
+        </Typography>
+    </Alert>
+  ) : null;
 }
 
 export default AlertBox;

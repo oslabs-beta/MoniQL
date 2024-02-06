@@ -1,6 +1,6 @@
 import React from 'react';
 import { BarChart } from '@mui/x-charts';
-import { Box } from '@mui/material';
+import { Box, Divider } from '@mui/material';
 import { useSelector } from 'react-redux';
 
 const DashAlertBarChart = () => {
@@ -26,10 +26,12 @@ const DashAlertBarChart = () => {
       sx={{
         backgroundColor: "#6870fa",
         borderRadius: 4,
-        m: 1
+        m: 1,
       }}
     >
       <h2 style={{ marginLeft: "1rem" }}>alerts by status</h2>
+      <Divider sx={{ width: "100%", mb: 1 }} />
+
       <BarChart
         // xAxisDataKey="status"
         // yAxisDataKey="alerts"

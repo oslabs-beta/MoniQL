@@ -2,7 +2,7 @@ import React from 'react';
 import { LineChart } from '@mui/x-charts/LineChart';
 import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
-import { Box } from '@mui/material';
+import { Box, Divider } from '@mui/material';
 
 const DashAlertLineChart = () => {
 
@@ -42,10 +42,12 @@ const DashAlertLineChart = () => {
       sx={{
         backgroundColor: "#6870fa",
         borderRadius: 4,
-        m: 1
+        m: 1,
       }}
     >
       <h2 style={{ marginLeft: "1rem" }}>alerts by date</h2>
+      <Divider sx={{ width: "100%", mb: 1 }} />
+
       <LineChart
         xAxisDataKey="date"
         yAxisDataKey="alerts"
