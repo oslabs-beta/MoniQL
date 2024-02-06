@@ -8,9 +8,9 @@ const monitorController = require('../controllers/monitorController');
 
 // router.post('/register', userController.register, /* dbcontroller.userpoolconnect,*/ (req, res) => {res.status(200).json(res.locals)});
 
-// router.post('/login', userController.login, monitorController.connect, (req, res) => {res.status(200).json(res.locals)});
+router.post('/login', userController.login, monitorController.connect, (req, res) => {res.status(200).json(res.locals)});
 
-// router.post('/register', userController.register, monitorController.connect, (req, res) => {res.status(200).json(res.locals)});
+router.post('/register', userController.register, monitorController.connect, (req, res) => {res.status(200).json(res.locals)});
 
 router.post('/people', dbController.getDB, (req, res) => {res.status(200).json(res.locals)});
 
