@@ -1,9 +1,9 @@
 // React imports
-import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
 // Action creators
-import { addMonitorsActionCreator } from "../../actions/actions";
+import { addMonitorsActionCreator } from '../../actions/actions';
 
 // MUI components
 import {
@@ -20,12 +20,12 @@ import {
   Select,
   TextField,
   useTheme
-} from "@mui/material";
-import tokens from "../stylesheets/Themes";
+} from '@mui/material';
+import tokens from '../stylesheets/Themes';
 
 // MUI icons
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import monitorObjectCreator from "./monitorObjectCreator";
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import monitorObjectCreator from './monitorObjectCreator';
 
 
 const CustomMonitor = () => {
@@ -56,10 +56,10 @@ const CustomMonitor = () => {
 
     //make post request to server
     try {
-      const response = await fetch("/monitors", {
-        method: "POST",
+      const response = await fetch('/monitors', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(monitorObject),
       });
@@ -71,30 +71,31 @@ const CustomMonitor = () => {
 
       dispatch(addMonitorsActionCreator(data));
     } catch (error) {
-      console.log("fetch error: ", error);
+      console.log('fetch error: ', error);
     }
   }
 
   return (
     <div>
-      <Box display="flex" justifyContent="center" alignItems="center" >
+      <Box display="flex" justifyContent="center" alignItems="center">
         <Card
           variant="outlined"
           sx={{
-            width: "50vw",
+            width: "25vw",
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
+            alignItems: "center",
             padding: 3,
             boxShadow: 3,
-            backgroundColor: "rgba(0, 0, 255, 0.7)",
             borderRadius: 4,
+            backgoundColor: "#6870fa",
           }}
         >
           <FormControl sx={{ m: 1, minWidth: 200 }}>
             <Box sx={{ p: 2 }}>
-              <Typography variant="h5" color={colors.grey[100]}>
-              Create New Custom Monitor
+              <Typography variant="h5" color={colors.grey[100]} sx={{ mb: 1 }}>
+                Create New Custom Monitor
               </Typography>
               <Divider />
             </Box>
@@ -113,14 +114,15 @@ const CustomMonitor = () => {
                 name="frequency"
                 value={params.frequency}
                 onChange={handleChanges}
+                color="secondary"
                 sx={{
                   borderRadius: "5px",
-                  width: "30%",
-                  backgroundColor: "rgba(255, 255, 255, 0.7)"
+                  width: "60%",
+                  // backgroundColor: 'rgba(255, 255, 255, 0.7)'
                 }}
               />
               <FormHelperText>
-              Enter the frequency (in hours) for the monitor to run
+                Enter the frequency (in hours) for the monitor to run
               </FormHelperText>
 
               {/* Custom Query Input */}
@@ -133,22 +135,15 @@ const CustomMonitor = () => {
                 name="query"
                 value={params.query}
                 onChange={handleChanges}
+                color="secondary"
                 sx={{
-                  backgroundColor: "white",
                   borderRadius: "5px",
                   width: "100%",
-                  input: { color: "hotpink" },
-                }}
-                InputLabelProps={{
-                  style: { color: "hotpink" },
-                }}
-                InputProps={{
-                  style: { color: "hotpink" },
                 }}
               />
               <FormHelperText>
-              Enter your custom query string to monitor 
-              (Structure your query so that it will only return anomalous rows)
+                Enter your custom query string to monitor (Structure your query
+                so that it will only return anomalous rows)
               </FormHelperText>
 
               {/* Description Input */}
@@ -161,20 +156,16 @@ const CustomMonitor = () => {
                 name="description"
                 value={params.description}
                 onChange={handleChanges}
+                color="secondary"
                 sx={{
-                  backgroundColor: "white",
+                  // bakgroundColor: 'white',
                   borderRadius: "5px",
                   width: "100%",
-                  input: { color: "hotpink" },
-                }}
-                InputLabelProps={{
-                  style: { color: "hotpink" },
-                }}
-                InputProps={{
-                  style: { color: "hotpink" },
                 }}
               />
-              <FormHelperText>Enter a description for the monitor</FormHelperText>
+              <FormHelperText>
+                Enter a description for the monitor
+              </FormHelperText>
             </Stack>
             <Button
               type="submit"
@@ -184,8 +175,9 @@ const CustomMonitor = () => {
               sx={{ mt: 3, mb: 2 }}
               size="small"
               disabled={!params.frequency}
+              color="secondary"
             >
-            Submit
+              Submit
             </Button>
           </FormControl>
         </Card>

@@ -20,7 +20,12 @@ const LandingContainer = () => {
   const [showLogin, setShowLogin] = useState(false);
 
   return (
-    <div>
+    <div style={{ 
+    backgroundImage: `url(https://i.pinimg.com/originals/60/15/9f/60159f45955be086e295dd9400ceee86.jpg)`, 
+    backgroundRepeat: 'no-repeat', 
+    backgroundSize: 'cover',
+    height: "100vh",
+  }}>
       <Toolbar sx={{ ml: 15 }}>
         <Box sx={{ flexGrow: 1 }} />
         <Button

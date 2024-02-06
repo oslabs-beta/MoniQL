@@ -1,8 +1,10 @@
 import * as types from '../constants/actionTypes';
 
 const initialState = {
-  page: 'ERD'
-}
+  //*** CHANGE PAGE FOR DEV MODE ***//
+  // page: 'Dashboard',
+  page: 'Monitors',
+};
 
 const appReducer = (state = initialState, action)  => {
   switch (action.type) {

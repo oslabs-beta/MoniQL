@@ -15,22 +15,22 @@ const PageContainer = () => {
   return (
     <Box
       sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "stretch",
-        width: "auto",
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'stretch',
+        width: 'auto',
         ml: 6,
         overflow: 'auto'
       }}
     >
-      {page === "Dashboard" && <MainContainer />}
-      {page === "ERD" && <ErdVisualizerContainer />}
-      {page === "Monitors" && <MonitorContainer />}
-      {page === "Reports" && <ReportContainer />}
-      {page === "Query" && <QueryContainer />}
-      {page === "Account" && <></>}
-      {page === "Settings" && <></>}
-      {page === "Help" && <></>}
+      {page === 'Dashboard' && <MainContainer />}
+      {page === 'ERD' && <ErdVisualizerContainer />}
+      {page === 'Monitors' && <MonitorContainer />}
+      {page === 'Reports' && <ReportContainer />}
+      {page === 'Query' && <QueryContainer />}
+      {page === 'Account' && <></>}
+      {page === 'Settings' && <></>}
+      {page === 'Help' && <></>}
     </Box>
   );
 }
