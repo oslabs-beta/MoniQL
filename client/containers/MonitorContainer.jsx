@@ -161,7 +161,7 @@ const MonitorContainer = () => {
                           >
                             {monitor.parameters.table}
                           </Typography>{" "}
-                          | type:
+                          | type:{" "}
                           <Typography
                             variant="h5"
                             color="secondary"
@@ -184,7 +184,7 @@ const MonitorContainer = () => {
                           {Object.entries(monitor.parameters).map(
                             ([key, value], index) => (
                               <ListItem key={`${monitor.monitor_id}-${index}`}>
-                                <strong>{key}: </strong>{" "}
+                                <strong>{key}{":  "} </strong>{" "}
                                 {value != null ? value.toString() : "N/A"}
                               </ListItem>
                             )
