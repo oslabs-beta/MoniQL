@@ -6,13 +6,28 @@ import Box from '@mui/material/Box'
 
 const DashboardContainer = () => {
   return (
-    <Box sx={{opacity: "80%"}}>
-      <Box sx={{ display: 'flex' }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        opacity: "100%",
+        width: "85vw",
+      }}
+    >
+      <Box
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          flexDirection: "row",
+          justifyContent: "space-around",
+          mb: 3,
+        }}
+      >
         <DashAlertLineChart />
         <DashAlertBarChart />
       </Box>
       <DashTableOfTables />
-    </Box >
+    </Box>
   );
 };
 

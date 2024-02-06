@@ -107,10 +107,10 @@ const RangeMonitor = () => {
         <Card
           variant="outlined"
           sx={{
-            width: "25vw",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
+            width: '25vw',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
             padding: 3,
             boxShadow: 3,
             // backgroundColor: 'rgba(255, 255, 255, 0.7)',
@@ -127,8 +127,8 @@ const RangeMonitor = () => {
 
             {/* TABLE SELECT */}
             <Box display="flex" justifyContent="space-between">
-              <FormControl sx={{ flex: 1, minWidth: "40%", mr: "1rem" }}>
-                <InputLabel id="table-name" style={{ color: "#4cceac" }}>
+              <FormControl sx={{ flex: 1, minWidth: '40%', mr: '1rem' }}>
+                <InputLabel id="table-name" style={{ color: '#4cceac' }}>
                   Table Name
                 </InputLabel>
 
@@ -142,8 +142,8 @@ const RangeMonitor = () => {
                   onChange={handleChanges}
                   color="secondary"
                   sx={{
-                    borderRadius: "5px",
-                    width: "100%",
+                    borderRadius: '5px',
+                    width: '100%',
                   }}
                 >
                   {tablesArray.map((item, index) => (
@@ -155,8 +155,8 @@ const RangeMonitor = () => {
                 <FormHelperText>Select table to monitor</FormHelperText>
               </FormControl>
               {/* COLUMN SELECT */}
-              <FormControl sx={{ flex: 1, minWidth: "40%" }}>
-                <InputLabel id="table-name" style={{ color: "#4cceac" }}>
+              <FormControl sx={{ flex: 1, minWidth: '40%' }}>
+                <InputLabel id="table-name" style={{ color: '#4cceac' }}>
                   Column Name
                 </InputLabel>
                 <Select
@@ -167,8 +167,8 @@ const RangeMonitor = () => {
                   onChange={handleChanges}
                   color="secondary"
                   sx={{
-                    borderRadius: "5px",
-                    width: "100%",
+                    borderRadius: '5px',
+                    width: '100%',
                   }}
                 >
                   {columnsArray.map((item, index) => (
@@ -182,7 +182,7 @@ const RangeMonitor = () => {
             </Box>
             {/* Min Value Input */}
             <Box display="flex" justifyContent="space-between">
-              <FormControl sx={{ flex: 1, minWidth: "30%", mr: "1rem" }}>
+              <FormControl sx={{ flex: 1, minWidth: '30%', mr: '1rem' }}>
                 <TextField
                   required
                   id="min-value"
@@ -193,14 +193,14 @@ const RangeMonitor = () => {
                   onChange={handleChanges}
                   color="secondary"
                   sx={{
-                    borderRadius: "5px",
-                    width: "100%",
+                    borderRadius: '5px',
+                    width: '100%',
                   }}
                 />
                 <FormHelperText>Minimum Value</FormHelperText>
               </FormControl>
 
-              <FormControl sx={{ flex: 1, minWidth: "30%", mr: "1rem" }}>
+              <FormControl sx={{ flex: 1, minWidth: '30%', mr: '1rem' }}>
                 {/* Max Value Input */}
                 <TextField
                   required
@@ -212,14 +212,14 @@ const RangeMonitor = () => {
                   onChange={handleChanges}
                   color="secondary"
                   sx={{
-                    borderRadius: "5px",
-                    width: "100%",
+                    borderRadius: '5px',
+                    width: '100%',
                   }}
                 />
                 <FormHelperText>Maximum Value</FormHelperText>
               </FormControl>
 
-              <FormControl sx={{ flex: 1, minWidth: "30%" }}>
+              <FormControl sx={{ flex: 1, minWidth: '30%' }}>
                 {/* Frequency Input */}
                 <TextField
                   required
@@ -231,8 +231,8 @@ const RangeMonitor = () => {
                   onChange={handleChanges}
                   color="secondary"
                   sx={{
-                    borderRadius: "5px",
-                    width: "100%",
+                    borderRadius: '5px',
+                    width: '100%',
                   }}
                 />
                 <FormHelperText>Monitoring frequency (in hours)</FormHelperText>
@@ -250,8 +250,8 @@ const RangeMonitor = () => {
               onChange={handleChanges}
               color="secondary"
               sx={{
-                borderRadius: "5px",
-                width: "100%",
+                borderRadius: '5px',
+                width: '100%',
               }}
             />
             <FormHelperText>Enter a description for the monitor</FormHelperText>

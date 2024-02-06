@@ -38,28 +38,45 @@ const DashAlertLineChart = () => {
 
 
   return (
-    <Box sx={{backgroundColor: '#6870fa', color: 'FAF9F6'}}>
+    <Box
+      sx={{
+        backgroundColor: "#6870fa",
+        borderRadius: 4,
+        m: 1
+      }}
+    >
+      <h2 style={{ marginLeft: "1rem" }}>alerts by date</h2>
       <LineChart
         xAxisDataKey="date"
         yAxisDataKey="alerts"
-        yAxis={[{
-          label: 'alerts',
-        }]}
+        yAxis={[
+          {
+            label: "alerts",
+          },
+        ]}
         xAxis={[
-          { 
-            scaleType: 'point',
+          {
+            scaleType: "point",
             data: days, //[-6, -5, -4, -3, -2, -1, 0],
-            label: 'date',
-          }]}
+            label: "date",
+          },
+        ]}
         series={[
-          { 
-            data: alertsByDay, 
-          }]}
+          {
+            data: alertsByDay,
+          },
+        ]}
         width={500}
         height={300}
+        sx={{
+          backgroundColor: "#6870fa",
+          color: "FAF9F6",
+          borderRadius: 4,
+          width: "45%",
+        }}
       />
     </Box>
-  )
+  );
 };
 
 export default DashAlertLineChart;
