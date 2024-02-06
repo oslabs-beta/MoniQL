@@ -1,7 +1,8 @@
 import * as types from '../constants/actionTypes';
 
 const initialState = {
-  activeMonitors: []
+  activeMonitors: [],
+  displayMonitors: []
 };
 
 const monitorReducer = (state = initialState, action) => {
@@ -11,7 +12,15 @@ const monitorReducer = (state = initialState, action) => {
 
     return {
       ...state,
-      activeMonitors: action.payload
+      activeMonitors: action.payload,
+      displayMonitors: action.payload
+    }
+
+  case types.DISPLAY_MONITORS:
+
+    return {
+      ...state,
+      displayMonitors: action.payload
     }
 
   default:

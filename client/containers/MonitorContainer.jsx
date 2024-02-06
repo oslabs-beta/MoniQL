@@ -29,9 +29,10 @@ const MonitorContainer = () => {
   const [selectedMonitor, setSelectedMonitor] = useState('');
   const monitors = ['Range', 'Freshness', 'Volume', 'Null', 'Custom'];
   const activeMonitors = useSelector((state) => state.monitor.activeMonitors);
+  const displayMonitors = useSelector((state) => state.monitor.displayMonitors);
   const user_id = useSelector((state) => state.user.user_id);
-  const alerts = useSelector((state) => state.alert.alerts);
-  console.log('alerts in MonitorContainer', alerts);
+  // const alerts = useSelector((state) => state.alert.alerts);
+  // console.log('alerts in MonitorContainer', alerts);
 
   const sendQuery = async (monitor) => {
     try {
@@ -91,9 +92,9 @@ const MonitorContainer = () => {
         <Divider sx={{ width: '100%' }} />
 
         <Box sx={{ p: 2 }}>
-          <Typography gutterBottom variant='body2' color={colors.grey[100]}>
+          {/* <Typography gutterBottom variant='body2' color={colors.grey[100]}>
             default monitors
-          </Typography>
+          </Typography> */}
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, margin: 3 }}>
             {monitors.map((monitor) => (
               <Chip
@@ -123,8 +124,8 @@ const MonitorContainer = () => {
               justifyContent: 'flex-start',
             }}
           >
-            {Array.isArray(activeMonitors) &&
-              activeMonitors.map((monitor, i) => (
+            {Array.isArray(displayMonitors) &&
+              displayMonitors.map((monitor, i) => (
                 <Card
                   key={i}
                   sx={{ minWidth: 240, maxWidth: 240, mt: 4, mb: 4, mr: 4 }}

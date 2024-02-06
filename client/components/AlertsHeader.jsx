@@ -74,50 +74,25 @@ const AlertsHeader = () => {
       if (selectedTable && alert.table !== selectedTable) {
         return false;
       }
-      return true;
-    });
-    dispatch(displayAlertsActionCreator(filteredAlerts));
-  }, [selectedTable, alerts]);
-
-  useEffect(() => {
-    const filteredAlerts = alerts.filter((alert) => {
       if (selectedColumn && alert.column !== selectedColumn) {
         return false;
       }
-      return true;
-    });
-    dispatch(displayAlertsActionCreator(filteredAlerts));
-  }, [selectedColumn, alerts]);
-
-  useEffect(() => {
-    const filteredAlerts = alerts.filter((alert) => {
       if (selectedMonitorType && alert.monitorType !== selectedMonitorType) {
         return false;
       }
-      return true;
-    });
-    dispatch(displayAlertsActionCreator(filteredAlerts));
-  }, [selectedMonitorType, alerts]);
-
-  useEffect(() => {
-    const filteredAlerts = alerts.filter((alert) => {
       if (!showResolved && alert.resolved) {
         return false;
       }
-      return true;
-    });
-    dispatch(displayAlertsActionCreator(filteredAlerts));
-  }, [showResolved]);
-
-  useEffect(() => {
-    const filteredAlerts = alerts.filter((alert) => {
-      if (!showDismissed && alert.dismissed) {
+      if (!showDismissed && alert.display) {
         return false;
+      }
+      if(showDismissed && alert.display === false) {
+        return true;
       }
       return true;
     });
-    dispatch(displayAlertsActionCreator(filteredAlerts, alerts));
-  }, [showDismissed]);
+    dispatch(displayAlertsActionCreator(filteredAlerts));
+  }, [selectedTable, selectedColumn, selectedMonitorType, showResolved, showDismissed, alerts]);
 
   return (
     <div>

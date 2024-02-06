@@ -58,3 +58,8 @@ export const displayAlertsActionCreator = (alertsArray) => ({
   type: types.DISPLAY_ALERTS,
   payload: alertsArray
 })
+
+export const displayMonitorsActionCreator = (monitorsArray) => ({
+  type: types.DISPLAY_MONITORS,
+  payload: monitorsArray
+})
