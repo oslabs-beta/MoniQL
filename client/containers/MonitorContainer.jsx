@@ -10,6 +10,7 @@ import {
   CardContent,
   List,
   ListItem,
+  ListItemText,
   useTheme,
 } from '@mui/material';
 import tokens from '../components/stylesheets/Themes';
@@ -131,7 +132,7 @@ const MonitorContainer = () => {
           }
         >
           {Array.isArray(activeMonitors) &&
-            activeMonitors.map((monitor, i) => (
+            displayMonitors.map((monitor, i) => (
               <Card
                 key={i}
                 sx={{
@@ -152,8 +153,8 @@ const MonitorContainer = () => {
                     <>
                       <Box
                         sx={{
-                          // display: "flex",
-                          // justifyContent: "space-between",
+                          display: "flex",
+                          justifyContent: "space-between",
                           alignItems: "row",
                         }}
                       >
@@ -175,26 +176,50 @@ const MonitorContainer = () => {
                             {monitor.type}
                           </Typography>
                         </Typography>
-                        <Divider sx={{ width: "100%" }} />
-                        {/* logic to go into monitor editor */}
+                        <Box>
+
                         <Button onClick={() => setEditingMonitor(monitor)}>
                           Edit
                         </Button>
                         <Button onClick={() => sendQuery(monitor)}>
-                          fire me
+                            fire me
                         </Button>
+                        </Box>
                       </Box>
+                      <Divider sx={{ width: "100%" }} />
+                      {/* logic to go into monitor editor */}
+
                       {monitor.parameters && (
-                        <List>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
+                          }}
+                        >
                           {Object.entries(monitor.parameters).map(
-                            ([key, value], index) => (
-                              <ListItem key={`${monitor.monitor_id}-${index}`}>
-                                <strong>{key}{":  "} </strong>{" "}
-                                {value != null ? value.toString() : "N/A"}
-                              </ListItem>
-                            )
+                            ([key, value], index) => {
+                              if (index === 0) return null;
+
+                              return (
+                                <React.Fragment
+                                  key={`${monitor.monitor_id}-${index}`}
+                                >
+                                  {index !== 1 && (
+                                    <Divider orientation="vertical" flexItem />
+                                  )}
+                                  <ListItem>
+                                    <ListItemText
+                                      primary={`${key}: ${
+                                        value != null ? value.toString() : "N/A"
+                                      }`}
+                                    />
+                                  </ListItem>
+                                </React.Fragment>
+                              );
+                            }
                           )}
-                        </List>
+                        </Box>
                       )}
                     </>
                   )}
