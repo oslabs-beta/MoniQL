@@ -75,14 +75,12 @@ const Header = () => {
     dispatch(logOutActionCreator())
   };
 
-  const alertsArr = useSelector((state) => state.alert.alerts);
+  const displayAlerts = useSelector((state) => state.alert.displayAlerts);
   React.useEffect(() => {
-    setAlertsCount(
-      alertsArr.filter((alertObj) => alertObj.display).length
-    );
-  }, [alertsArr]);
+    setAlertsCount(displayAlerts.length);
+  }, [displayAlerts]);
 
-  const [alertsCount, setAlertsCount] = React.useState(alertsArr.length);
+  const [alertsCount, setAlertsCount] = React.useState(displayAlerts.length);
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -113,7 +111,7 @@ const Header = () => {
     setAlertsDrawerToggle(!alertsDrawerToggle);
   };
 
-  let anomalies = alertsArr.sort((a, b) => b.anomalyTime - a.anomalyTime);
+  let anomalies = displayAlerts.sort((a, b) => new Date(b.detected_at) - new Date(a.detected_at));
   anomalies = anomalies.map((alertObj, i) => (
     <AlertBox key={i} {...alertObj} />
   ));

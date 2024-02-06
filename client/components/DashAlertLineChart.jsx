@@ -28,15 +28,6 @@ const DashAlertLineChart = () => {
     }
   });
 
-  const dashLineChartData = days.map((day, index) => ({
-    date: day,
-    alerts: alertsByDay[index]
-  }));
-  console.log('dashLineChartData', dashLineChartData)
-  console.log('alertsByDay', alertsByDay)
-  console.log('days', days)
-
-
   return (
     <Box sx={{backgroundColor: '#6870fa', color: 'FAF9F6'}}>
       <LineChart
@@ -48,7 +39,7 @@ const DashAlertLineChart = () => {
         xAxis={[
           { 
             scaleType: 'point',
-            data: days, //[-6, -5, -4, -3, -2, -1, 0],
+            data: days, 
             label: 'date',
           }]}
         series={[

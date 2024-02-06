@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector, useStore } from 'react-redux';
+import { useSelector, useStore, useDispatch } from 'react-redux';
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
+import { addTablesWeightsActionCreator } from '../actions/actions';
+import { set } from 'mongoose';
 
 const DashTableOfTables = () => {
   const store = useStore();
+  const dispatch = useDispatch();
 
   const monitors = useSelector((state) => state.monitor.activeMonitors);
   const alerts = useSelector((state) => state.alert.alerts);
+  const tableMetadata = useSelector((state) => state.diagram.data);
 
   const [dashMonitorData, setDashMonitorData] = useState({});
   const [dashToTRows, setdashToTRows] = useState([]);
@@ -168,12 +172,14 @@ const DashTableOfTables = () => {
     if(Object.keys(dashMonitorData).length) getDashMonitorData();
   }, [didPopulateDashMonitorObj, alerts]);
 
-  useEffect(() => {
-    if (didGetDashMonitorData){
-      const tablesWeightsObj = store.getState().diagram.tablesWeightsObj;
-      setTablesWeightsObj(tablesWeightsObj);
-    }
-  }, [didGetDashMonitorData]);
+  // do not delete -- only commenting this out until we move the tableWeight function to a helper file
+  // useEffect(() => {
+  //   if (didGetDashMonitorData){
+  //     const tablesWeightsObj = store.getState().diagram.tablesWeightsObj;
+  //     console.log('tablesWeightsObj in getDashMonitorData in dashToT', tablesWeightsObj)
+  //     setTablesWeightsObj(tablesWeightsObj);
+  //   }
+  // }, [didGetDashMonitorData]);
 
   useEffect(() => {
     console.log('tablesWeightsObj updated: ', tablesWeightsObj)
@@ -190,6 +196,29 @@ const DashTableOfTables = () => {
       populateDashToTRows();
     }
   }, [didGetDashMonitorData, tablesWeightsObj, alerts]);
+
+  // pasting this function from Focus.jsx -- should be in a helper file -- then uncomment useEffect above 
+  const tableWeight = () => {
+    const importance = new Map();
+    tableMetadata.forEach((table) => {
+      //table name = key / num of FKs (<< hehe) = value
+      importance.set(table.table_name, (table.foreign_keys || []).length);
+    });
+
+    // if(tableWeightNotCalledYet) {
+    const importanceObj = Object.fromEntries(importance);
+    dispatch(addTablesWeightsActionCreator(importanceObj));
+    setTablesWeightsObj(importanceObj);
+    // tableWeightNotCalledYet.current = false;
+    // }
+
+    return importance;
+  };
+
+  useEffect(() => {
+    console.log('calling tableWeight in dashToT') 
+    tableWeight();
+  }, [didGetDashMonitorData]);
 
   return (
     <Box sx={{ height: 400, width: '100%', backgroundColor: '#6870fa', color: 'FAF9F6'}}>

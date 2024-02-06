@@ -63,7 +63,7 @@ const MonitorContainer = () => {
       throw new Error(error);
     }
   };
-
+  
   useEffect(() => {
     setSelectedMonitor('');
   }, [activeMonitors]);
