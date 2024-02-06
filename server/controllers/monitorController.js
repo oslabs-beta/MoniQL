@@ -1,5 +1,7 @@
 const { pool, userPool, connectToPool } = require('../models/db');
 const { v4: uuidv4 } =  require('uuid');
+const cron = require('node-cron');
+const { getIo } = require('../socket');
 
 const monitorController = {};
 
@@ -61,6 +63,8 @@ const alertObjCreator = (table, monitorType, anomalyType, severity = 'error',
     detected_at: new Date,
   }
 };
+
+
 
 monitorController.queryAll = async (req, res, next) => {
   // query tables by name using postman req.body until we connect to front end
@@ -155,12 +159,19 @@ monitorController.fresh = async (req, res, next) => {
 monitorController.range = async (req, res, next) => {
   // query tables by name
   // for values out of normal range set by user
-  console.log('req.body in moncontroller.range: ',req.body)
 
-  const { table, column } = req.body.monitor.parameters; 
-  const timeColumn = req.body.monitor.parameters.timeColumn || 'created_at';
-  const minValue = req.body.monitor.parameters.minValue || null;
-  const maxValue = req.body.monitor.parameters.maxValue || null;
+  //Check to see if req is an http request object or if it is an argument passed directly from a nodecron callback
+  const isScheduledCall = !req.hasOwnProperty('body');
+  //if it is. we use the params off the req.body. If it isn't we use the params directly off the passed in object
+  const params = isScheduledCall ? req.parameters : req.body.monitor.parameters
+  const { table, column, minValue = null, maxValue = null, timeColumn = 'created_at' } = params;
+  console.log('HIT IN RANGE MONITOR!!!')
+  if (req.body) console.log('req.body in moncontroller.range: ', req.body)
+
+  // const { table, column } = req.body.monitor.parameters; 
+  // const timeColumn = req.body.monitor.parameters.timeColumn || 'created_at';
+  // const minValue = req.body.monitor.parameters.minValue || null;
+  // const maxValue = req.body.monitor.parameters.maxValue || null;
 
   try {
     console.log('req.body in moncontroller.range',req.body)
@@ -177,13 +188,18 @@ monitorController.range = async (req, res, next) => {
     const data = await db.query(text, values);
     const anomalousArray = data.rows;
     console.log('anomalous rows in moncont.range: ', anomalousArray);
+    
+    
     if(anomalousArray.length) {
+      const alerts = [alertObjCreator(table, 'Range', 'out of range', 'error', column, anomalousArray, anomalousArray[0][column], anomalousArray[0][timeColumn])];
+      if (isScheduledCall) return alerts
       res.locals.alerts = [];
       res.locals.alerts.push(alertObjCreator(table, 'Range', 'out of range', 'error', column, anomalousArray, anomalousArray[0][column], anomalousArray[0][timeColumn]));
       console.log('res.locals.alerts in moncontroller.range: ', res.locals.alerts)
     }
-    next();
+    if (!isScheduledCall) return next();
   } catch(err) {
+    if (isScheduledCall) throw err;
     return next({
       log: `error in monitorController.range: ${err}`,
       status: 500,
@@ -196,10 +212,11 @@ monitorController.range = async (req, res, next) => {
 
 monitorController.null = async (req, res, next) => {
   // query table by name, look for any null values
-
-  const { table } = req.body.monitor.parameters;
-  const timeColumn = req.body.monitor.parameters.timeColumn || 'created_at';
-
+  const isScheduledCall = !req.hasOwnProperty('body')
+  const params = isScheduledCall ? req.parameters : req.body.monitor.parameters
+  const { table, timeColumn = 'created_at' } = params;
+  // const timeColumn = req.body.monitor.parameters.timeColumn || 'created_at';
+  if (req.body) console.log('req.body in moncontroller.null: ', req.body)
   try {
     // first, query metadata for column names
     // returns array of objects like {column_name: 'name'}
@@ -217,11 +234,18 @@ monitorController.null = async (req, res, next) => {
 
     const data = await db.query(query);
     const anomalousArray = data.rows;
+
+    
     if(anomalousArray.length) {
-      res.locals.alerts = [];
+      const alerts = []
       for(const column in anomalousArray[0]){
-        if(anomalousArray[0][column] === null) res.locals.alerts.push(alertObjCreator(table, 'Null', 'null found', 'error', column, anomalousArray, null, anomalousArray[0][timeColumn]));
+        if(anomalousArray[0][column] === null) {
+          alerts.push(alertObjCreator(table, 'Null', 'null found', 'error', column, anomalousArray, null, anomalousArray[0][timeColumn]));
+        }
       }
+      if (isScheduledCall) return alerts
+      res.locals.alerts = alerts;
+      return next()
     }
     console.log('res.locals in moncont.null: ', res.locals);
     next();
@@ -292,19 +316,23 @@ monitorController.stats = async (req, res, next) => {
 }
 
 monitorController.custom = async (req, res, next) => {
-  const customQuery = req.body.monitor.parameters.query;
+//(table, monitorType, anomalyType, severity = 'error', 
+//column, rows = null, anomalyValue, anomalyTime, notes = [])
+  const isScheduledCall = !req.hasOwnProperty('body')
+  const customQuery = isScheduledCall ? req.parameters.query : req.body.monitor.parameters.query;
 
   try {
     const data = await db.query(customQuery);
     const anomalousArray = data.rows;
     console.log('anomalous rows in moncont.range: ', anomalousArray);
     if(anomalousArray.length) {
-      res.locals.alerts = [];
+      const alerts = [alertObjCreator('custom query table(s)', 'Custom', 'custom', 'error', 'custom', anomalousArray)];
       // might be better to make a different alert object for custom queries
-      res.locals.alerts.push(alertObjCreator('custom query table(s)', 'Custom', 'custom', 'error', 'custom', anomalousArray));
+      if (isScheduledCall) return alerts;
+      res.locals.alerts = alerts;
     }
     console.log('res.locals.alerts in moncontroller.range: ', res.locals.alerts)
-    next();
+    return next();
   } catch(err) {
     return next({
       log: `error in monitorController.custom: ${err}`,
@@ -315,5 +343,52 @@ monitorController.custom = async (req, res, next) => {
     });
   }
 };
+
+monitorController.scheduleMonitors = async (req, res, next) => {
+  const monitors = res.locals.monitors
+  const user_id = res.locals.user_id
+  console.log(`$$$$$$$$ USER_ID IN SCHEDULE MONITORS IS ${user_id} $$$$$$$$`)
+  
+  if (monitors.length) {
+    monitors.forEach((monitor, i) => {
+      console.log('*********INITIAL MONITOR PULL*********',monitor)
+      const { type, parameters } = monitor
+    
+      const cronExpression = `*/${parameters.frequency} * * * * `
+      // const monitorFunction = monitorController.range
+      console.log('CRON EXPRESSION:', cronExpression)
+      const req = {parameters: parameters}
+      console.log('TYPE:', type.toLowerCase())
+      const monitorFunction = monitorController[type.toLowerCase()]
+      
+      cron.schedule(cronExpression, () => {
+        console.log(`Executing task for ${type}-type monitor with frequency: ${parameters.frequency} minutes`)
+        // monitorController.test(req)
+        const getAlerts = async () => {
+          try {
+            const alerts = await monitorFunction(req, null, null)
+            console.log(`Executed ${type}-type monitor. Results:`, alerts);
+            if (alerts.length) {
+              const io = getIo();
+              io.to(user_id.toString()).emit('alert', alerts)
+            }
+          } catch (err) {
+            console.error(`Error during direct invocation of ${type}-type monitor:`, err);
+          }
+        };
+        getAlerts()
+        console.log(req)
+
+
+      }, {scheduled: true})
+      
+    })
+  }
+  return next(); 
+}
+
+monitorController.test = async (req, res, next) => {
+  console.log(req)
+}
 
 module.exports = monitorController;

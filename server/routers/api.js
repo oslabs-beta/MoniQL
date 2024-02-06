@@ -4,9 +4,12 @@ const userController = require('../controllers/userController');
 const dbController = require('../controllers/dbController');
 const monitorController = require('../controllers/monitorController');
 
-router.post('/login', userController.login, monitorController.connect, (req, res) => {res.status(200).json(res.locals)});
+//uncomment below to revert to working login
+// router.post('/login', userController.login, monitorController.connect, (req, res) => {res.status(200).json(res.locals)});
 
-router.post('/register', userController.register, monitorController.connect, (req, res) => {res.status(200).json(res.locals)});
+router.post('/login', userController.login, monitorController.connect, userController.getMonitors, monitorController.scheduleMonitors, (req, res) => {res.status(200).json(res.locals)});
+
+router.post('/register', userController.register, monitorController.connect, userController.getMonitors, monitorController.scheduleMonitors, (req, res) => {res.status(200).json(res.locals)});
 
 router.post('/people', dbController.getDB, (req, res) => {res.status(200).json(res.locals)});
 
@@ -21,7 +24,7 @@ router.post('/range', monitorController.range, userController.addAlerts, (req, r
 router.post('/null', monitorController.null, userController.addAlerts, (req, res) => {res.status(200).json(res.locals)});
 
 
-router.post('/monitors', userController.insertMonitor, userController.getMonitors, (req, res) => {res.status(200).json(res.locals.monitors)});
+router.post('/monitors', userController.insertMonitor, monitorController.scheduleMonitors, userController.getMonitors, (req, res) => {res.status(200).json(res.locals.monitors)});
 
 router.put('/monitors', userController.updateMonitor, (req, res) => {res.status(200).json(res.locals.monitors)});
 

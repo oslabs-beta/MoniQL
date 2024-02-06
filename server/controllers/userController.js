@@ -144,7 +144,7 @@ userController.getAlerts = async (req, res, next) => {
       alertObjArr.push(row.alert_obj);
     }
     res.locals.allAlerts = alertObjArr;
-    console.log('alertObjArr in getAlerts: ', alertObjArr);
+    // console.log('alertObjArr in getAlerts: ', alertObjArr);
     return next();
   } catch (err) {
     return next({
@@ -249,7 +249,10 @@ userController.insertMonitor = async (req, res, next) => {
   try {
     const insertQuery = 'INSERT INTO monitors (type, user_id, parameters) VALUES ($1, $2, $3) RETURNING *;';
     const values = [type, user_id, JSON.stringify(parameters)];
-    await db.query(insertQuery, values);
+    const { rows } = await db.query(insertQuery, values);
+    console.log('MONITOR RETURNED FROM INSERTING INTO DB!!!:', rows)
+    res.locals.monitors = rows
+    res.locals.user_id = rows[0].user_id
     return next();
   } catch (err) {
     return next({
@@ -261,11 +264,16 @@ userController.insertMonitor = async (req, res, next) => {
 };
 
 userController.getMonitors = async (req, res, next) => {
-  const { user_id } = req.body;
+  
+  // const { user_id } = req.body;
+  console.log('!@!@!@!@!@!@!@!@!@!@!@!@', res.locals)
+  const { user_id } = req.body.user_id ? req.body : res.locals ;
+  console.log('USERID!!!!!', user_id)
   try {
     const fetchQuery = 'SELECT * FROM monitors WHERE user_id = $1;';
     const { rows } = await db.query(fetchQuery, [user_id]);
     res.locals.monitors = rows;
+  
     return next();
   } catch (err) {
     return next({

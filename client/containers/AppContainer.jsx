@@ -1,7 +1,9 @@
+import io from 'socket.io-client'
 import React, { useEffect, useState } from 'react';
 import { Box } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+
 
 //TEMPORARY IMPORTS
 import { useDispatch, useSelector } from 'react-redux';
@@ -61,10 +63,30 @@ const AppContainer = () => {
 
   const user_id = useSelector((state) => state.user.user_id);
 
+  useEffect(() => {
+    fetchAllMonitors();
+    getAllAlerts();
+    if (user_id) {
+      const socket = io('http://localhost:3000');
+      socket.on('connect', () => {
+        socket.emit('register', { user_id: user_id });
+      });
+      socket.on('alert', (alerts) => {
+        console.log('(人´∀｀).☆.。.: SOCKET.IO IN APPCONTAINER RECIEVED ALERTS :.。.☆.(´∀`人)', alerts);
+        dispatch(addAlertsActionCreator(alerts));
+      });
+
+      return () => {
+        socket.disconnect();
+      }
+    }
+  }, [user_id])
+
+
   const fetchAllMonitors = async () => {
     console.log('user_id in fetchAllMonitors in MonitorContainer', user_id);
     try {
-      const response = await fetch('/monitors', {
+      const response = await fetch('/getMonitors', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -82,9 +104,9 @@ const AppContainer = () => {
     }
   };
 
-  useEffect(() => {
-    fetchAllMonitors();  
-  }, []);
+  // useEffect(() => {
+  //   fetchAllMonitors();  
+  // }, []);
 
   const getAllAlerts = async () => {
     try {
@@ -106,9 +128,9 @@ const AppContainer = () => {
     }
   };
 
-  useEffect(() => {
-    getAllAlerts();
-  }, []);
+  // useEffect(() => {
+  //   getAllAlerts();
+  // }, []);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -147,36 +169,3 @@ const AppContainer = () => {
 };
 
 export default AppContainer;
-
-
-
-
-
-
-
-//   return (
-//     <ColorModeContext.Provider value={colorMode}>
-//       <ThemeProvider theme={theme}>
-//         <CssBaseline />
-//         <div className="AppContainer">
-//           {/* <Box sx={{ display: "flex", flexDirection: "column" }}> */}
-//           {/* <main className="content"> */}
-//             <Header />
-//             <Box sx={{ display: "flex" }}>
-//               <SideBar sx={{ m: 0, p: 0 }} />
-//               <Box sx={{ display: "flex", flexDirection: "column" }}>
-//                 <SubheaderContainer />
-//                 <PageContainer />
-//                 {/* <MainContainer/> */}
-//               </Box>
-//             </Box>
-//             {/* </Box> */}
-//             {/* <ErdVisualizerContainer /> */}
-//             {/* <MonitorContainer /> */}
-//             {/* <CustomRangesMonitor /> */}
-//           {/* </main> */}
-//         </div>
-//       </ThemeProvider>
-//     </ColorModeContext.Provider>
-//   );
-// };
