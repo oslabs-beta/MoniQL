@@ -1,6 +1,7 @@
 const { pool, userPool, connectToPool } = require('../models/db');
 const { v4: uuidv4 } =  require('uuid');
 const cron = require('node-cron');
+const { getIo } = require('../socket');
 
 const monitorController = {};
 
@@ -335,6 +336,8 @@ monitorController.custom = async (req, res, next) => {
 
 monitorController.scheduleMonitors = async (req, res, next) => {
   const monitors = res.locals.monitors
+  const user_id = res.locals.user_id
+  console.log(`$$$$$$$$ USER_ID IN SCHEDULE MONITORS IS ${user_id} $$$$$$$$`)
   
   if (monitors.length) {
     monitors.forEach((monitor, i) => {
@@ -350,12 +353,15 @@ monitorController.scheduleMonitors = async (req, res, next) => {
       
       cron.schedule(cronExpression, () => {
         console.log(`Executing task for ${type}-type monitor with frequency: ${parameters.frequency} minutes`)
-        monitorController.test(req)
+        // monitorController.test(req)
         const getAlerts = async () => {
           try {
             const alerts = await monitorFunction(req, null, null)
             console.log(`Executed ${type}-type monitor. Results:`, alerts);
-            // const test = monitorController.test()
+            if (alerts.length) {
+              const io = getIo();
+              io.to(user_id.toString()).emit('alert', alerts)
+            }
           } catch (err) {
             console.error(`Error during direct invocation of ${type}-type monitor:`, err);
           }
