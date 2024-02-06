@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector, useStore } from 'react-redux';
+
+import { useSelector, useStore, useDispatch } from 'react-redux';
 import {Box, Typography} from '@mui/material';
+
 import { DataGrid } from '@mui/x-data-grid';
+import { addTablesWeightsActionCreator } from '../actions/actions';
+import { set } from 'mongoose';
 
 const DashTableOfTables = () => {
   const store = useStore();
+  const dispatch = useDispatch();
 
   const monitors = useSelector((state) => state.monitor.activeMonitors);
   const alerts = useSelector((state) => state.alert.alerts);
+  const tableMetadata = useSelector((state) => state.diagram.data);
 
   const [dashMonitorData, setDashMonitorData] = useState({});
   const [dashToTRows, setdashToTRows] = useState([]);
@@ -160,7 +166,6 @@ const DashTableOfTables = () => {
       row.id = i + 1;
     });
 
-    console.log('newDashToTRows', newDashToTRows)
     setdashToTRows(newDashToTRows);
   };
 
@@ -168,16 +173,18 @@ const DashTableOfTables = () => {
     if(Object.keys(dashMonitorData).length) getDashMonitorData();
   }, [didPopulateDashMonitorObj, alerts]);
 
-  useEffect(() => {
-    if (didGetDashMonitorData){
-      const tablesWeightsObj = store.getState().diagram.tablesWeightsObj;
-      setTablesWeightsObj(tablesWeightsObj);
-    }
-  }, [didGetDashMonitorData]);
+  // do not delete -- only commenting this out until we move the tableWeight function to a helper file
+  // useEffect(() => {
+  //   if (didGetDashMonitorData){
+  //     const tablesWeightsObj = store.getState().diagram.tablesWeightsObj;
+  //     console.log('tablesWeightsObj in getDashMonitorData in dashToT', tablesWeightsObj)
+  //     setTablesWeightsObj(tablesWeightsObj);
+  //   }
+  // }, [didGetDashMonitorData]);
 
-  useEffect(() => {
-    console.log('tablesWeightsObj updated: ', tablesWeightsObj)
-  }, [tablesWeightsObj]);
+  // useEffect(() => {
+  //   console.log('tablesWeightsObj updated: ', tablesWeightsObj)
+  // }, [tablesWeightsObj]);
 
   useEffect(() => {
     if(didGetDashMonitorData && tablesWeightsObj){
@@ -190,6 +197,29 @@ const DashTableOfTables = () => {
       populateDashToTRows();
     }
   }, [didGetDashMonitorData, tablesWeightsObj, alerts]);
+
+  // pasting this function from Focus.jsx -- should be in a helper file -- then uncomment useEffect above 
+  const tableWeight = () => {
+    const importance = new Map();
+    tableMetadata.forEach((table) => {
+      //table name = key / num of FKs (<< hehe) = value
+      importance.set(table.table_name, (table.foreign_keys || []).length);
+    });
+
+    // if(tableWeightNotCalledYet) {
+    const importanceObj = Object.fromEntries(importance);
+    dispatch(addTablesWeightsActionCreator(importanceObj));
+    setTablesWeightsObj(importanceObj);
+    // tableWeightNotCalledYet.current = false;
+    // }
+
+    return importance;
+  };
+
+  useEffect(() => {
+    // console.log('calling tableWeight in dashToT') 
+    tableWeight();
+  }, [didGetDashMonitorData]);
 
   return (
     <Box>
@@ -228,20 +258,3 @@ const DashTableOfTables = () => {
 };
 
 export default DashTableOfTables;
-
-/*
-<FormControl fullWidth>
-  <InputLabel id="demo-simple-select-label">Age</InputLabel>
-  <Select
-    labelId="demo-simple-select-label"
-    id="demo-simple-select"
-    value={age}
-    label="Age"
-    onChange={handleChange}
-  >
-    <MenuItem value={10}>Ten</MenuItem>
-    <MenuItem value={20}>Twenty</MenuItem>
-    <MenuItem value={30}>Thirty</MenuItem>
-  </Select>
-</FormControl>
-*/

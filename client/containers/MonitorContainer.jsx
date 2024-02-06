@@ -20,6 +20,7 @@ import VolumeMonitor from '../components/monitors/VolumeMonitor';
 import CustomMonitor from '../components/monitors/CustomMonitor';
 import NullMonitor from '../components/monitors/NullMonitor';
 import { addAlertsActionCreator } from '../actions/actions';
+import { updateMonitorActionCreator } from '../actions/actions';
 
 //for editing
 import MonitorEditor from '../components/monitors/MonitorEditor';
@@ -57,8 +58,30 @@ const MonitorContainer = () => {
           : monitor
       )
     );
+    updateMonitorQuery(updatedMonitor);
     // Exit the editing mode
     setEditingMonitor(null);
+  };
+
+  const updateMonitorQuery = async (monitorObj) => {
+    try {
+      const response = await fetch('/monitors', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(monitorObj),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const updatedMonitorObj = await response.json();
+      console.log('updatedMonitorObj in monitoreditor: ', updatedMonitorObj);
+      dispatch(updateMonitorActionCreator(updatedMonitorObj));
+    } catch (error) {
+      console.error('Error updating monitor', error);
+    }
+
   };
 
   //*** for editing monitors with existing rules ***//
@@ -92,7 +115,7 @@ const MonitorContainer = () => {
       throw new Error(error);
     }
   };
-
+  
   useEffect(() => {
     setSelectedMonitor('');
   }, [activeMonitors]);
@@ -119,7 +142,7 @@ const MonitorContainer = () => {
         }}
       >
         <Box sx={{ p: 2, display: 'flex', justifyContent: 'space-between' }}>
-          <Typography variant='h5' color={colors.grey[100]}>
+          <Typography variant="h5" color={colors.grey[100]}>
             Active Monitors
           </Typography>
         </Box>
@@ -159,32 +182,39 @@ const MonitorContainer = () => {
                           alignItems: 'row',
                         }}
                       >
-                        <Typography variant='h5' color={colors.grey[100]}>
+
+                        <Typography fontSize='16px' color={colors.grey[100]}>
                           table:{' '}
                           <Typography
-                            variant='h5'
-                            color='secondary'
-                            display='inline'
-                          >
+                            fontSize='19px'
+                            color="secondary"
+                            display="inline"
+        >
                             {monitor.parameters.table}
                           </Typography>{' '}
                           | type:{' '}
                           <Typography
-                            variant='h5'
-                            color='secondary'
-                            display='inline'
+
+                            fontSize='19px'
+                            color="secondary"
+                            display="inline"
+
                           >
                             {monitor.type}
                           </Typography>
                           </Typography>
                         <Box>
+
                           <Button onClick={() => setEditingMonitor(monitor)}>
                             Edit
+
                           </Button>
                           <Button onClick={() => sendQuery(monitor)}>
                             fire me
                           </Button>
-                          </Box>
+
+                        </Box>
+
                       </Box>
                       <Divider sx={{ width: '100%' }} />
                       {/* logic to go into monitor editor */}
@@ -244,6 +274,7 @@ const MonitorContainer = () => {
           }}
         >
           <Box sx={{ p: 2, display: 'flex', justifyContent: 'space-between' }}>
+
             <Typography variant='h5' color={colors.grey[100]}>
               Create New Monitor
             </Typography>

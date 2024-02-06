@@ -8,6 +8,7 @@ const initialState = {
 
 const alertReducer = (state = initialState, action) => {
   let updatedAlerts; 
+  let displayAlerts;
 
   switch(action.type) {
   case types.ADD_ALERTS:
@@ -16,10 +17,12 @@ const alertReducer = (state = initialState, action) => {
     updatedAlerts.push(...action.payload);
     updatedAlerts = updatedAlerts.sort((a, b) => new Date(b.detected_at) - new Date(a.detected_at));
 
+    displayAlerts = updatedAlerts.filter(alert => alert.display === true);
+
     return {
       ...state,
       alerts: updatedAlerts,
-      displayAlerts: updatedAlerts
+      displayAlerts: displayAlerts
     }
 
   case types.DELETE_ALERT:

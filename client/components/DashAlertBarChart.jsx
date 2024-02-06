@@ -2,12 +2,18 @@ import React from 'react';
 import { BarChart } from '@mui/x-charts';
 import { Box, Divider } from '@mui/material';
 import { useSelector } from 'react-redux';
+import dayjs from "dayjs";
 
 const DashAlertBarChart = () => {
 
   // look at alerts in state
   // pull out data -- how many alerts of each status: unresolved, resolved, not dismissed, dismissed
   const alerts = useSelector((state) => state.alert.alerts);
+  const dashDisplayAlertsTimeRange = useSelector((state) => state.diagram.dashDisplayAlertsTimeRange);
+
+  const alertsInTimeRange = alerts.filter((alertObj) => {
+    return dayjs(alertObj.detected_at).isAfter(dayjs(dashDisplayAlertsTimeRange[0])) && dayjs(alertObj.detected_at).isBefore((dashDisplayAlertsTimeRange[1]))
+  });
 
   const alertsByStatus = {
     unresolved: 0,
@@ -16,7 +22,7 @@ const DashAlertBarChart = () => {
     dismissed: 0
   };
 
-  alerts.forEach(alertObj => {
+  alertsInTimeRange.forEach(alertObj => {
     alertObj.resolved ? alertsByStatus.resolved++ : alertsByStatus.unresolved++;
     alertObj.display ? alertsByStatus.notDismissed++ : alertsByStatus.dismissed++;
   });

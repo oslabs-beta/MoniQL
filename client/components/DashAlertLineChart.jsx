@@ -7,35 +7,42 @@ import { Box, Divider } from '@mui/material';
 const DashAlertLineChart = () => {
 
   const alerts = useSelector((state) => state.alert.alerts);
+  const dashDisplayAlertsTimeRangeFromState = useSelector((state) => state.diagram.dashDisplayAlertsTimeRange);
+
+  const dashDisplayAlertsTimeRangeSize = dashDisplayAlertsTimeRangeFromState[1] - dashDisplayAlertsTimeRangeFromState[0];
+  const dashDisplayAlertsTimeRangeInDays = Math.floor(dashDisplayAlertsTimeRangeSize / 86400000);
+  const dashDisplayAlertsTimeRangeInterval = Math.ceil(dashDisplayAlertsTimeRangeInDays / 7);
+
+  let numIntervals = 7;
+  if (dashDisplayAlertsTimeRangeInDays < 7) {
+    numIntervals = dashDisplayAlertsTimeRangeInDays;
+  } 
 
   // look at alerts in state
   // pull out data -- how many alerts over each of the last 7 days
   // date on alert object: alertObj.detected_at
   const days = [];
-  // populate days array with today and each of the past 6 days, in order, with dates
-  for (let i = 6; i >= 0; i--) {
-    days.push(dayjs().subtract(i, 'day').format('YYYY-MM-DD'));
+  // populate days array with dates from beginning of time range to end of time range (7 steps)
+  for (let i = numIntervals; i > 0; i--) {
+    days.push(dayjs(dashDisplayAlertsTimeRangeFromState[1]).subtract((i - 1) * dashDisplayAlertsTimeRangeInterval, 'day').format('YYYY-MM-DD'));
   }
+  // console.log('days in dashalertlinechart', days)
 
   // create an array to hold the number of alerts for each day
-  const alertsByDay = new Array(7).fill(0);
+  const alertsByInterval = new Array(numIntervals).fill(0);
   // populate alertsByDay array with the number of alerts for each day
-  alerts.forEach((alertObj) => {
-    const alertDate = dayjs(alertObj.detected_at).format('YYYY-MM-DD');
-    const index = days.indexOf(alertDate);
-    if (index !== -1) {
-      alertsByDay[index] = alertsByDay[index] + 1;
+  for(let i = 0; i < alerts.length; i++){
+    let j = 0;
+    while(j < numIntervals) {
+      const alertDate = dayjs(alerts[i].detected_at).format('YYYY-MM-DD');
+      if(alertDate > days[j] && alertDate <= days[j + 1]) {
+        alertsByInterval[j] = alertsByInterval[j] + 1;
+      }
+      j++;
     }
-  });
+  }
 
-  const dashLineChartData = days.map((day, index) => ({
-    date: day,
-    alerts: alertsByDay[index]
-  }));
-  console.log('dashLineChartData', dashLineChartData)
-  console.log('alertsByDay', alertsByDay)
-  console.log('days', days)
-
+  // console.log('alertsByInterval in dashalertlinechart', alertsByInterval)
 
   return (
     <Box
@@ -57,17 +64,16 @@ const DashAlertLineChart = () => {
           },
         ]}
         xAxis={[
-          {
-            scaleType: "point",
-            data: days, //[-6, -5, -4, -3, -2, -1, 0],
-            label: "date",
-          },
-        ]}
+          { 
+            scaleType: 'point',
+            data: days, 
+            label: 'date',
+          }]}
         series={[
-          {
-            data: alertsByDay,
-          },
-        ]}
+          { 
+            data: alertsByInterval, 
+          }]}
+
         width={500}
         height={300}
         sx={{

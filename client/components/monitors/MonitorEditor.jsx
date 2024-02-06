@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { updateMonitorActionCreator } from '../../actions/actions';
 
 function MonitorEditor({ monitor, onDone }) {
+  const dispatch = useDispatch();
   const [params, setParams] = useState(monitor.parameters);
 
   const handleChanges = (e) => {

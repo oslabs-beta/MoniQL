@@ -4,10 +4,6 @@ const userController = require('../controllers/userController');
 const dbController = require('../controllers/dbController');
 const monitorController = require('../controllers/monitorController');
 
-// router.post('/login', userController.login, dbController.connect /* this one doesn't do anything rn */, dbController.getDB, (req, res) => {res.status(200).json(res.locals)});
-
-// router.post('/register', userController.register, /* dbcontroller.userpoolconnect,*/ (req, res) => {res.status(200).json(res.locals)});
-
 router.post('/login', userController.login, monitorController.connect, (req, res) => {res.status(200).json(res.locals)});
 
 router.post('/register', userController.register, monitorController.connect, (req, res) => {res.status(200).json(res.locals)});
@@ -27,7 +23,7 @@ router.post('/null', monitorController.null, userController.addAlerts, (req, res
 
 router.post('/monitors', userController.insertMonitor, userController.getMonitors, (req, res) => {res.status(200).json(res.locals.monitors)});
 
-router.post('/monitors', userController.getMonitors, (req, res) => {res.status(200).json(res.locals.monitors)});
+router.put('/monitors', userController.updateMonitor, (req, res) => {res.status(200).json(res.locals.monitors)});
 
 router.post('/alerts', userController.getAlerts, (req, res) => {res.status(200).json(res.locals.allAlerts)});
 

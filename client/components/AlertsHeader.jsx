@@ -43,7 +43,7 @@ const AlertsHeader = () => {
   const [selectedColumn, setSelectedColumn] = useState('');
   const [selectedMonitorType, setSelectedMonitorType] = useState('');
   const [showResolved, setShowResolved] = useState(true);
-  const [showDismissed, setShowDismissed] = useState(true);
+  const [showDismissed, setShowDismissed] = useState(false);
 
   // look at alerts --
   // pull out tables
@@ -79,7 +79,6 @@ const AlertsHeader = () => {
   // toggle for resolved/unresolved
   // toggle for dismissed/not dismissed (display property of alertObj)
 
-  // break this up into separate useEffects
   useEffect(() => {
     const filteredAlerts = alerts.filter((alert) => {
       if (selectedTable && alert.table !== selectedTable) {
@@ -94,9 +93,10 @@ const AlertsHeader = () => {
       if (!showResolved && alert.resolved) {
         return false;
       }
-      if (!showDismissed && alert.display) {
+      if (!showDismissed && !alert.display) {
         return false;
       }
+
       if (showDismissed && alert.display === false) {
         return true;
       }
@@ -234,7 +234,7 @@ const AlertsHeader = () => {
                 setSelectedColumn('');
                 setSelectedMonitorType('');
                 setShowResolved(true);
-                setShowDismissed(true);
+                setShowDismissed(false);
               }}
               size='large'
               sx={{

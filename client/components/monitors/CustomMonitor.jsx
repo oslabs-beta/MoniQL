@@ -5,26 +5,23 @@ import { useSelector, useDispatch } from 'react-redux';
 // Action creators
 import { addMonitorsActionCreator } from '../../actions/actions';
 
+
 // MUI components
 import {
   Box,
   Card,
   Button,
   Divider,
-  InputLabel,
   FormControl,
   FormHelperText,
   Stack,
   Typography,
-  MenuItem,
-  Select,
   TextField,
   useTheme
 } from '@mui/material';
 import tokens from '../stylesheets/Themes';
 
 // MUI icons
-import AddCircleIcon from '@mui/icons-material/AddCircle';
 import monitorObjectCreator from './monitorObjectCreator';
 
 
