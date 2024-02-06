@@ -21,7 +21,7 @@ const SubheaderContainer = () => {
       {page === "Dashboard" && <DashboardHeader />}
       {page === "ERD" && <FocusBar />}
       {page === "Monitors" && <MonitorHeader />}
-      {page === "Reports" && <ReportsHeader />}
+      {page === "Alerts" && <ReportsHeader />}
       {page === "Query" && <QueryHeader />}
       {page === "Account" && <></>}
       {page === "Settings" && <></>}

@@ -243,6 +243,7 @@ const LoginContainer = ({ closeLogin }) => {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              disabled={selectedTab === "register" && (!uri.includes(".com") || password.length < 4 || username === "" )}
             >
               {/* {regToggle ? "Register" : "Sign in"} */}
               {selectedTab === "login" ? "Log In" : "Sign Up"}

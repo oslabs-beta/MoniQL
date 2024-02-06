@@ -87,8 +87,7 @@ const Focus = ({ children, elements }) => {
   const dispatch = useDispatch();
 
   ///////////////////////NODE STYLE/////////////////////////
-  ////////////////////////////**********HAY STACK**********//////////////////////////////
-
+  
   const nodeStyle = {
     width: '150px', // Fixed width
     height: '200px', // Fixed height
@@ -131,7 +130,6 @@ const Focus = ({ children, elements }) => {
   };
 
   ///////////////////////NODE STYLE/////////////////////////
-  ////////////////////////////**********HAY STACK**********//////////////////////////////
 
   const nodeTypes = useMemo(() => ({ custom: CustomNode }), []);
 
@@ -234,7 +232,7 @@ const Focus = ({ children, elements }) => {
   }, [data, focusTable, focusDepth]); // runs whenever `data` or `currNode` changes
 
   return (
-    <div style={{ width: '100vw', height: '100vh' }}>
+    <div style={{ width: '85vw', height: '70vh'}}>
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -245,6 +243,8 @@ const Focus = ({ children, elements }) => {
       >
         {/* <Background color="#2A2A43" /> */}
         <Background color="#0D0221" />
+        <MiniMap />
+        <Controls />
       </ReactFlow>
     </div>
   );

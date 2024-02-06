@@ -127,9 +127,9 @@ const AppContainer = () => {
           <Box
             display="flex"
             flexDirection="column"
-            justifyContent="center"
+            justifyContent="flex-start"
             alignItems="center"
-            minHeight="80vh"
+            minHeight="100vh"
             sx={{ right: 0 }}
           >
             <PageContainer />

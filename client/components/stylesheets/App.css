@@ -102,7 +102,7 @@ inset 0 0 50px #fff,
 }
 
 .scrollable-content::-webkit-scrollbar-thumb {
-  background: rgba(104, 112, 250, 0.01); 
+  background: rgba(104, 112, 250, 0.5); 
   border-radius: 10px;
   transition: background 0.1s ease-in-out;
 }

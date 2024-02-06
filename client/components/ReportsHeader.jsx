@@ -27,7 +27,7 @@ const ReportsHeader = () => {
     <div>
       <Box m="30px">
         <SubHeader
-          title="Reports"
+          title="Detected Anomalies"
           subtitle="Some day this will be reports, right now it's alerts ¯\_(ツ)_/¯"
         />
       </Box>

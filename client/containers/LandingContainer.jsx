@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import {
   Box,
   Toolbar,
@@ -6,11 +6,11 @@ import {
   ThemeProvider,
   useTheme,
   Typography,
-} from "@mui/material";
-import { useSelector } from "react-redux";
-import { ColorModeContext, tokens } from "../components/stylesheets/Themes.jsx";
-import { useContext, useState } from "react";
-import LoginContainer from "../components/LoginContainer";
+} from '@mui/material';
+import { useSelector } from 'react-redux';
+import { ColorModeContext, tokens } from '../components/stylesheets/Themes.jsx';
+import { useContext, useState } from 'react';
+import LoginContainer from '../components/Login.jsx';
 
 const LandingContainer = () => {
   const theme = useTheme();
@@ -24,11 +24,11 @@ const LandingContainer = () => {
       <Toolbar sx={{ ml: 15 }}>
         <Box sx={{ flexGrow: 1 }} />
         <Button
-          variant="contained"
-          size="large"
-          edge="end"
-          aria-haspopup="true"
-          color="primary"
+          variant='contained'
+          size='large'
+          edge='end'
+          aria-haspopup='true'
+          color='primary'
           onClick={() => setShowLogin(true)}
         >
           Log in / Sign up
@@ -36,10 +36,10 @@ const LandingContainer = () => {
       </Toolbar>
       <div
         style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "80vh",
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '80vh',
         }}
       >
         {showLogin && <LoginContainer closeLogin={() => setShowLogin(false)} />}
