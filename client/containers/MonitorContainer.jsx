@@ -48,17 +48,7 @@ const MonitorContainer = () => {
   //   // Exit the editing mode
   //   setEditingMonitor(null);
   // };
-  const handleSaveChanges = (updatedMonitor) => {
-    setNewActiveMonitors((prevMonitors) =>
-      prevMonitors.map((monitor) =>
-        monitor.monitor_id === updatedMonitor.monitor_id
-          ? updatedMonitor
-          : monitor
-      )
-    );
-    // Exit the editing mode
-    setEditingMonitor(null);
-  };
+
   const handleSaveChanges = (updatedMonitor) => {
     setNewActiveMonitors((prevMonitors) =>
       prevMonitors.map((monitor) =>
@@ -122,12 +112,8 @@ const MonitorContainer = () => {
           minWidth: '30vw',
           flexDirection: 'column',
           minHeight: '60vh',
-          minWidth: '30vw',
-          flexDirection: 'column',
-          minHeight: '60vh',
           padding: 3,
           boxShadow: 3,
-          backgroundColor: '#2E2D3D',
           backgroundColor: '#2E2D3D',
           borderRadius: 4,
         }}
@@ -137,7 +123,6 @@ const MonitorContainer = () => {
             Active Monitors
           </Typography>
         </Box>
-        <Divider sx={{ width: '100%', mb: 1 }} />
         <Divider sx={{ width: '100%', mb: 1 }} />
         <Box
           sx={
@@ -157,8 +142,6 @@ const MonitorContainer = () => {
                   m: 1,
                   overflow: 'auto',
                   maxHeight: '20vh',
-                  overflow: 'auto',
-                  maxHeight: '20vh',
                 }}
               >
                 <CardContent>
@@ -174,9 +157,6 @@ const MonitorContainer = () => {
                           display: 'flex',
                           justifyContent: 'space-between',
                           alignItems: 'row',
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          alignItems: 'row',
                         }}
                       >
                         <Typography variant='h5' color={colors.grey[100]}>
@@ -189,8 +169,6 @@ const MonitorContainer = () => {
                             {monitor.parameters.table}
                           </Typography>{' '}
                           | type:{' '}
-                          </Typography>{' '}
-                          | type:{' '}
                           <Typography
                             variant='h5'
                             color='secondary'
@@ -198,7 +176,7 @@ const MonitorContainer = () => {
                           >
                             {monitor.type}
                           </Typography>
-                        </Typography>
+                          </Typography>
                         <Box>
                           <Button onClick={() => setEditingMonitor(monitor)}>
                             Edit
@@ -206,19 +184,14 @@ const MonitorContainer = () => {
                           <Button onClick={() => sendQuery(monitor)}>
                             fire me
                           </Button>
-                          </Button>
-                        </Box>
+                          </Box>
                       </Box>
-                      <Divider sx={{ width: '100%' }} />
                       <Divider sx={{ width: '100%' }} />
                       {/* logic to go into monitor editor */}
 
                       {monitor.parameters && (
                         <Box
                           sx={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            alignItems: 'center',
                             display: 'flex',
                             flexDirection: 'row',
                             alignItems: 'center',
@@ -239,7 +212,6 @@ const MonitorContainer = () => {
                                     <ListItemText
                                       primary={`${key}: ${
                                         value != null ? value.toString() : 'N/A'
-                                        value != null ? value.toString() : 'N/A'
                                       }`}
                                     />
                                   </ListItem>
@@ -258,7 +230,6 @@ const MonitorContainer = () => {
       </Card>
 
       <Box sx={{ p: 2, marginTop: '-15px' }}>
-      <Box sx={{ p: 2, marginTop: '-15px' }}>
         {/* Conditional Rendering for Monitors */}
         <Card
           variant='outlined'
@@ -266,12 +237,8 @@ const MonitorContainer = () => {
             minWidth: '30vw', // Adjust this as needed
             flexDirection: 'column',
             minHeight: '60vh',
-            minWidth: '30vw', // Adjust this as needed
-            flexDirection: 'column',
-            minHeight: '60vh',
             padding: 3,
             boxShadow: 3,
-            backgroundColor: '#2E2D3D',
             backgroundColor: '#2E2D3D',
             borderRadius: 4,
           }}
@@ -282,18 +249,14 @@ const MonitorContainer = () => {
             </Typography>
           </Box>
           <Divider sx={{ width: '100%' }} />
-          <Divider sx={{ width: '100%' }} />
           {/* Conditional Rendering for Monitors and Editor */}
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, margin: 3 }}>
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, margin: 3 }}>
             {monitors.map((monitor) => (
               <Chip
                 key={monitor}
                 label={monitor}
                 color={selectedMonitor === monitor ? 'secondary' : 'default'}
-                color={selectedMonitor === monitor ? 'secondary' : 'default'}
                 onClick={() =>
-                  setSelectedMonitor(monitor === selectedMonitor ? '' : monitor)
                   setSelectedMonitor(monitor === selectedMonitor ? '' : monitor)
                 }
               />
@@ -304,16 +267,8 @@ const MonitorContainer = () => {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
             }}
           >
-            {selectedMonitor === 'Range' && <RangeMonitor />}
-            {selectedMonitor === 'Freshness' && <FreshnessMonitor />}
-            {selectedMonitor === 'Volume' && <VolumeMonitor />}
-            {selectedMonitor === 'Null' && <NullMonitor />}
-            {selectedMonitor === 'Custom' && <CustomMonitor />}
             {selectedMonitor === 'Range' && <RangeMonitor />}
             {selectedMonitor === 'Freshness' && <FreshnessMonitor />}
             {selectedMonitor === 'Volume' && <VolumeMonitor />}
