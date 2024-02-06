@@ -44,6 +44,7 @@
     "@mui/material": "^5.15.5",
     "@mui/x-charts": "^6.19.3",
     "@mui/x-data-grid": "^6.19.3",
+    "@mui/x-date-pickers": "^6.19.3",
     "@reduxjs/toolkit": "^2.0.1",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",

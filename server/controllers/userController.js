@@ -284,6 +284,24 @@ userController.getMonitors = async (req, res, next) => {
   }
 };
 
+userController.updateMonitor = async (req, res, next) => {
+  const { monitor_id, parameters } = req.body;
+  try {
+    const updateQuery = 'UPDATE monitors SET parameters = $1 WHERE monitor_id = $2 RETURNING *;';
+    const values = [JSON.stringify(parameters), monitor_id];
+    const { rows } = await db.query(updateQuery, values);
+    res.locals.monitors = rows;
+    console.log('rows in updateMonitor: ', rows)
+    return next();
+  } catch (err) {
+    return next({
+      log: `error in userController.updateMonitor: ${err}`,
+      status: 500,
+      message: { error: 'Error occurred in updateMonitor' },
+    });
+  }
+};
+
 module.exports = userController;
 
 

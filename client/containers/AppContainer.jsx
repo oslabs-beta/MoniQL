@@ -1,28 +1,31 @@
-import React, { useEffect, useState } from "react";
-import { Box } from "@mui/material";
 import io from 'socket.io-client'
+import React, { useEffect, useState } from 'react';
+import { Box } from '@mui/material';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+
 
 //TEMPORARY IMPORTS
-import { useDispatch, useSelector } from "react-redux";
-import { saveDBActionCreator, addAlertsActionCreator, addMonitorsActionCreator } from "../actions/actions";
-import AlertBox from "../components/AlertBox";
+import { useDispatch, useSelector } from 'react-redux';
+import { saveDBActionCreator, addAlertsActionCreator, addMonitorsActionCreator } from '../actions/actions';
+import AlertBox from '../components/AlertBox';
 //END TEMPORARY IMPORTS
 
-import Header from "../components/Header";
-import SideBar from "../components/SideBar";
-import ErdVisualizerContainer from "../containers/ErdVisualizerContainer";
-import MonitorContainer from "../containers/MonitorContainer";
-import CustomRangesMonitor from "../components/monitors/RangeMonitor";
-import PageContainer from "./PageContainer";
-import SubheaderContainer from "./SubheaderContainer";
+import Header from '../components/Header';
+import SideBar from '../components/SideBar';
+import ErdVisualizerContainer from '../containers/ErdVisualizerContainer';
+import MonitorContainer from '../containers/MonitorContainer';
+import CustomRangesMonitor from '../components/monitors/RangeMonitor';
+import PageContainer from './PageContainer';
+import SubheaderContainer from './SubheaderContainer';
 // import { response } from "express";
-import MainContainer from "./MainContainer";
+import MainContainer from './MainContainer';
 
 //////////////////////hay added for light/dark mode/////////////////////
 // import { ThemeProvider } from '@emotion/react';
-import { ColorModeContext, useMode } from "../components/stylesheets/Themes";
-import { CssBaseline, ThemeProvider } from "@mui/material";
-import LandingContainer from "./LandingContainer";
+import { ColorModeContext, useMode } from '../components/stylesheets/Themes';
+import { CssBaseline, ThemeProvider } from '@mui/material';
+import LandingContainer from './LandingContainer';
 
 //for pull out drawer:
 //   import Topbar from "./scenes/global/Topbar";
@@ -42,17 +45,17 @@ const AppContainer = () => {
     const fetchDB = async () => {
       try {
         const requestOptions = {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({user_uri: user_uri})
         };
-        const response = await fetch("/eboshi", requestOptions);
+        const response = await fetch('/eboshi', requestOptions);
         const data = await response.json();
         console.log('dbArray in fetchDB in appContainer: ', data.dbArray);
-        if (!response.ok) throw new Error(data.error || "Error from server");
+        if (!response.ok) throw new Error(data.error || 'Error from server');
         dispatch(saveDBActionCreator(data.dbArray));
       } catch (err) {
-        console.log("AppContainer Mounted", err);
+        console.log('AppContainer Mounted', err);
       }
     };
     fetchDB();
@@ -130,70 +133,39 @@ const AppContainer = () => {
   // }, []);
 
   return (
-    // <ColorModeContext.Provider value={colorMode}>
-    //   <ThemeProvider theme={theme}>
-    <div className="AppContainer">
-      <CssBaseline />
-      <Header />
-      <Box sx={{ display: "flex" }}>
-        <SideBar />
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-          }}
-        >
-          <SubheaderContainer />
-          <Box
-            display="flex"
-            flexDirection="column"
-            justifyContent="center"
-            alignItems="center"
-            minHeight="80vh"
-            sx={{ right: 0 }}
-          >
-            <PageContainer />
-          </Box>
-        </Box>
-      </Box>
-    </div>
-    //   </ThemeProvider>
-    // </ColorModeContext.Provider>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <ColorModeContext.Provider value={colorMode}>
+        <ThemeProvider theme={theme}>
+          <div className="AppContainer">
+            <CssBaseline />
+            <Header />
+            <Box sx={{ display: 'flex' }}>
+              <SideBar />
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                }}
+              >
+                <SubheaderContainer />
+                <Box
+                  display="flex"
+                  flexDirection="column"
+                  justifyContent="flex-start"
+                  alignItems="center"
+                  minHeight="100vh"
+                  sx={{ right: 0 }}
+                >
+                  <PageContainer />
+                </Box>
+              </Box>
+            </Box>
+          </div>
+        </ThemeProvider>
+      </ColorModeContext.Provider>
+    </LocalizationProvider>
   );
 };
 
 export default AppContainer;
-
-
-
-
-
-
-
-//   return (
-//     <ColorModeContext.Provider value={colorMode}>
-//       <ThemeProvider theme={theme}>
-//         <CssBaseline />
-//         <div className="AppContainer">
-//           {/* <Box sx={{ display: "flex", flexDirection: "column" }}> */}
-//           {/* <main className="content"> */}
-//             <Header />
-//             <Box sx={{ display: "flex" }}>
-//               <SideBar sx={{ m: 0, p: 0 }} />
-//               <Box sx={{ display: "flex", flexDirection: "column" }}>
-//                 <SubheaderContainer />
-//                 <PageContainer />
-//                 {/* <MainContainer/> */}
-//               </Box>
-//             </Box>
-//             {/* </Box> */}
-//             {/* <ErdVisualizerContainer /> */}
-//             {/* <MonitorContainer /> */}
-//             {/* <CustomRangesMonitor /> */}
-//           {/* </main> */}
-//         </div>
-//       </ThemeProvider>
-//     </ColorModeContext.Provider>
-//   );
-// };

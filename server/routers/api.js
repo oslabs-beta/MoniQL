@@ -4,10 +4,6 @@ const userController = require('../controllers/userController');
 const dbController = require('../controllers/dbController');
 const monitorController = require('../controllers/monitorController');
 
-// router.post('/login', userController.login, dbController.connect /* this one doesn't do anything rn */, dbController.getDB, (req, res) => {res.status(200).json(res.locals)});
-
-// router.post('/register', userController.register, /* dbcontroller.userpoolconnect,*/ (req, res) => {res.status(200).json(res.locals)});
-
 //uncomment below to revert to working login
 // router.post('/login', userController.login, monitorController.connect, (req, res) => {res.status(200).json(res.locals)});
 
@@ -30,7 +26,7 @@ router.post('/null', monitorController.null, userController.addAlerts, (req, res
 
 router.post('/monitors', userController.insertMonitor, monitorController.scheduleMonitors, userController.getMonitors, (req, res) => {res.status(200).json(res.locals.monitors)});
 
-router.post('/getMonitors', userController.getMonitors, (req, res) => {res.status(200).json(res.locals.monitors)});
+router.put('/monitors', userController.updateMonitor, (req, res) => {res.status(200).json(res.locals.monitors)});
 
 router.post('/alerts', userController.getAlerts, (req, res) => {res.status(200).json(res.locals.allAlerts)});
 
@@ -38,7 +34,7 @@ router.put('/alerts', userController.updateAlert, (req, res) => {res.status(200)
 
 router.post('/stats', monitorController.stats, (req, res) => {res.status(200).json(res.locals)});
 
-router.post('/custom', monitorController.custom, (req, res) => {res.status(200).json(res.locals)});
+router.post('/custom', monitorController.custom, userController.addAlerts, (req, res) => {res.status(200).json(res.locals)});
 
 //this is temp for working on front end
 router.post('/eboshi', dbController.getDB, (req, res) => {res.status(200).json(res.locals)});

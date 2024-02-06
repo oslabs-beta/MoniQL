@@ -16,6 +16,7 @@ const pool = new Pool({
   connectionString: pgUri
 });
 
+// uncomment for dev mode
 // const userPool = new Pool({
 //   connectionString: userUri
 // });

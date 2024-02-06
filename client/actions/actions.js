@@ -49,7 +49,27 @@ export const addMonitorsActionCreator = (monitorsArray) => ({
   payload: monitorsArray
 })
 
-export const addTableWeightsActionCreator = (tableWeightsObj) => ({
-  type: types.ADD_TABLE_WEIGHTS,
-  payload: tableWeightsObj
+export const updateMonitorActionCreator = (monitorObj) => ({
+  type: types.UPDATE_MONITOR,
+  payload: monitorObj
+})
+
+export const addTablesWeightsActionCreator = (tablesWeightsObj) => ({
+  type: types.ADD_TABLES_WEIGHTS,
+  payload: tablesWeightsObj
+})
+
+export const displayAlertsActionCreator = (alertsArray) => ({
+  type: types.DISPLAY_ALERTS,
+  payload: alertsArray
+})
+
+export const displayMonitorsActionCreator = (monitorsArray) => ({
+  type: types.DISPLAY_MONITORS,
+  payload: monitorsArray
+})
+
+export const updateDashDisplayTimeRangeActionCreator = (timeRange) => ({
+  type: types.UPDATE_DASH_DISPLAY_TIME_RANGE,
+  payload: timeRange
 })
