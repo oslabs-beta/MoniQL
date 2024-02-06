@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useStore } from 'react-redux';
-import Box from '@mui/material/Box';
+import {Box, Typography} from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 
 const DashTableOfTables = () => {
@@ -97,18 +97,18 @@ const DashTableOfTables = () => {
   // number of alerts of type custom
 
   const dashToTColumns = [
-    { field: 'id', headerName: 'ID', width: 75},
+    { field: 'id', headerName: 'ID', width: 30},
     { field: 'table', headerName: 'Table', width: 150},
-    { field: 'downstream', headerName: 'Downstream', width: 75},
-    { field: 'monitors', headerName: 'Monitors', width: 75},
-    { field: 'alerts', headerName: 'Alerts', width: 75},
-    { field: 'unresolved', headerName: 'Unresolved', width: 75},
-    { field: 'resolved', headerName: 'Resolved', width: 75},
-    { field: 'displayed', headerName: 'Displayed', width: 75},
-    { field: 'dismissed', headerName: 'Dismissed', width: 75},
-    { field: 'range', headerName: 'Range', width: 75},
-    { field: 'null', headerName: 'Null', width: 75},
-    { field: 'custom', headerName: 'Custom', width: 75}
+    { field: 'downstream', headerName: 'Downstream Entities', width: 85},
+    { field: 'monitors', headerName: 'Monitors', width: 85},
+    { field: 'alerts', headerName: 'Alerts', width: 85},
+    { field: 'unresolved', headerName: 'Unresolved', width: 85},
+    { field: 'resolved', headerName: 'Resolved', width: 85},
+    { field: 'displayed', headerName: 'Displayed', width: 85},
+    { field: 'dismissed', headerName: 'Dismissed', width: 85},
+    { field: 'range', headerName: 'Range', width: 85},
+    { field: 'null', headerName: 'Null', width: 85},
+    { field: 'custom', headerName: 'Custom', width: 85}
   ]; 
 
   // turn out: array of rows
@@ -192,16 +192,39 @@ const DashTableOfTables = () => {
   }, [didGetDashMonitorData, tablesWeightsObj, alerts]);
 
   return (
-    <Box sx={{ height: 400, width: '100%', backgroundColor: '#6870fa', color: 'FAF9F6'}}>
-      <DataGrid
-        rows={dashToTRows}
-        columns={dashToTColumns}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
-        checkboxSelection
-      />
+    <Box>
+      <Box
+        sx={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {/* <Typography variant="h3">Tables</Typography> */}
+        <Box sx={{ height: 466, backgroundColor: "rgba(104, 112, 250, 0.8)", border: .5, borderColor: 'gray'}}>
+          {/* <Typography variant="h4" sx={{ml: 2}}>monitored tables</Typography> */}
+<h2 style={{marginLeft: '1rem' }} >monitored tables</h2>
+          <DataGrid
+          autoHeight
+            rows={dashToTRows}
+            columns={dashToTColumns}
+            pageSize={5}
+            rowsPerPageOptions={[5]}
+            sx={{
+              height: 400,
+              paddng: 2,
+              headerAlign: "center",
+              backgroundColor: "#6870fa",
+              borderRadius: 0,
+              color: "FAF9F6",
+              width: "100%",
+            }}
+          />
+        </Box>
+      </Box>
     </Box>
-  )
+  );
 };
 
 export default DashTableOfTables;
