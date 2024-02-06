@@ -215,7 +215,7 @@ const DashTableOfTables = () => {
   };
 
   useEffect(() => {
-    console.log('calling tableWeight in dashToT') 
+    // console.log('calling tableWeight in dashToT') 
     tableWeight();
   }, [didGetDashMonitorData]);
 

@@ -1,20 +1,20 @@
 import * as types from '../constants/actionTypes';
 
 // for dev mode:
-const initialState = {
-  user_id: 36,
-  username: 'x',
-  uri: 'postgres://shmginsf:X_0THV9c5J3K3CGt0JnlvJGvwwCorHHy@bubble.db.elephantsql.com/shmginsf',
-  isLoggedIn: true,
-};
+// const initialState = {
+//   user_id: 36,
+//   username: 'x',
+//   uri: 'postgres://shmginsf:X_0THV9c5J3K3CGt0JnlvJGvwwCorHHy@bubble.db.elephantsql.com/shmginsf',
+//   isLoggedIn: true,
+// };
 
 // for prod mode:
-// const initialState = {
-//   user_id: null,
-//   username: null,
-//   uri: null,
-//   isLoggedIn: false,
-// };
+const initialState = {
+  user_id: null,
+  username: null,
+  uri: null,
+  isLoggedIn: false,
+};
 
 const userReducer = (state = initialState, action) => {
   switch (action.type) {

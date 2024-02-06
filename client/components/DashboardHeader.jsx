@@ -1,4 +1,4 @@
-import { Typography, Box, useTheme, Divider } from '@mui/material';
+import { Typography, Box, useTheme, Divider, Chip } from '@mui/material';
 import tokens from './stylesheets/Themes';
 import React, { useState } from 'react';
 import { DatePicker } from '@mui/x-date-pickers';
@@ -34,9 +34,9 @@ const DashboardHeader = () => {
 
 
   const handleDashDisplayAlertsTimeRange = (timeRangeArr) => {
-    const timeRangeArrAsDate = timeRangeArr.map((date) => new Date(date));
-    dispatch(updateDashDisplayTimeRangeActionCreator(timeRangeArrAsDate));
-    setDashDisplayAlertsTimeRange(timeRangeArr);
+    const timeRangeArrAsTimestamps = timeRangeArr.map((date) => date.valueOf());
+    dispatch(updateDashDisplayTimeRangeActionCreator(timeRangeArrAsTimestamps));
+    setDashDisplayAlertsTimeRange(timeRangeArr.map(dayjs));
     console.log('timeRangeArr', timeRangeArr)
   };
 
@@ -60,6 +60,22 @@ const DashboardHeader = () => {
           label="Pick dates to display alerts for"
           value={dashDisplayAlertsTimeRange[1]}
           onChange={newValue => handleDashDisplayAlertsTimeRange([dashDisplayAlertsTimeRange[0], newValue])}
+        />
+        <Chip
+          label="Reset to past 7 days"
+          onClick={() => handleDashDisplayAlertsTimeRange([dayjs().subtract(7, 'day'), dayjs()])}
+        />
+        <Chip
+          label="Past 30 days"
+          onClick={() => handleDashDisplayAlertsTimeRange([dayjs().subtract(30, 'day'), dayjs()])}
+        />
+        <Chip
+          label="Past 60 days"
+          onClick={() => handleDashDisplayAlertsTimeRange([dayjs().subtract(60, 'day'), dayjs()])}
+        />
+        <Chip
+          label="Past 90 days"
+          onClick={() => handleDashDisplayAlertsTimeRange([dayjs().subtract(90, 'day'), dayjs()])}
         />
       </Box>
     </div>

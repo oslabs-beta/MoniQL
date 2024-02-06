@@ -179,10 +179,10 @@ const MonitorContainer = () => {
                           alignItems: 'row',
                         }}
                       >
-                        <Typography variant="h5" color={colors.grey[100]}>
+                        <Typography fontSize='16px' color={colors.grey[100]}>
                           table:{' '}
                           <Typography
-                            variant="h5"
+                            fontSize='19px'
                             color="secondary"
                             display="inline"
                           >
@@ -190,7 +190,7 @@ const MonitorContainer = () => {
                           </Typography>{' '}
                           | type:{' '}
                           <Typography
-                            variant="h5"
+                            fontSize='19px'
                             color="secondary"
                             display="inline"
                           >
