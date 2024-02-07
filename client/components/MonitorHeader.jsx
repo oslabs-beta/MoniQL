@@ -94,7 +94,7 @@ const MonitorHeader = () => {
       return true;
     });
     dispatch(displayMonitorsActionCreator(filteredMonitors));
-  }, [selectedTable, selectedColumn, selectedMonitorType, monitors, displayMonitors]);
+  }, [selectedTable, selectedColumn, selectedMonitorType, monitors]);
 
   // dropdown for tables
   // dropdown for columns on tables

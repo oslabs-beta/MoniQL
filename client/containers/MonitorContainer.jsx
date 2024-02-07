@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch, useEffect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   Box,
   Card,
