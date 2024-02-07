@@ -36,6 +36,7 @@ const SubHeader = ({ title, subtitle }) => {
 const MonitorHeader = () => {
   const dispatch = useDispatch();
   const monitors = useSelector((state) => state.monitor.activeMonitors);
+  const displayMonitors = useSelector((state) => state.monitor.displayMonitors);
 
   const [selectedTable, setSelectedTable] = useState('');
   const [selectedColumn, setSelectedColumn] = useState('');
@@ -93,7 +94,7 @@ const MonitorHeader = () => {
       return true;
     });
     dispatch(displayMonitorsActionCreator(filteredMonitors));
-  }, [selectedTable, selectedColumn, selectedMonitorType, monitors]);
+  }, [selectedTable, selectedColumn, selectedMonitorType, monitors, displayMonitors]);
 
   // dropdown for tables
   // dropdown for columns on tables

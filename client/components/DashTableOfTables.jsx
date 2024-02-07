@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from 'react';
-
 import { useSelector, useStore, useDispatch } from 'react-redux';
 import {Box, Typography} from '@mui/material';
-
 import { DataGrid } from '@mui/x-data-grid';
 import { addTablesWeightsActionCreator } from '../actions/actions';
-import { set } from 'mongoose';
 
 const DashTableOfTables = () => {
   const store = useStore();

@@ -36,7 +36,7 @@ const monitorReducer = (state = initialState, action) => {
       return monitor;
     });
       
-    updatedDisplayMonitors = state.activeMonitors.slice();
+    updatedDisplayMonitors = state.displayMonitors.slice();
     updatedDisplayMonitors = updatedDisplayMonitors.map((monitor) => {
       if (monitor.monitor_id === action.payload.monitor_id) {
         return action.payload;
