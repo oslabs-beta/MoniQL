@@ -54,7 +54,6 @@ body:before {
   position: relative;
 }
 
-
 .card-container {
 background: rgb(33,30,38);
 background: radial-gradient(circle, rgba(33,30,38,1) 0%, rgba(44,44,60,1) 100%);
