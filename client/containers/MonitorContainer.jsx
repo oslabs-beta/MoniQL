@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch, useEffect } from 'react-redux';
 import {
   Box,
   Card,
@@ -77,11 +77,10 @@ const MonitorContainer = () => {
       }
       const updatedMonitorObj = await response.json();
       console.log('updatedMonitorObj in monitoreditor: ', updatedMonitorObj);
-      dispatch(updateMonitorActionCreator(updatedMonitorObj));
+      dispatch(updateMonitorActionCreator(updatedMonitorObj[0]));
     } catch (error) {
       console.error('Error updating monitor', error);
     }
-
   };
 
   //*** for editing monitors with existing rules ***//
