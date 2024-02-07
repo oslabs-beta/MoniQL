@@ -2,6 +2,7 @@ name: publish-to-github-pages
 on:
   push:
     branches:
+      - master
       - splash
 
 permissions:
