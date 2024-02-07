@@ -29,6 +29,12 @@ jobs:
         uses: actions/configure-pages@v4
         with:
           static_site_generator: next
+      - name: Dump Pages configuration
+        run: |
+          echo PAGES_BASE_URL:  ${{ steps.pages.outputs.base_url }}
+          echo PAGES_ORIGIN:    ${{ steps.pages.outputs.origin }}
+          echo PAGES_HOST:      ${{ steps.pages.outputs.host }}
+          echo PAGES_BASE_PATH: ${{ steps.pages.outputs.base_path }}
 
       - name: Build with Next.js 🏗️
         run: npx next build
