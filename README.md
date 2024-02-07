@@ -1,1 +1,1 @@
-# hide-n-go-SQL
+# MoniQL
