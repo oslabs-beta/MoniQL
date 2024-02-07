@@ -101,8 +101,8 @@ const DashTableOfTables = () => {
 
   const dashToTColumns = [
     { field: 'id', headerName: 'ID', width: 30},
-    { field: 'table', headerName: 'Table', width: 150},
-    { field: 'downstream', headerName: 'Downstream Entities', width: 85},
+    { field: 'table', headerName: 'Table', width: 180},
+    { field: 'downstream', headerName: 'Downstream Entities', width: 130},
     { field: 'monitors', headerName: 'Monitors', width: 85},
     { field: 'alerts', headerName: 'Alerts', width: 85},
     { field: 'unresolved', headerName: 'Unresolved', width: 85},
@@ -229,11 +229,18 @@ const DashTableOfTables = () => {
         }}
       >
         {/* <Typography variant="h3">Tables</Typography> */}
-        <Box sx={{ height: 466, backgroundColor: "rgba(104, 112, 250, 0.8)", border: .5, borderColor: 'gray'}}>
+        <Box
+          sx={{
+            height: 466,
+            backgroundColor: "rgba(104, 112, 250, 0.8)",
+            border: 0.5,
+            borderColor: "gray",
+          }}
+        >
           {/* <Typography variant="h4" sx={{ml: 2}}>monitored tables</Typography> */}
-<h2 style={{marginLeft: '1rem' }} >monitored tables</h2>
+          <h2 style={{ marginLeft: "1rem" }}>Monitored tables</h2>
           <DataGrid
-          autoHeight
+            autoHeight
             rows={dashToTRows}
             columns={dashToTColumns}
             pageSize={5}

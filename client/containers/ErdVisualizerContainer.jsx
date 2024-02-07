@@ -43,7 +43,7 @@ import FocusBar from "../components/FocusBar";
 const ErdVisualizerContainer = () => {
   return (
     <div>
-      <Box sx={{ ml: 2, mt:0, zIndex: 3, backgroundColor: "#6870fa", borderRadius: 3, opacity: '80%' }}>
+      <Box sx={{ ml: '1%', mt:0, zIndex: 3, backgroundColor: "#6870fa", borderRadius: 3, opacity: '80%' }}>
         <Focus sx={{ zIndex: 2 }} />
       </Box>
     </div>
