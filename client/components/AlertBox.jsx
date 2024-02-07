@@ -140,7 +140,7 @@ const AlertBox = (alertObj) => {
   const renderRowsAccordion = (
     <div style={{display: 'inline-block'}}>
       <Accordion anchorEl={rowsAccordionAnchorEl} open={Boolean(rowsAccordionAnchorEl)} onClose={handleRowsAccordionToggle}>
-        <Box sx={{width: '100%'}}>
+        <Box  sx={{width: '100%'}}>
           <IconButton
             size="large"
             aria-label={`show ${rowsCount} anomalous rows`}
@@ -154,7 +154,7 @@ const AlertBox = (alertObj) => {
           </IconButton>
           <br/>
           {rowsAccordionAnchorEl ? 
-            <Stack maxHeight='250px' overflow='auto'>
+            <Stack maxHeight='250px'>
               {rows ? unspooledRows.map((row, i) => <Typography key={i}>{row}</Typography>) : null}
             </Stack>
             : null}
@@ -171,23 +171,20 @@ const AlertBox = (alertObj) => {
   // }
 
   return display ? (
-    <Alert
+    
+    <Alert className='card-container'
       severity="warning"
       // variant="outlined"
       onClose={handleClose}
       sx={{
-        // bgcolor: "background.paper",
-        backgroundColor: "#2E2D3D",
-
+        display: "flex",
+        justifyContent: "space-between",
+        backgroundColor: "#121212",
+boxShadow: 3,
+            // border: "3px",
         zIndex: 9999,
         width: "100%",
-        // marginRight: "auto",
-        // marginLeft: "auto",
         maxWidth: "900px",
-        margin: "1rem",
-        borderRadius: "4",
-        // borderColor: "#6870fa",
-        // padding: "1rem",
       }}
     >
         <AlertTitle sx={{ fontSize: 16, color: "white" }}>

@@ -117,7 +117,7 @@ const Header = () => {
   ));
 
   const renderAlertsDrawer = (
-    <Drawer
+    <Drawer 
       anchor='right'
       open={alertsDrawerToggle}
       onClose={handleAlertsDrawerToggle}
@@ -125,11 +125,12 @@ const Header = () => {
         '& .MuiDrawer-paper': {
           width: 350,
           boxSizing: 'border-box',
-          backgroundColor: 'black'
+          // backgroundColor: 'black',
         },
       }}
     >
-      <Box sx={{ width: 350 }}>
+      <Box className="card-container" sx={{ p: 1, width: 350}}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <IconButton
           size='large'
           aria-label={`show ${alertsCount} new alerts`}
@@ -140,7 +141,11 @@ const Header = () => {
             <NotificationsIcon />
           </Badge>
         </IconButton>
+        <Typography variant='h3' sx={{mr: 1}} >New alerts</Typography>
+        </Box>
+        <Box sx={{mr: 1}}>
         {anomalies}
+        </Box>
       </Box>
     </Drawer>
   );

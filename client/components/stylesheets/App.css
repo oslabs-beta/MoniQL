@@ -7,6 +7,7 @@
     font-family: sans-serif;
   }  */
 
+  
 @import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap");
 
 html,
@@ -18,7 +19,7 @@ body,
   width: 100%;
   font-family: "Source Sans Pro", sans-serif;
   /* background-color: #222130; */
-  background-color: #1d1c25;
+  /* background-color: #1d1c25; */
   /* background-image: url(https://img.freepik.com/free-vector/blurred-abstract-background-design_1107-169.jpg?w=2000&t=st=1706200718~exp=1706201318~hmac=6998d8adb64a2ea68c5f75f354698c93c53991a6bd012012fa955b8c73718976); */
 /* background-image: url(https://i.pinimg.com/originals/60/15/9f/60159f45955be086e295dd9400ceee86.jpg); */
 
@@ -31,10 +32,9 @@ body,
   padding: 0;
   overflow-x: hidden;
   overflow-y: auto;
-  /* cursor: url("https://cur.cursors-4u.net/food/foo-3/foo265.png"), auto; */
-  /* url("https://cur.cursors-4u.net/symbols/sym-1/sym20.cur"), auto; seastar*/
-  /* cursor: url("https://cur.cursors-4u.net/nature/nat-1/nat48.cur"), auto;  */
-  /* url("https://cur.cursors-4u.net/cursors/cur-2/cur113.cur"), auto; */
+/* background: rgb(33,30,38);
+background: radial-gradient(circle, rgba(33,30,38,1) 0%, rgba(44,44,60,1) 100%); */
+background: #211e26;
 }
 body:before {
     content: "";
@@ -55,7 +55,10 @@ body:before {
 }
 
 
-
+.card-container {
+background: rgb(33,30,38);
+background: radial-gradient(circle, rgba(33,30,38,1) 0%, rgba(44,44,60,1) 100%);
+}
 .react-flow__node {
   /* filter: blur(1px); */
   font-size: 14px;

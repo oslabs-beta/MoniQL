@@ -129,7 +129,7 @@ const MonitorContainer = () => {
         marginLeft: '10px'
       }}
     >
-      <Card
+      <Card className='card-container'
         variant='outlined'
         sx={{
           minWidth: '30vw',
@@ -139,6 +139,7 @@ const MonitorContainer = () => {
           boxShadow: 3,
           backgroundColor: '#2E2D3D',
           borderRadius: 4,
+          
         }}
       >
         <Box sx={{ p: 2, display: 'flex', justifyContent: 'space-between' }}>
@@ -157,7 +158,7 @@ const MonitorContainer = () => {
         >
           {Array.isArray(activeMonitors) &&
             displayMonitors.map((monitor, i) => (
-              <Card
+              <Card 
                 key={i}
                 sx={{
                   minWidth: 500,
@@ -261,12 +262,12 @@ const MonitorContainer = () => {
 
       <Box sx={{ p: 2, marginTop: '-15px' }}>
         {/* Conditional Rendering for Monitors */}
-        <Card
+        <Card className='card-container'
           variant='outlined'
           sx={{
             minWidth: '30vw', // Adjust this as needed
             flexDirection: 'column',
-            minHeight: '60vh',
+            minHeight: '20vh',
             padding: 3,
             boxShadow: 3,
             backgroundColor: '#2E2D3D',
