@@ -10,8 +10,11 @@ const DashboardContainer = () => {
       sx={{
         display: "flex",
         flexDirection: "column",
+        alignItems: "flex-start",
         opacity: "100%",
         width: "85vw",
+        ml: "1%"
+        
       }}
     >
       <Box
@@ -19,8 +22,9 @@ const DashboardContainer = () => {
           display: "flex",
           flexWrap: "wrap",
           flexDirection: "row",
-          justifyContent: "space-around",
+          // justifyContent: "center",
           mb: 3,
+          gap: 3,
         }}
       >
         <DashAlertLineChart />

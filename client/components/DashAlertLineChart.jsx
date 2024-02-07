@@ -49,7 +49,6 @@ const DashAlertLineChart = () => {
       sx={{
         backgroundColor: "#6870fa",
         borderRadius: 4,
-        m: 1,
       }}
     >
       <h2 style={{ marginLeft: "1rem" }}>alerts by date</h2>
@@ -74,7 +73,7 @@ const DashAlertLineChart = () => {
             data: alertsByInterval, 
           }]}
 
-        width={500}
+        width={550}
         height={300}
         sx={{
           backgroundColor: "#6870fa",
