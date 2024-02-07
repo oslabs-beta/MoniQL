@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    basePath: "/MoniQL",
+    basePath: "/",
     output: "export",  
     reactStrictMode: true,
 };
