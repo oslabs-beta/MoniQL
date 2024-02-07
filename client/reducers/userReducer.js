@@ -2,10 +2,10 @@ import * as types from '../constants/actionTypes';
 
 // for dev mode:
 const initialState = {
-  user_id: 36,
-  username: 'x',
-  uri: 'postgres://shmginsf:X_0THV9c5J3K3CGt0JnlvJGvwwCorHHy@bubble.db.elephantsql.com/shmginsf',
-  isLoggedIn: true,
+  user_id: null,
+  username: '',
+  uri: '',
+  isLoggedIn: false,
 };
 
 // for prod mode:
