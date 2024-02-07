@@ -240,7 +240,7 @@ const DashTableOfTables = () => {
           }}
         >
           {/* <Typography variant="h4" sx={{ml: 2}}>monitored tables</Typography> */}
-          <h2 style={{ marginLeft: "1rem" }}>monitored tables</h2>
+          <h2 style={{ marginLeft: "1rem" }}>Monitored tables</h2>
           <DataGrid
             autoHeight
             rows={dashToTRows}

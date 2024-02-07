@@ -32,9 +32,11 @@ const DashAlertBarChart = () => {
       sx={{
         backgroundColor: "#6870fa",
         borderRadius: 4,
+        border: 0.5,
+        borderColor: "gray",
       }}
     >
-      <h2 style={{ marginLeft: "1rem" }}>alerts by status</h2>
+      <h2 style={{ marginLeft: "1rem" }}>Alerts by status</h2>
       <Divider sx={{ width: "100%", mb: 1 }} />
 
       <BarChart
