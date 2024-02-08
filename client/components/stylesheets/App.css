@@ -13,8 +13,13 @@
 body {
   overflow: auto;
   font-family: 'Hanken Grotesk', sans-serif;
+ background: radial-gradient(circle, rgba(44,44,60, 1) 0%, rgb(25, 24, 31) 100%); 
+  height: 100vh;
+  width: 100vw;
+
 }
   
+
 
 html,
 #root,
@@ -35,9 +40,8 @@ html,
   /* overflow: auto; */
   /* overflow-x: auto;
   overflow-y: auto; */
-/* background: rgb(33,30,38);
-background: radial-gradient(circle, rgba(33,30,38,1) 0%, rgba(44,44,60,1) 100%); */
-background: #211e26;
+/* background: rgb(33,30,38);*/
+/* background: #211e26; */
 }
 
 .app {
@@ -50,12 +54,22 @@ background: rgb(33,30,38);
 background: radial-gradient(circle, rgba(33,30,38,1) 0%, rgba(44,44,60,1) 100%);
 }
 
+
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-  /* background-color: transparent; */
+  width: 0px;
+  height: 0px;
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+ 
+::-webkit-scrollbar-track {
+  background-color: transparent;
 
 }
+
 ::-webkit-scrollbar-thumb {
   background: transparent;
   border-radius: 10px;
@@ -68,7 +82,6 @@ background: radial-gradient(circle, rgba(33,30,38,1) 0%, rgba(44,44,60,1) 100%);
 ::-webkit-scrollbar-thumb:active {
   background: rgba(104, 112, 250, 0.9); 
 }
-
 
 .react-flow__node {
   /* filter: blur(1px); */
