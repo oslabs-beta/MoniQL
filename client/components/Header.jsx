@@ -107,6 +107,7 @@ const Header = () => {
       anchor='right'
       open={alertsDrawerToggle}
       onClose={handleAlertsDrawerToggle}
+      sx={{width: 350 }}
     >
       <Box className="card-container" sx={{ p: 1, width: 350}}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

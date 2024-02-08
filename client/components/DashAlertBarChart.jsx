@@ -31,7 +31,7 @@ const DashAlertBarChart = () => {
     <Box
       sx={{
         backgroundColor: "#6870fa",
-        borderRadius: 4,
+        borderRadius: 1,
         border: 0.5,
         borderColor: "gray",
       }}
