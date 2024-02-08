@@ -1,1 +1,0 @@
-# hide-n-go-SQL
