@@ -1,9 +1,15 @@
-export const ADD_ALERT = 'ADD_ALERT';
+export const ADD_ALERTS = 'ADD_ALERT';
 export const DELETE_ALERT = 'DELETE_ALERT';
 export const UPDATE_ALERT = 'UPDATE_ALERT';
 export const LOG_IN = 'LOG_IN';
+export const LOG_OUT= 'LOG_OUT';
 export const SAVE_DB = 'SAVE_DB';
 export const SELECT_TABLE = 'SELECT_TABLE';
 export const SELECT_DEPTH = 'SELECT_DEPTH';
 export const SELECT_PAGE = 'SELECT_PAGE';
-export const ADD_MONITOR = 'ADD_MONITOR'
+export const ADD_MONITORS = 'ADD_MONITORS';
+export const UPDATE_MONITOR = 'UPDATE_MONITOR';
+export const ADD_TABLES_WEIGHTS = 'ADD_TABLE_WEIGHTS';
+export const DISPLAY_ALERTS = 'DISPLAY_ALERTS';
+export const DISPLAY_MONITORS = 'DISPLAY_MONITORS';
+export const UPDATE_DASH_DISPLAY_TIME_RANGE = 'UPDATE_DASH_DISPLAY_TIME_RANGE';

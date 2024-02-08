@@ -1,56 +1,28 @@
 import * as types from '../constants/actionTypes';
 
 const initialState = {
-  alerts: [
-    {
-      "alert_id": "f61707a2-c52a-41db-98d0-e7006c250f02",
-      "table": "weather_data",
-      "monitorType": "custom range",
-      "anomalyType": "out of range",
-      "severity": "error",
-      "column": "Temperature (C)",
-      "anomalyValue": "39.58888888888889",
-      "anomalyTime": "Sat 07-21-2007 08:00:00 am",
-      "notes": [],
-      "resolved_at": null,
-      "resolved": false,
-      "resolved_by": null,
-      "display": true,
-      "detected_at": "Tue 01-23-2024 08:13:17 pm"
-    },
-    {
-      "alert_id": "7b8567d0-5c46-49ba-aed0-9423f8b2ab77",
-      "table": "weather_data",
-      "monitorType": "custom range",
-      "anomalyType": "out of range",
-      "severity": "error",
-      "column": "Temperature (C)",
-      "anomalyValue": "39.90555555555555",
-      "anomalyTime": "Sun 07-22-2007 06:00:00 am",
-      "notes": [],
-      "resolved_at": null,
-      "resolved": false,
-      "resolved_by": null,
-      "display": true,
-      "detected_at": "Tue 01-23-2024 08:13:17 pm"
-    }
-  ]
+  alerts: [],
+  displayAlerts: [],
 };
 
 
 const alertReducer = (state = initialState, action) => {
   let updatedAlerts; 
+  let displayAlerts;
 
   switch(action.type) {
-  case types.ADD_ALERT:
+  case types.ADD_ALERTS:
 
     updatedAlerts = state.alerts.slice();
-    updatedAlerts.push(action.payload);
-    updatedAlerts.sort((a, b) => b.detected_at - a.detected_at);
+    updatedAlerts.push(...action.payload);
+    updatedAlerts = updatedAlerts.sort((a, b) => new Date(b.detected_at) - new Date(a.detected_at));
+
+    displayAlerts = updatedAlerts.filter(alert => alert.display === true);
 
     return {
       ...state,
-      alerts: updatedAlerts
+      alerts: updatedAlerts,
+      displayAlerts: displayAlerts
     }
 
   case types.DELETE_ALERT:
@@ -66,13 +38,25 @@ const alertReducer = (state = initialState, action) => {
   case types.UPDATE_ALERT:
 
     updatedAlerts = state.alerts.slice();
-    updatedAlerts = updatedAlerts.filter(alert => alert.alert_id !== action.payload.alert_id);
-    updatedAlerts.push(action.payload);
-    updatedAlerts.sort((a, b) => b.detected_at - a.detected_at);
+    updatedAlerts = updatedAlerts.map((alert) => {
+      if (alert.alert_id === action.payload.alert_id) {
+        return action.payload;
+      }
+      return alert;
+    });
+    updatedAlerts = updatedAlerts.sort((a, b) => new Date(b.detected_at) - new Date(a.detected_at));
 
     return {
       ...state,
       alerts: updatedAlerts
+    }
+
+  case types.DISPLAY_ALERTS:
+    updatedAlerts = action.payload.sort((a, b) => new Date(b.detected_at) - new Date(a.detected_at));
+    
+    return {
+      ...state,
+      displayAlerts: updatedAlerts
     }
 
   default:

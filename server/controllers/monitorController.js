@@ -1,18 +1,37 @@
-const { userPool } = require('../models/db');
+const { pool, userPool, connectToPool } = require('../models/db');
 const { v4: uuidv4 } =  require('uuid');
-const dayjs = require('dayjs');
+const cron = require('node-cron');
+const { getIo } = require('../socket');
+const userController = require('./userController')
+const monitorController = {};
 
-const db = userPool;
+// declare a variable for our connection to user db, but don't connect until log in
+let db;
+const ourDB = pool;
+
+
+// prod mode:
+monitorController.connect = async (req, res, next) => {
+  const user_uri = res.locals.uri;
+  db = await connectToPool(user_uri);
+  console.log('connected to user db in moncont.connect');
+  return next();
+};
+
+// dev mode:
+// db = userPool;
 
 /**
  * alert object shape:
  * {
- *    alert_id: number,
+ *    alert_id: uuid,
+ *    monitor_id: uuid,
  *    table: string,
  *    monitorType: string,
  *    anomalyType: string,
  *    severity: string,
  *    column?: string,
+ *    rows?: array of object(s),
  *    anomalyValue?: number || string,
  *    anomalyTime?: timestamptz,
  *    notes?: string,
@@ -25,7 +44,7 @@ const db = userPool;
  */
 
 const alertObjCreator = (table, monitorType, anomalyType, severity = 'error', 
-  column, anomalyValue, anomalyTime, notes = []) => {
+  column, rows = null, anomalyValue, anomalyTime, notes = []) => {
   return {
     alert_id: uuidv4(),
     table,
@@ -33,22 +52,23 @@ const alertObjCreator = (table, monitorType, anomalyType, severity = 'error',
     anomalyType,
     severity,
     column,
+    rows,
     anomalyValue,
-    anomalyTime: dayjs(anomalyTime).format('ddd MM-DD-YYYY hh:mm:ss a'),
+    anomalyTime,
     notes,
     resolved_at: null,
     resolved: false,
     resolved_by: null,
     display: true,
-    detected_at: dayjs().format('ddd MM-DD-YYYY hh:mm:ss a'),
+    detected_at: new Date,
   }
 };
 
-const monitorController = {};
+
 
 monitorController.queryAll = async (req, res, next) => {
   // query tables by name using postman req.body until we connect to front end
-  const { table } = req.body;
+  const { table } = req.body.monitor.parameters;
   
   try {
     const query = `SELECT * FROM ${table} LIMIT 100`;
@@ -73,7 +93,7 @@ monitorController.volume = async (req, res, next) => {
   // ending = time to look back from (should default to now())
   // timeColumn = name of table's timestamp column (should default to 'created_at')
 
-  const { table, interval, period, ending, timeColumn } = req.body;
+  const { table, interval, period, ending, timeColumn } = req.body.monitor.parameters;
 
   try {
     const text = `SELECT time_interval, 
@@ -110,18 +130,18 @@ monitorController.fresh = async (req, res, next) => {
   // store on our db
   // on front we can display the last update for each table, let users decide if they want to set alerts 
 
-  const { table } = req.body;
+  const { table, howLongIsTooLong } = req.body.monitor.parameters;
 
   try {
     // query exact row count (more precise, less performant)
-    // const queryCount = `SELECT COUNT(*) AS exact_row_count FROM ${table}`;
+    const queryCount = `SELECT COUNT(*) AS exact_row_count FROM ${table}`;
 
     // OR query metadata (less precise, more performant)
     // precision depends on how recently the table has been analyzed
-    const queryCount = `SELECT reltuples AS approximate_row_count FROM pg_class WHERE relname = '${table}'`;
+    // const queryCount = `SELECT reltuples AS approximate_row_count FROM pg_class WHERE relname = '${table}'`;
     
     const data = await db.query(queryCount);
-    res.locals.fresh = data.rows;
+    res.locals.fresh = data.rows[0];
 
     console.log('fresh data in moncont.fresh: ', res.locals.fresh);
     next();
@@ -136,34 +156,56 @@ monitorController.fresh = async (req, res, next) => {
   }
 }
 
-monitorController.ranges = async (req, res, next) => {
+monitorController.range = async (req, res, next) => {
   // query tables by name
   // for values out of normal range set by user
 
-  const { table, column, minValue, maxValue } = req.body; 
-  const timeColumn = req.body.timeColumn || 'created_at';
+  //Check to see if req is an http request object or if it is an argument passed directly from a nodecron callback
+  const isScheduledCall = !req.hasOwnProperty('body');
+  //if it is. we use the params off the req.body. If it isn't we use the params directly off the passed in object
+  const params = isScheduledCall ? req.parameters : req.body.monitor.parameters
+  const { table, column, minValue = null, maxValue = null, timeColumn = 'created_at' } = params;
+  console.log('HIT IN RANGE MONITOR!!!')
+  if (req.body) console.log('req.body in moncontroller.range: ', req.body)
+
+  // const { table, column } = req.body.monitor.parameters; 
+  // const timeColumn = req.body.monitor.parameters.timeColumn || 'created_at';
+  // const minValue = req.body.monitor.parameters.minValue || null;
+  // const maxValue = req.body.monitor.parameters.maxValue || null;
 
   try {
-    const text = `SELECT * FROM ${table} WHERE "${column}" < $1 OR "${column}" > $2`;
-    const values = [minValue, maxValue];
+    console.log('req.body in moncontroller.range',req.body)
+    let text = `SELECT * FROM ${table} WHERE "${column}" < $1 OR "${column}" > $2`;
+    let values = [minValue, maxValue];
+    if(!minValue) {
+      text = `SELECT * FROM ${table} WHERE "${column}" > $1`;
+      values = [maxValue];
+    }
+    if(!maxValue) {
+      text = `SELECT * FROM ${table} WHERE "${column}" < $1`;
+      values = [minValue];
+    }
     const data = await db.query(text, values);
     const anomalousArray = data.rows;
-    res.locals.ranges = anomalousArray;
-    console.log('custom data in moncont.ranges: ', anomalousArray);
+    console.log('anomalous rows in moncont.range: ', anomalousArray);
+    
+    
     if(anomalousArray.length) {
+      const alerts = [alertObjCreator(table, 'Range', 'out of range', 'error', column, anomalousArray, anomalousArray[0][column], anomalousArray[0][timeColumn])];
+      if (isScheduledCall) return alerts
       res.locals.alerts = [];
-      anomalousArray.map((obj) => {
-        res.locals.alerts.push(alertObjCreator(table, 'custom range', 'out of range', 'error', column, obj[column], obj[timeColumn]));
-      });
-      console.log('res.locals.alerts in moncont.ranges: ', res.locals.alerts)
+      res.locals.alerts.push(alertObjCreator(table, 'Range', 'out of range', 'error', column, anomalousArray, anomalousArray[0][column], anomalousArray[0][timeColumn]));
+      console.log('res.locals.alerts in moncontroller.range: ', res.locals.alerts)
     }
-    next();
+    if (!isScheduledCall) return next();
   } catch(err) {
+    console.log('&%&%&%&%&&% WE IN THE CATCH BLOCK!!! &%&%&%%&%&%&%&%&%')
+    if (isScheduledCall) throw err;
     return next({
-      log: `error in monitorController.custom: ${err}`,
+      log: `error in monitorController.range: ${err}`,
       status: 500,
       message: {
-        error: 'Error occured in monitorController.custom',
+        error: 'Error occured in monitorController.range',
       }
     });
   }
@@ -171,10 +213,11 @@ monitorController.ranges = async (req, res, next) => {
 
 monitorController.null = async (req, res, next) => {
   // query table by name, look for any null values
-
-  const { table } = req.body;
-  const timeColumn = req.body.timeColumn || 'created_at';
-
+  const isScheduledCall = !req.hasOwnProperty('body')
+  const params = isScheduledCall ? req.parameters : req.body.monitor.parameters
+  const { table, timeColumn = 'created_at' } = params;
+  // const timeColumn = req.body.monitor.parameters.timeColumn || 'created_at';
+  if (req.body) console.log('req.body in moncontroller.null: ', req.body)
   try {
     // first, query metadata for column names
     // returns array of objects like {column_name: 'name'}
@@ -192,14 +235,18 @@ monitorController.null = async (req, res, next) => {
 
     const data = await db.query(query);
     const anomalousArray = data.rows;
-    res.locals.null = anomalousArray;
+
+    
     if(anomalousArray.length) {
-      res.locals.alerts = [];
-      anomalousArray.map((obj) => {
-        for(const column in obj){
-          if(obj[column] === null) res.locals.alerts.push(alertObjCreator(table, 'notnull', 'null found', 'error', column, null, obj[timeColumn]));
+      const alerts = []
+      for(const column in anomalousArray[0]){
+        if(anomalousArray[0][column] === null) {
+          alerts.push(alertObjCreator(table, 'Null', 'null found', 'error', column, anomalousArray, null, anomalousArray[0][timeColumn]));
         }
-      });
+      }
+      if (isScheduledCall) return alerts
+      res.locals.alerts = alerts;
+      if (!isScheduledCall) return next()
     }
     console.log('res.locals in moncont.null: ', res.locals);
     next();
@@ -218,7 +265,9 @@ monitorController.null = async (req, res, next) => {
 // :( error: too many connections for role "rqtyhpzb" :( 
 monitorController.stats = async (req, res, next) => {
 
-  const { table, starting, ending, timeColumn } = req.body;
+  const { table, starting, ending, timeColumn } = req.body.monitor.parameters;
+  let exact_row_count = null;
+  if(res.locals.fresh) exact_row_count = res.locals.fresh.exact_row_count;
 
   try {
   // query metadata for column names, but only for columns holding numbers
@@ -226,18 +275,18 @@ monitorController.stats = async (req, res, next) => {
     const queryMd = `SELECT column_name 
       FROM information_schema.columns 
       WHERE table_name = '${table}' 
-      AND data_type IN ('integer', 'numeric', 'real', 'double precision', 'smallint', 'bigint')`;
+      AND data_type IN ('integer', 'numeric', 'real', 'double precision', 'smallint', 'bigint', 'decimal', 'smallserial', 'serial', 'bigserial')`;
     const numberData = await db.query(queryMd);
     const columns = numberData.rows; 
     console.log('columns in moncont.stats: ', columns);
 
     const statsQuery = `SELECT
       ${columns.map(column => `
-      AVG("${column.column_name}") AS ${column.column_name.replace(/[^a-zA-Z0-9]/g, '')}_mean,
-      PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY "${column.column_name}") AS ${column.column_name.replace(/[^a-zA-Z0-9]/g, '')}_median,
-      MIN("${column.column_name}") AS ${column.column_name.replace(/[^a-zA-Z0-9]/g, '')}_min,
-      MAX("${column.column_name}") AS ${column.column_name.replace(/[^a-zA-Z0-9]/g, '')}_max,
-      STDDEV("${column.column_name}") AS ${column.column_name.replace(/[^a-zA-Z0-9]/g, '')}_std_dev`
+      AVG("${column.column_name}") AS ${column.column_name.replace(/[^a-zA-Z0-9 ]/g, '').replace(/ /g, '_')}_mean,
+      PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY "${column.column_name}") AS ${column.column_name.replace(/[^a-zA-Z0-9 ]/g, '').replace(/ /g, '_')}_median,
+      MIN("${column.column_name}") AS ${column.column_name.replace(/[^a-zA-Z0-9 ]/g, '').replace(/ /g, '_')}_min,
+      MAX("${column.column_name}") AS ${column.column_name.replace(/[^a-zA-Z0-9 ]/g, '').replace(/ /g, '_')}_max,
+      STDDEV("${column.column_name}") AS ${column.column_name.replace(/[^a-zA-Z0-9 ]/g, '').replace(/ /g, '_')}_std_dev`
   ).join(',\n')}
     FROM
       ${table}
@@ -250,6 +299,11 @@ monitorController.stats = async (req, res, next) => {
     const data = await db.query(statsQuery, values);
     console.log('stats data in moncont.stats: ', data.rows);
     res.locals.stats = data.rows;
+
+    const saveStatsQuery = 'INSERT INTO stats (table_name, stats_obj, starting, ending, num_rows) VALUES ($1, $2, $3, $4, $5)';
+    const saveStatsValues = [table, data.rows, starting, ending, exact_row_count];
+    const savedResult = await ourDB.query(saveStatsQuery, saveStatsValues);
+    console.log('savedResult in stats controller: ', savedResult);
     next(); 
   } catch(err) {
     return next({
@@ -262,70 +316,89 @@ monitorController.stats = async (req, res, next) => {
   }
 }
 
-module.exports = monitorController;
+monitorController.custom = async (req, res, next) => {
+//(table, monitorType, anomalyType, severity = 'error', 
+//column, rows = null, anomalyValue, anomalyTime, notes = [])
+  const isScheduledCall = !req.hasOwnProperty('body')
+  const customQuery = isScheduledCall ? req.parameters.query : req.body.monitor.parameters.query;
 
-//   const statsQuery = `SELECT
-//   AVG( column ) AS mean,
-//   PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY  column ) AS median,
-//   MIN( column ) AS min,
-//   MAX( column ) AS max,
-//   STDDEV( column ) AS std_dev
-// FROM
-//   (SELECT generate_series(
-//       $3::timestamptz - $2::interval,
-//       $3::timestamptz,
-//       $1::interval
-//   ) AS time_interval) AS intervals
-// JOIN ${table} ON ${table}."${timeColumn}" >= intervals.time_interval
-//             AND ${table}."${timeColumn}" < intervals.time_interval + $1::interval
-// WHERE
-//   ${table}."${timeColumn}" >= $3::timestamp - $2::interval
-//   AND ${table}."${timeColumn}" <= $3::timestamp;`
-//   const values = [interval, period, ending || 'now()'];
+  try {
+    const data = await db.query(customQuery);
+    const anomalousArray = data.rows;
+    console.log('anomalous rows in moncont.range: ', anomalousArray);
+    if(anomalousArray.length) {
+      const alerts = [alertObjCreator('custom query table(s)', 'Custom', 'custom', 'error', 'custom', anomalousArray)];
+      // might be better to make a different alert object for custom queries
+      if (isScheduledCall) return alerts;
+      res.locals.alerts = alerts;
+    }
+    console.log('res.locals.alerts in moncontroller.range: ', res.locals.alerts)
+    if (!isScheduledCall) return next();
+  } catch(err) {
+    return next({
+      log: `error in monitorController.custom: ${err}`,
+      status: 500,
+      message: {
+        error: 'Error occured in monitorController.custom',
+      }
+    });
+  }
+};
 
-//   // iterate over columns, add each to query text
-//   const arrQueries = [];
-//   columns.map((obj) => {
-//     arrQueries.push(statsQuery.replace(/ column /g, `"${obj.column_name}"`));
-//   });
-//   console.log('arrQueries in moncont.stats: ', arrQueries);
-//   arrQueries.map(async (query) => {
-//     // :( error: too many connections for role "rqtyhpzb" :( 
-//     const data = await db.query(query, values);
-//     console.log('data in moncont.stats: ', data.rows);
-//   });
-
-
-// SELECT
-//   AVG(${timeColumn}) AS mean,
-//   PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY ${timeColumn}) AS median,
-//   MIN(${timeColumn}) AS min,
-//   MAX(${timeColumn}) AS max,
-//   STDDEV(${timeColumn}) AS std_dev
-// FROM
-//     (SELECT generate_series(
-//       $3::timestamptz - $2::interval,
-//       $3::timestamptz,
-//       $1::interval
-//     ) AS time_interval
-//   ) AS intervals 
-//   ${table}
-// WHERE
-//   $3::timestamp >= $2::timestamp - interval $1::interval
-//   AND $3::timestamp <= $2::timestamp;`
-
+monitorController.scheduleMonitors = async (req, res, next) => {
+  const monitors = res.locals.monitors
+  const user_id = res.locals.user_id
+  console.log(`$$$$$$$$ USER_ID IN SCHEDULE MONITORS IS ${user_id} $$$$$$$$`)
   
+  if (monitors.length) {
+    monitors.forEach((monitor, i) => {
+      console.log('*********INITIAL MONITOR PULL*********',monitor)
+      const { type, parameters } = monitor
+    
+      const cronExpression = `*/${parameters.frequency} * * * * `
+      // const monitorFunction = monitorController.range
+      console.log('CRON EXPRESSION:', cronExpression)
+      const req = {parameters: parameters, user_id: user_id}
+      console.log('TYPE:', type.toLowerCase())
+      const monitorFunction = monitorController[type.toLowerCase()]
+      
+      // Calculate delay based on index to stagger execution
+      const delay = i * 2000; // 2 seconds apart for each monitor
 
-// iterate over columns, add each to query text
-// const arrQueries = [];
-// columns.map((obj) => {
-//   arrQueries.push(statsQuery.replace(/ column /g, `"${obj.column_name}"`));
-// });
-// console.log('arrQueries in moncont.stats: ', arrQueries);
-// const arrData = [];
-// arrQueries.map(
-//   setTimeout(async (query) => {
-//     const data = await db.query(query, values);
-//     console.log('data in moncont.stats: ', data.rows);
-//   }, 25)
-// );
+      cron.schedule(cronExpression, async () => {
+        console.log(`Executing task for ${type}-type monitor with frequency: ${parameters.frequency} minutes`)
+        // monitorController.test(req)
+
+        // Delay the execution of the task
+        await new Promise(resolve => setTimeout(resolve, delay));
+
+        const getAlerts = async () => {
+          try {
+            const alerts = await monitorFunction(req, null, null)
+            console.log(`Executed ${type}-type monitor. Results:`, alerts);
+            if (alerts.length && alerts !== undefined) {
+              const io = getIo();
+              io.to(user_id.toString()).emit('alert', alerts)
+              req.alerts = alerts
+              userController.addAlerts(req, null, null)
+            }
+          } catch (err) {
+            console.error(`Error during direct invocation of ${type}-type monitor:`, err);
+          }
+        };
+        getAlerts()
+        console.log(req)
+
+
+      }, {scheduled: true})
+      
+    })
+  }
+  return next(); 
+}
+
+monitorController.test = async (req, res, next) => {
+  console.log(req)
+}
+
+module.exports = monitorController;

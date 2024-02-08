@@ -1,14 +1,16 @@
-import * as React from "react";
-import { Box, Container } from "@mui/material";
-import Focus from "../components/Focus";
-import FocusBar from "../components/FocusBar";
-import Header from "../components/Header";
-import SideBar from "../components/SideBar";
+import * as React from 'react';
+import { Box, Container } from '@mui/material';
+import Focus from '../components/Focus';
+import FocusBar from '../components/FocusBar';
+import Header from '../components/Header';
+import SideBar from '../components/SideBar';
+import DashboardContainer from './DashboardContainer';
 // import { theme1, theme2 } from "../public/styles/theme";
 
 const MainContainer = () => {
   return (
     <div>
+      <DashboardContainer />
       {/* <ThemeProvider theme={isThemeLight ? lightTheme : darkTheme}> */}
       <Box display="flex" flexDirection="row">
         {/* <SideBar /> */}
@@ -21,17 +23,17 @@ const MainContainer = () => {
         sx={{
           flexGrow: 1,
           p: 3,
-          height: "100vh",
-          backgroundColor: "#222130",
+          height: '100vh',
+          backgroundColor: '#222130',
         }}
       >
         <Box
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            paddingTop: "15px",
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            paddingTop: '15px',
             zIndex: 2,
           }}
         >

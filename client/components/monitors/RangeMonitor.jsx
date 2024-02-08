@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { addMonitorActionCreator } from "../../actions/actions";
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { addMonitorsActionCreator } from '../../actions/actions';
 import {
   Box,
   Card,
@@ -14,141 +14,230 @@ import {
   MenuItem,
   Select,
   TextField,
-} from "@mui/material";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
+  NumberInput,
+} from '@mui/material';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import monitorObjectCreator from './monitorObjectCreator';
 
 
 const RangeMonitor = () => {
   const dispatch = useDispatch();
+
   const [params, setParams] = useState({
     table: '',
     column: '',
-    min: '',
-    max: '',
+    minValue: '',
+    maxValue: '',
     frequency: '',
     description: ''
   });
+  
+  const tablesArray = useSelector((state) => state.diagram.data);
+  const user_id = useSelector((state) => state.user.user_id);
+  const monitorsArray = useSelector((state) => state.monitor.activeMonitors);
 
-const tablesArray = useSelector((state) => state.diagram.data);
-const [columnsArray, setColumnsArray] = useState([]);
+  const [columnsArray, setColumnsArray] = useState([]);
 
-useEffect(() => {
-  tablesArray.forEach((table, i) => {
-    if (params.table === table.table_name){
-      console.log("HIT!!!!! TABLE NAME SELECTED IS ", table.tablename)
-      setColumnsArray(table.columns)
+  useEffect(() => {
+    console.log('tablesArray in rangeMon', tablesArray)
+    tablesArray.forEach((table, i) => {
+      if (params.table === table.table_name){
+        console.log('HIT!!!!! TABLE NAME SELECTED IS ', table.tablename)
+        const numColumns = table.columns.filter(column => column.data_type === 'integer' || column.data_type === 'numeric').map(column => column.name)
+        setColumnsArray(numColumns)
+      }
+    })
+  }, [params.table, tablesArray]);
+
+  const handleChanges = (e) => {
+    const { name, value } = e.target;
+
+    // Check if the input name is 'min' or 'max' and convert the value to a number
+    const newValue = (name === 'minValue' || name === 'maxValue') ? Number(value) : value;
+
+    // console.log('THIS IS THE NAME OF THE DROPDOWNLIST', name, 'THIS IS THE VALUE THE USER CHOSE', newValue);
+    setParams({ ...params, [name]: newValue });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // console.log('this is params', params);
+    const monitorObject = monitorObjectCreator('Range', user_id, params);
+
+    // make post request to server
+    try {
+      const response = await fetch('/monitors', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(monitorObject)
+      })
+      if (!response.ok) {
+        throw new Error (`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+    
+      console.log('data returned in rangeMonitor', data);
+      // console.log('Data Parameters',data[0].parameters);
+
+      dispatch(addMonitorsActionCreator(data));
+
+    } catch (error) {
+      console.log('fetch error:', error);
     }
-  })
-}, [params.table, tablesArray]);
+  }
 
-//for editing monitors with existing rules
-const handleChanges = (e) => {  
-    console.log('THIS IS THE NAME OF THE DROPDOWNLIST',e.target.name, 'THIS IS THE VALUE THE USER CHOSE', e.target.value)
-    setParams({ ...params, [e.target.name]: e.target.value });
-}
+  //Hi hay, if you're reading this its because I took a lunch and you didnt...
+  //This is the inputs we need on this component :
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  console.log('this is params', params);
-  const monitorObject = {type: 'range', params: params}
-  dispatch(addMonitorActionCreator(monitorObject))
-}
-
-//Hi hay, if you're reading this its because I took a lunch and you didnt...
-//This is the inputs we need on this component :
-
-// ************************************************************************************************************
+  // ************************************************************************************************************
   // table name - dropdown (iterate through tablesArray on line 18 looking at table_name property), 
   // column name - dropdown (iterate through tablesArray on line 18, then iterate through columns (array))
   // min value - inpiut field
   // max value - input field
-// ************************************************************************************************************
+  // ************************************************************************************************************
 
-//We'll store this with a usestate here until we're ready to fire them off to the express server
-// I made the use states for you already. you just need to hook them up to input fiels or whatever/
+  //We'll store this with a usestate here until we're ready to fire them off to the express server
+  // I made the use states for you already. you just need to hook them up to input fiels or whatever/
 
-return (
-  <div>
-    <Box display="flex" justifyContent="center" alignItems="center">
-      <Card
-        variant="outlined"
-        sx={{ width: "50vw", display: "flex", flexDirection: "column",
-              justifyContent: "center", padding: 3, boxShadow: 3,
-              backgroundColor: "rgba(255, 255, 255, 0.7)", borderRadius: 4 }}>
-        <FormControl sx={{ m: 1, minWidth: 200 }}>
-          <Box sx={{ p: 2 }}>
-            <Typography variant="h5" color="white">Create New Monitor For Custom Ranges</Typography>
-            <Divider />
-          </Box>
-          <Stack direction="column" spacing={1} alignItems="center" justifyContent="left">
-            
+  return (
+    <div>
+      <Box display="flex" justifyContent="center" alignItems="center">
+        <Card
+          variant="outlined"
+          sx={{
+            width: '25vw',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            padding: 3,
+            boxShadow: 3,
+            // backgroundColor: 'rgba(255, 255, 255, 0.7)',
+            borderRadius: 4,
+          }}
+        >
+          <FormControl sx={{ m: 1, minWidth: 200 }}>
+            <Box sx={{ p: 2 }}>
+              <Typography variant="h5" color="white">
+                New Monitor For Custom Ranges
+              </Typography>
+              <Divider />
+            </Box>
+
             {/* TABLE SELECT */}
-            <Select
-              required
-              id="select-table"
-              value={params.table}
-              name='table'
-              onChange={handleChanges}
-              sx={{ backgroundColor: "white", borderRadius: "5px", width: '30%' }}>
-              {tablesArray.map((item, index) => (
-                <MenuItem key={index} value={item.table_name}>{item.table_name}</MenuItem>
-              ))}
-            </Select>
-            <FormHelperText>Select table to monitor</FormHelperText>
+            <Box display="flex" justifyContent="space-between">
+              <FormControl sx={{ flex: 1, minWidth: '40%', mr: '1rem' }}>
+                <InputLabel id="table-name" style={{ color: '#4cceac' }}>
+                  Table Name
+                </InputLabel>
 
-            {/* COLUMN SELECT */}
-            <Select
-              required
-              id="select-column"
-              value={params.column}
-              name='column'
-              onChange={handleChanges}
-              sx={{ backgroundColor: "white", borderRadius: "5px", width: '30%' }}>
-              {columnsArray.map((item, index) => (
-                <MenuItem key={index} value={item}>{item}</MenuItem>
-              ))}
-            </Select>
-            <FormHelperText>Select column to monitor</FormHelperText>
-
+                <Select
+                  label="Table Name"
+                  labelId="table-name"
+                  required
+                  id="select-table"
+                  value={params.table}
+                  name="table"
+                  onChange={handleChanges}
+                  color="secondary"
+                  sx={{
+                    borderRadius: '5px',
+                    width: '100%',
+                  }}
+                >
+                  {tablesArray.map((item, index) => (
+                    <MenuItem key={index} value={item.table_name}>
+                      {item.table_name}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <FormHelperText>Select table to monitor</FormHelperText>
+              </FormControl>
+              {/* COLUMN SELECT */}
+              <FormControl sx={{ flex: 1, minWidth: '40%' }}>
+                <InputLabel id="table-name" style={{ color: '#4cceac' }}>
+                  Column Name
+                </InputLabel>
+                <Select
+                  required
+                  id="select-column"
+                  value={params.column}
+                  name="column"
+                  onChange={handleChanges}
+                  color="secondary"
+                  sx={{
+                    borderRadius: '5px',
+                    width: '100%',
+                  }}
+                >
+                  {columnsArray.map((item, index) => (
+                    <MenuItem key={index} value={item}>
+                      {item}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <FormHelperText>Select column to monitor</FormHelperText>
+              </FormControl>
+            </Box>
             {/* Min Value Input */}
-            <TextField
-              required
-              id="min-value"
-              label="Min Value"
-              type="number"
-              name="min"
-              value={params.min}
-              onChange={handleChanges}
-              sx={{ backgroundColor: "white", borderRadius: "5px", width: '30%' }}
-            />
-            <FormHelperText>Minimum Value</FormHelperText>
+            <Box display="flex" justifyContent="space-between">
+              <FormControl sx={{ flex: 1, minWidth: '30%', mr: '1rem' }}>
+                <TextField
+                  required
+                  id="min-value"
+                  label="Min Value"
+                  type="number"
+                  name="minValue"
+                  value={params.minValue}
+                  onChange={handleChanges}
+                  color="secondary"
+                  sx={{
+                    borderRadius: '5px',
+                    width: '100%',
+                  }}
+                />
+                <FormHelperText>Minimum Value</FormHelperText>
+              </FormControl>
 
-            {/* Max Value Input */}
-            <TextField
-              required
-              id="max-value"
-              label="Max Value"
-              type="number"
-              name="max"
-              value={params.max}
-              onChange={handleChanges}
-              sx={{ backgroundColor: "white", borderRadius: "5px", width: '30%' }}
-            />
-            <FormHelperText>Maximum Value</FormHelperText>
+              <FormControl sx={{ flex: 1, minWidth: '30%', mr: '1rem' }}>
+                {/* Max Value Input */}
+                <TextField
+                  required
+                  id="max-value"
+                  label="Max Value"
+                  type="number"
+                  name="maxValue"
+                  value={params.maxValue}
+                  onChange={handleChanges}
+                  color="secondary"
+                  sx={{
+                    borderRadius: '5px',
+                    width: '100%',
+                  }}
+                />
+                <FormHelperText>Maximum Value</FormHelperText>
+              </FormControl>
 
-            {/* Frequency Input */}
-            <TextField
-              required
-              id="frequency"
-              label="Frequency (Hours)"
-              type="number"
-              name="frequency"
-              value={params.frequency}
-              onChange={handleChanges}
-              sx={{ backgroundColor: "white", borderRadius: "5px", width: '30%' }}
-            />
-            <FormHelperText>Enter the frequency (in hours) for the monitor to run</FormHelperText>
-
+              <FormControl sx={{ flex: 1, minWidth: '30%' }}>
+                {/* Frequency Input */}
+                <TextField
+                  required
+                  id="frequency"
+                  label="Frequency (Hours)"
+                  type="number"
+                  name="frequency"
+                  value={params.frequency}
+                  onChange={handleChanges}
+                  color="secondary"
+                  sx={{
+                    borderRadius: '5px',
+                    width: '100%',
+                  }}
+                />
+                <FormHelperText>Monitoring frequency (in hours)</FormHelperText>
+              </FormControl>
+            </Box>
             {/* Description Input */}
             <TextField
               required
@@ -159,27 +248,30 @@ return (
               name="description"
               value={params.description}
               onChange={handleChanges}
-              sx={{ backgroundColor: "white", borderRadius: "5px", width: '100%' }}
+              color="secondary"
+              sx={{
+                borderRadius: '5px',
+                width: '100%',
+              }}
             />
             <FormHelperText>Enter a description for the monitor</FormHelperText>
-            
 
-          </Stack>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            onClick={handleSubmit}
-            sx={{ mt: 3, mb: 2 }}
-            size="small"
-          >
-            Submit
-          </Button>
-        </FormControl>
-      </Card>
-    </Box>
-  </div>
-);
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              onClick={handleSubmit}
+              sx={{ mt: 3, mb: 2 }}
+              size="small"
+              color="secondary"
+            >
+              Submit
+            </Button>
+          </FormControl>
+        </Card>
+      </Box>
+    </div>
+  );
 }
 
 export default RangeMonitor;

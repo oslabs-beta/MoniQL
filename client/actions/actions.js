@@ -1,8 +1,8 @@
 import * as types from '../constants/actionTypes';
 
-export const addAlertActionCreator = (alertObj) => ({
-  type: types.ADD_ALERT,
-  payload: alertObj
+export const addAlertsActionCreator = (alertsArray) => ({
+  type: types.ADD_ALERTS,
+  payload: alertsArray
 })
 
 export const deleteAlertActionCreator = (alert_id) => ({
@@ -15,9 +15,13 @@ export const updateAlertActionCreator = (alertObj) => ({
   payload: alertObj
 })
 
-export const logInActionCreator = (user, username, uri) => ({
+export const logInActionCreator = (user_id, username, uri) => ({
   type: types.LOG_IN,
-  payload: {user, username, uri}
+  payload: {user_id, username, uri}
+})
+
+export const logOutActionCreator = () => ({
+  type: types.LOG_OUT
 })
 
 export const saveDBActionCreator = (dbArray) => ({
@@ -40,7 +44,32 @@ export const selectPageActionCreator = (page) => ({
   payload: page
 })
 
-export const addMonitorActionCreator = (monitorObject) => ({
-  type: types.ADD_MONITOR,
-  payload: monitorObject
+export const addMonitorsActionCreator = (monitorsArray) => ({
+  type: types.ADD_MONITORS,
+  payload: monitorsArray
+})
+
+export const updateMonitorActionCreator = (monitorObj) => ({
+  type: types.UPDATE_MONITOR,
+  payload: monitorObj
+})
+
+export const addTablesWeightsActionCreator = (tablesWeightsObj) => ({
+  type: types.ADD_TABLES_WEIGHTS,
+  payload: tablesWeightsObj
+})
+
+export const displayAlertsActionCreator = (alertsArray) => ({
+  type: types.DISPLAY_ALERTS,
+  payload: alertsArray
+})
+
+export const displayMonitorsActionCreator = (monitorsArray) => ({
+  type: types.DISPLAY_MONITORS,
+  payload: monitorsArray
+})
+
+export const updateDashDisplayTimeRangeActionCreator = (timeRange) => ({
+  type: types.UPDATE_DASH_DISPLAY_TIME_RANGE,
+  payload: timeRange
 })

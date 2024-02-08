@@ -3,7 +3,7 @@ import React from 'react';
 const QueryContainer = () => {
     return (
         <div>
-            <h1>Queries Will Go Here</h1>
+            <h1>Future plans: AI/ML query helper that suggests effective queries.</h1>
         </div>
     )
 }
