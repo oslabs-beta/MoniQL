@@ -45,15 +45,7 @@ const DashAlertLineChart = () => {
   // console.log('alertsByInterval in dashalertlinechart', alertsByInterval)
 
   return (
-    <Box className="graph-container"
-      sx={{
-        backgroundColor: "#6870fa",
-        borderRadius: 1,
-        border: .5,
-        borderColor: "gray",
-
-      }}
-    >
+    <Box className="graph-container" >
       <h2 style={{ marginLeft: "1rem" }}>Alerts by date</h2>
       <Divider sx={{ width: "100%", mb: 1 }} />
 
@@ -74,13 +66,14 @@ const DashAlertLineChart = () => {
         series={[
           { 
             data: alertsByInterval, 
+  
           }]}
 
         width={550}
         height={300}
         sx={{
-          backgroundColor: "#6870fa",
-          color: "FAF9F6",
+          backgroundColor: "transparent",
+          color: "white",
           borderRadius: 4,
           width: "45%",
         }}

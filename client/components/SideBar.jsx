@@ -140,6 +140,7 @@ const SideBar = () => {
     <div>
       {/* <Box sx={{ display: "flex" }}> */}
       <Drawer
+      // PaperProps={{ elevation: 5 }}
         variant='permanent'
         about='left'
         //BOX SHADOW
@@ -149,7 +150,14 @@ const SideBar = () => {
           [`& .MuiDrawer-paper`]: {
             width: drawerWidth,
             boxSizing: 'border-box',
-            backgroundColor: '#2A2A43',
+            // backgroundColor: '#2A2A43',
+            background: 'linear-gradient(0deg, rgba(25, 24, 31, 1) 0%, rgb(44,44,60, 1) 130%)',
+            // background:'linear-gradient(0deg, rgba(42,42,67,1) 0%, rgba(62,62,100,1) 100%)',
+            borderWidth: 0,
+            // borderColor: '#2A2A43',
+            // backgroundColor: 'transparent',
+
+
           },
         }}
       >
@@ -168,11 +176,11 @@ const SideBar = () => {
             align='center'
             variant='h6'
             noWrap
-            color='#a4a9fc'
             component='div'
             mt='1'
             // transform: { rotate: '90deg'}
-            sx={{ display: { xs: 'none', sm: 'block'  } }}
+            
+            sx={{ color: '#a4a9fc', display: { xs: 'none', sm: 'block'  } }}
           >
             MoniQL
           </Typography>

@@ -28,14 +28,8 @@ const DashAlertBarChart = () => {
   });
 
   return (
-    <Box
-      sx={{
-        backgroundColor: "#6870fa",
-        borderRadius: 1,
-        border: 0.5,
-        borderColor: "gray",
-      }}
-    >
+    <Box className="graph-container"
+>
       <h2 style={{ marginLeft: "1rem" }}>Alerts by status</h2>
       <Divider sx={{ width: "100%", mb: 1 }} />
 
@@ -67,8 +61,8 @@ const DashAlertBarChart = () => {
         width={550}
         height={300}
         sx={{
-          backgroundColor: "#6870fa",
-          color: "FAF9F6",
+          backgroundColor: "transparent",
+          color: "white",
           borderRadius: 4,
           width: "45%",
         }}
