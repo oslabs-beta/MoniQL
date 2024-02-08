@@ -45,7 +45,9 @@ To get started on monitoring your database with this Project:
 - Material-UI
 - React-Flow
 - Node-Cron
+- Socket.io
 - Express
+- Webpack
 
 ## Interface & Features
 
