@@ -93,7 +93,7 @@ The sidebar has Dashboard, ERD, Monitors, Alerts, and a settings icon for easy n
 
 We’ve released MoniQL as a valuable tool to help visualize and monitor PostgreSQL databases. Expect ongoing enhancements, extensions, and added features to be introduced to further elevate its utility. We deeply appreciate any community contributions and we invite you to explore MoniQL and offer suggestions for improvements as you see fit! If you encounter any issues, please report them in the issues tab or submit a PR. Your interest and support are greatly appreciated.
 
-## Contributors
+## Core Team
 
 - Hay Nocik
 - Aaron Brown
