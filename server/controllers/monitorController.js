@@ -2,7 +2,7 @@ const { pool, userPool, connectToPool } = require('../models/db');
 const { v4: uuidv4 } =  require('uuid');
 const cron = require('node-cron');
 const { getIo } = require('../socket');
-
+const userController = require('./userController')
 const monitorController = {};
 
 // declare a variable for our connection to user db, but don't connect until log in
@@ -358,7 +358,7 @@ monitorController.scheduleMonitors = async (req, res, next) => {
       const cronExpression = `*/${parameters.frequency} * * * * `
       // const monitorFunction = monitorController.range
       console.log('CRON EXPRESSION:', cronExpression)
-      const req = {parameters: parameters}
+      const req = {parameters: parameters, user_id: user_id}
       console.log('TYPE:', type.toLowerCase())
       const monitorFunction = monitorController[type.toLowerCase()]
       
@@ -379,6 +379,8 @@ monitorController.scheduleMonitors = async (req, res, next) => {
             if (alerts.length && alerts !== undefined) {
               const io = getIo();
               io.to(user_id.toString()).emit('alert', alerts)
+              req.alerts = alerts
+              userController.addAlerts(req, null, null)
             }
           } catch (err) {
             console.error(`Error during direct invocation of ${type}-type monitor:`, err);

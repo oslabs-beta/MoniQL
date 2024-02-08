@@ -156,11 +156,22 @@ userController.getAlerts = async (req, res, next) => {
 }
 
 userController.addAlerts = async (req, res, next) => {
-  if(!res.locals.alerts) return next();
-  if(!res.locals.alerts.length) return next();
 
-  const { user_id } = req.body;
-  const alertsArr = res.locals.alerts;
+  const isScheduledCall = !req.hasOwnProperty('body')
+
+  const alertsArr = isScheduledCall ? req.alerts : res.locals.alerts
+  const user_id = isScheduledCall ? req.user_id : req.body.user_id
+
+  if (!alertsArr || !alertsArr.length) {
+    if(isScheduledCall) return
+    else return next();
+  }
+
+  // if(!res.locals.alerts) return next();
+  // if(!res.locals.alerts.length) return next();
+
+  // const { user_id } = req.body;
+  // const alertsArr = res.locals.alerts;
 
   let insertQuery = 'INSERT INTO alerts (alert_id, user_id, alert_obj) VALUES ';
   // create VALUES parameters for one query to insert all alerts
@@ -177,8 +188,13 @@ userController.addAlerts = async (req, res, next) => {
   try {
     // console.log('insertQuery in addAlerts: ', insertQuery, 'query params: ', values);
     const { rows } = await db.query(insertQuery, values);
-    return next();
+    if (isScheduledCall) return
+    else return next()
   } catch (err) {
+    if (isScheduledCall) {
+      console.log('FAILED AT DIRECT CALL OF ADDALERTS MIDDLEWARE')
+      return;
+    }
     return next({
       log: `error in userController.addAlert: ${err}`,
       status: 500,
