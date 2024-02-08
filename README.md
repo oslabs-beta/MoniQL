@@ -48,6 +48,7 @@ To get started on monitoring your database with this Project:
 - Socket.io
 - Express
 - Webpack
+- Love <3
 
 ## Interface & Features
 
