@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useStore, useDispatch } from 'react-redux';
-import {Box, Typography} from '@mui/material';
+import {Box, Typography, Divider} from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { addTablesWeightsActionCreator } from '../actions/actions';
 
@@ -229,16 +229,17 @@ const DashTableOfTables = () => {
         }}
       >
         {/* <Typography variant="h3">Tables</Typography> */}
-        <Box
+        <Box className="graph-container"
           sx={{
-            height: 466,
-            backgroundColor: "rgba(104, 112, 250, 0.8)",
+            height: 540,
+            // backgroundColor: "rgba(104, 112, 250, 0.8)",
             border: 0.5,
-            borderColor: "gray",
+            borderColor: "rgb(33,30,38)",
           }}
         >
           {/* <Typography variant="h4" sx={{ml: 2}}>monitored tables</Typography> */}
           <h2 style={{ marginLeft: "1rem" }}>Monitored tables</h2>
+                <Divider sx={{ width: "100%", mb: 1 }} />
           <DataGrid
             autoHeight
             rows={dashToTRows}
@@ -249,8 +250,9 @@ const DashTableOfTables = () => {
               height: 400,
               paddng: 2,
               headerAlign: "center",
-              backgroundColor: "#6870fa",
+              backgroundColor: "transparent",
               borderRadius: 0,
+              border: 0,
               color: "FAF9F6",
               width: "100%",
             }}

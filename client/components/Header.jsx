@@ -35,21 +35,7 @@ import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 //////////////////////hay added for light/dark mode/////////////////////
 
-// const theme = createTheme({
-//   //  typography: {
-//   //    fontFamily: "Roboto",
-//   //  },
-//   palette: {
-//     primary: {
-//       main: "#222130",
-//       light: "#2A2A43",
-//       dark: "#2E2D3D",
-//     },
-//     secondary: {
-//       main: "#7275F1",
-//     },
-//   },
-// });
+
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -121,13 +107,7 @@ const Header = () => {
       anchor='right'
       open={alertsDrawerToggle}
       onClose={handleAlertsDrawerToggle}
-      sx={{
-        '& .MuiDrawer-paper': {
-          width: 350,
-          boxSizing: 'border-box',
-          // backgroundColor: 'black',
-        },
-      }}
+      sx={{width: 350 }}
     >
       <Box className="card-container" sx={{ p: 1, width: 350}}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

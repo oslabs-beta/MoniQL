@@ -3,7 +3,14 @@ import { useSelector } from 'react-redux';
 import AlertBox from '../components/AlertBox';
 import {
   Box,
+  Card,
+  Typography,
+  useTheme,
+  ThemeProvider,
+  Divider
 } from "@mui/material";
+import tokens from '../components/stylesheets/Themes';
+
 
 const AlertContainer = () => {
   const alerts = useSelector((state) => state.alert.alerts);
@@ -11,6 +18,9 @@ const AlertContainer = () => {
 
   const [displayAlertsArr, setDisplayAlertsArr] = useState(displayAlertsArrFromState);
   const [anomalies, setAnomalies] = useState([]);
+
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
   useEffect(() => {
     const sortedAlerts = displayAlertsArrFromState.sort((a, b) => new Date(b.detected_at) - new Date(a.detected_at));
@@ -32,9 +42,29 @@ const AlertContainer = () => {
 
   return (
     <Box sx={{
-      ml: '1%'
+      ml: '1%',
     }}>
-      <div>{anomalies}</div>
+      <Card className='card-container'
+        variant='outlined'
+        sx={{
+          minWidth: '20vw',
+          flexDirection: 'column',
+          minHeight: '60vh',
+          padding: 3,
+          boxShadow: 3,
+          backgroundColor: '#2E2D3D',
+          borderRadius: 4,
+          
+        }}
+      >
+         <Box sx={{ p: 2, display: 'flex', justifyContent: 'space-between' }}>
+          <Typography variant="h5" color={colors.grey[100]}>
+            Anomalies found
+          </Typography>
+        </Box>
+        <Divider sx={{ width: '100%', mb: 1 }} />
+      <Box sx={{mr: 2}}>{anomalies}</Box>
+      </Card>
     </Box>
   );
 }

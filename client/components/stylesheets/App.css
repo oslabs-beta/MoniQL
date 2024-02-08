@@ -7,11 +7,22 @@
     font-family: sans-serif;
   }  */
 
-  
+@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@500;700;800&display=swap');
 @import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap");
 
+body {
+  overflow: auto;
+  font-family: 'Hanken Grotesk', sans-serif;
+ background: radial-gradient(circle, rgba(44,44,60, 1) 0%, rgb(25, 24, 31) 100%); 
+  height: 100vh;
+  width: 100vw;
+  /* color: #3e3e64; */
+
+}
+  
+
+
 html,
-body,
 #root,
 .app,
 .content {
@@ -22,42 +33,74 @@ body,
   /* background-color: #1d1c25; */
   /* background-image: url(https://img.freepik.com/free-vector/blurred-abstract-background-design_1107-169.jpg?w=2000&t=st=1706200718~exp=1706201318~hmac=6998d8adb64a2ea68c5f75f354698c93c53991a6bd012012fa955b8c73718976); */
 /* background-image: url(https://i.pinimg.com/originals/60/15/9f/60159f45955be086e295dd9400ceee86.jpg); */
-
-
-  /* opacity: 0.75; */
-  background-repeat: no-repeat;
-  background-size: cover;
+  /* background-repeat: no-repeat;
+  background-size: cover; */
 
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
-  overflow-y: auto;
-/* background: rgb(33,30,38);
-background: radial-gradient(circle, rgba(33,30,38,1) 0%, rgba(44,44,60,1) 100%); */
-background: #211e26;
+  /* overflow: auto; */
+  /* overflow-x: auto;
+  overflow-y: auto; */
+/* background: rgb(33,30,38);*/
+/* background: #211e26; */
 }
-body:before {
-    content: "";
- position: absolute;
-    top: 0px;
-    right: 0px;
-    bottom: 0px;
-    left: 0px;
-    /* background-color: rgba(0,0,0,0.25); */
-       z-index: -1;
-      background-color: transparent;
-  filter: blur(5px);
-  opacity: 0.5;
-}
+
 .app {
   display: flex;
   position: relative;
+}
+
+.graph-container {
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 5px 15px;
+  background-color: rgba(0,0,0,.2);
+  color: #fff;
+  border-radius: 1;
+  border: 0.2;
+  border-color: "gray";
 }
 
 .card-container {
 background: rgb(33,30,38);
 background: radial-gradient(circle, rgba(33,30,38,1) 0%, rgba(44,44,60,1) 100%);
 }
+
+
+
+        /* background: 'rgba( 255, 255, 255, 0.25 )',
+backdropFilter: 'blur( 4px )',
+borderRadius: '10px',
+border: '1px solid rgba( 255, 255, 255, 0.18 )',
+boxShadow: '0px 0px 23px 8px rgba(227,214,255,0.08)', 
+} */
+
+::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+ 
+::-webkit-scrollbar-track {
+  background-color: transparent;
+
+}
+
+::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(104, 112, 250, 0.8); 
+
+
+}
+::-webkit-scrollbar-thumb:active {
+  background: rgba(104, 112, 250, 0.9); 
+}
+
 .react-flow__node {
   /* filter: blur(1px); */
   font-size: 14px;
@@ -74,41 +117,47 @@ background: radial-gradient(circle, rgba(33,30,38,1) 0%, rgba(44,44,60,1) 100%);
   overflow: hidden; 
   /* background: rgba( 255, 255, 255, 0.25 ); */
   background: rgba(255, 255, 255, 0.1);
-backdrop-filter: blur( 10px );
--webkit-backdrop-filter: blur( 4x );
-border-radius: 10px;
-border: 1px solid rgba( 255, 255, 255, 0.18 );
-/* box-shadow: 0px 0px 23px 8px rgba(227,214,255,0.08); */
-/* box-shadow: 
-inset 0 0 50px #fff,      
-    inset 20px 0 80px #f0f,  
-    inset -20px 0 80px #0ff, 
-    inset 20px 0 300px #f0f,  
-    inset -20px 0 300px #0ff,  
- 0 0 20px #fff,            
-    -5px 0 30px #f0f,        
-    5px 0 30px #0ff; */
+  backdrop-filter: blur( 10px );
+  -webkit-backdrop-filter: blur( 4x );
+  border-radius: 10px;
+  border: 1px solid rgba( 255, 255, 255, 0.18 );
+  /* box-shadow: 0px 0px 23px 8px rgba(227,214,255,0.08); */
+
+    .scrollable-content {
+  overflow-y: auto;
+  overflow-x: auto;
+  
+  height: 100%;
+  /* padding-right: 15px;  */
 }
+
+.scrollable-content::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+  border-radius: 10px;
+}
+
+.scrollable-content::-webkit-scrollbar-thumb {
+  background: rgba(104, 112, 250); 
+  border-radius: 10px;
+  transition: background 0.1s ease-in-out;
+}
+
+.scrollable-content::-webkit-scrollbar-corner {
+  background: transparent;
+}
+}
+
 .react-flow__edge {
   /* filter: blur(1px); */
   color: #ffffff;
   /* z-index: 1; */
 }
-.scrollable-content {
-  overflow-y: auto;
-  height: 100%;
-  padding-right: 15px; 
-}
 
-.scrollable-content::-webkit-scrollbar {
-  width: 8px;
-}
 
-.scrollable-content::-webkit-scrollbar-thumb {
-  background: rgba(104, 112, 250, 0.5); 
-  border-radius: 10px;
-  transition: background 0.1s ease-in-out;
-}
+
+
+
 
 .react-flow__node h3 {
   text-align: center;
@@ -138,148 +187,3 @@ inset 0 0 50px #fff,
   height: 10px;
   z-index: 2;
 }
-
-
-
-::-webkit-scrollbar {
-  width: 8px;
-  border-radius: 10px;
-
-}
-
-
-
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: rgba(104, 112, 250, 0.01); 
-  border-radius: 10px;
-  transition: background 0.1s ease-in-out;
-}
-
-
-::-webkit-scrollbar-thumb:active,
-::-webkit-scrollbar-thumb:hover {
-  background: #6870fa; 
-}
-
-
-
-
-
-
-
-/* 
-grey {
-          color: #e0e0e0;
-          color: #c2c2c2;
-          color: #a3a3a3;
-          color: #858585;
-          color: #666666;
-          color: #525252;
-          color: #3d3d3d;
-          color: #292929;
-          color: #141414;
-          color: #26262b;
-
-        }
-        primary {
-          color: #d0d1d5;
-          color: #a1a4ab;
-          color: #727681;
-          color: #1F2A40;
-          color: #141b2d;
-          color: #101624;
-          color: #0c101b;
-          color: #080b12;
-          color: #040509;
-        }
-        greenAccent {
-          color: #dbf5ee;
-          color: #b7ebde;
-          color: #94e2cd;
-          color: #70d8bd;
-          color: #4cceac;
-          color: #3da58a;
-          color: #2e7c67;
-          color: #1e5245;
-          color: #0f2922;
-        }
-        redAccent {
-          color: #f8dcdb;
-          color: #f1b9b7;
-          color: #e99592;
-          color: #e2726e;
-          color: #db4f4a;
-          color: #af3f3b;
-          color: #832f2c;
-          color: #58201e;
-          color: #2c100f;
-        }
-        blueAccent {
-          color: #e1e2fe;
-          color: #c3c6fd;
-          color: #a4a9fc;
-          color: #868dfb;
-          color: #6870fa;
-          color: #535ac8;
-          color: #3e4396;
-          color: #2a2d64;
-          color: #151632;
-        }
-
-        grey {
-          color: #141414;
-          color: #292929;
-          color: #3d3d3d;
-          color: #525252;
-          color: #666666;
-          color: #858585;
-          color: #a3a3a3;
-          color: #c2c2c2;
-          color: #e0e0e0;
-        }
-        primary {
-          color: #040509;
-          color: #080b12;
-          color: #0c101b;
-          color: #f2f0f0; 
-          color: #141b2d;
-          color: #1F2A40;
-          color: #727681;
-          color: #a1a4ab;
-          color: #d0d1d5;
-        }
-        greenAccent {
-          color: #0f2922;
-          color: #1e5245;
-          color: #2e7c67;
-          color: #3da58a;
-          color: #4cceac; 
-          color: #70d8bd;
-          color: #94e2cd;
-          color: #b7ebde;
-          color: #dbf5ee;
-        }
-        redAccent {
-          color: #2c100f;
-          color: #58201e;
-          color: #832f2c;
-          color: #af3f3b;
-          color: #db4f4a;
-          color: #e2726e;
-          color: #e99592;
-          color: #f1b9b7;
-          color: #f8dcdb;
-        }
-        blueAccent {
-          color: #151632;
-          color: #2a2d64;
-          color: #3e4396;
-          color: #535ac8;
-          color: #6870fa; 
-          color: #868dfb;
-          color: #a4a9fc;
-          color: #c3c6fd;
-          color: #e1e2fe;
-        }  */

@@ -185,6 +185,7 @@ boxShadow: 3,
         zIndex: 9999,
         width: "100%",
         maxWidth: "900px",
+        m: 1
       }}
     >
         <AlertTitle sx={{ fontSize: 16, color: "white" }}>

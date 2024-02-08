@@ -23,13 +23,12 @@ import {
 } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { selectPageActionCreator } from '../actions/actions';
+import moniqlicon from '../../public/moniql.png';
 
 //icons
 //dashboard
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
-import HomeIcon from '@mui/icons-material/Home';
 //alerts
-import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
 import { NearbyErrorOutlined } from '@mui/icons-material';
 //ERD
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
@@ -141,6 +140,7 @@ const SideBar = () => {
     <div>
       {/* <Box sx={{ display: "flex" }}> */}
       <Drawer
+      // PaperProps={{ elevation: 5 }}
         variant='permanent'
         about='left'
         //BOX SHADOW
@@ -150,7 +150,14 @@ const SideBar = () => {
           [`& .MuiDrawer-paper`]: {
             width: drawerWidth,
             boxSizing: 'border-box',
-            backgroundColor: '#2A2A43',
+            // backgroundColor: '#2A2A43',
+            background: 'linear-gradient(0deg, rgba(25, 24, 31, 1) 0%, rgb(44,44,60, 1) 130%)',
+            // background:'linear-gradient(0deg, rgba(42,42,67,1) 0%, rgba(62,62,100,1) 100%)',
+            borderWidth: 0,
+            // borderColor: '#2A2A43',
+            // backgroundColor: 'transparent',
+
+
           },
         }}
       >
@@ -160,18 +167,20 @@ const SideBar = () => {
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
+            mt: 3
           }}
         >
-          <AutoAwesomeIcon sx={{ mt: 3, color: '#4cceac' }} />
+          <img src={moniqlicon} alt='moniqlicon' width='30%' height='auto' style={{marginTop:'3'}}  />
 
           <Typography
             align='center'
             variant='h6'
             noWrap
-            color='#a4a9fc'
             component='div'
+            mt='1'
             // transform: { rotate: '90deg'}
-            sx={{ display: { xs: 'none', sm: 'block' } }}
+            
+            sx={{ color: '#a4a9fc', display: { xs: 'none', sm: 'block'  } }}
           >
             MoniQL
           </Typography>
