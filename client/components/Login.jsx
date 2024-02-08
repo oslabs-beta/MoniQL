@@ -21,7 +21,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 const theme = createTheme({
   typography: {
-    fontFamily: ['Pixelify Sans', 'sans-serif'].join(','),
+    fontFamily: ['Hanken Grotesk', 'sans-serif'].join(','),
   },
   palette: {
     primary: {

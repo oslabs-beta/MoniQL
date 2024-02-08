@@ -5,9 +5,9 @@ const dbController = require('../controllers/dbController');
 const monitorController = require('../controllers/monitorController');
 
 //uncomment below to revert to working login
-// router.post('/login', userController.login, monitorController.connect, (req, res) => {res.status(200).json(res.locals)});
+router.post('/login', userController.login, monitorController.connect, (req, res) => {res.status(200).json(res.locals)});
 
-router.post('/login', userController.login, monitorController.connect, userController.getMonitors, monitorController.scheduleMonitors, (req, res) => {res.status(200).json(res.locals)});
+// router.post('/login', userController.login, monitorController.connect, userController.getMonitors, monitorController.scheduleMonitors, (req, res) => {res.status(200).json(res.locals)});
 
 router.post('/register', userController.register, monitorController.connect, userController.getMonitors, monitorController.scheduleMonitors, (req, res) => {res.status(200).json(res.locals)});
 

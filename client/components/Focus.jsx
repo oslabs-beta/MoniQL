@@ -1,4 +1,4 @@
-import React, { useRef, useMemo, useEffect, useState, memo } from 'react';
+import React, { useRef, useMemo, useEffect, useState, memo, StrictMode } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addTablesWeightsActionCreator } from '../actions/actions';
 import ReactFlow, {
@@ -16,7 +16,7 @@ import ReactFlow, {
 //must import reactflow css for visualizer to work
 import 'reactflow/dist/style.css';
 import { Card, CardContent, Typography, List } from '@mui/material';
-// import style from "./stylesheets/visualizer";
+import "./stylesheets/App.css";
 import styled, { ThemeProvider } from 'styled-components';
 import { ReactFlowProvider } from 'react-flow-renderer';
 //This
@@ -101,7 +101,8 @@ const Focus = ({ children, elements }) => {
 
   const CustomNode = ({ data }) => {
     return (
-      <div>
+      <div className="scrollable-content" >
+        <div className="nowheel" style={{ overflow: 'auto' }}>
 
         <Handle
           type="target"
@@ -125,6 +126,7 @@ const Focus = ({ children, elements }) => {
           />
         ))
         } 
+        </div>
       </div>
     );
   };
@@ -243,7 +245,7 @@ const Focus = ({ children, elements }) => {
       >
         {/* <Background color="#2A2A43" /> */}
         <Background color="#0D0221" />
-        <MiniMap />
+        {/* <MiniMap /> */}
         <Controls />
       </ReactFlow>
     </div>
