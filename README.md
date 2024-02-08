@@ -67,17 +67,24 @@ The sidebar has Dashboard, ERD, Monitors, Alerts, and a settings icon for easy n
 
 ### Dashboard
 
+Upon signing in to your MoniQL account, you will be presented with our Dashboard containing dynamic charts of your alerts by the specified date range or by status and a table with information about all your monitored tables. The Dashboard’s line chart and bar chart are responsively synced up to the time range selector above them, where users can choose a specific range of dates or jump to showing all of the Alerts of the past 7, 30, 60, or 90 days. The table of tables below the charts, listing each table currently under watch from one or more MoniQL Monitors, is initially organized by the number of downstream entities that a table has. But the table of tables is interactive, too, and can be reordered by clicking on any column of the table, letting users get a quick grasp of their data’s overall health.
+
 [... show functionality…]
 
-### ERD
+### Entity Relationship Diagram
 
+The ERD icon will take you to MoniQL’s organized, interactive, and pleasingly styled Focus Table ERD where you can choose a table to focus on, and the depth of downstream tables that you will like to have displayed. This allows the user to choose any table from their database and immediately display that table’s downstream entity relationships, up to the chosen depth.
 [... show functionality…]
 
 ### Monitors
 
+The monitors icon will take you to the engine of MoniQL’s core monitoring functionality where you can view and edit a list of your active monitors that you can filter by table name, column name, and monitor type. On the right side of the screen, you can choose a type of Monitor to create—so far we have full stack functionality for Range Monitors, Null Monitors, and Custom Monitors, and for each you can decide how often you’d like them to fire automatically, or you can fire at will with a button click. Range Monitors allow you to pick a minimum or a maximum value, or both, for any column that contains numbers, and set off an alert whenever a number outside of your chosen range is found. Our default Null Monitors look for null values in any column on a given table. And perhaps most useful to devs like yourself, our Custom Monitors allow you to enter whatever SQL query you’d like, set up to return anomalous values, and automatically check your database for such values at time intervals of your choosing. When one of your Monitors finds anomalous values on a table of yours, MoniQL will create an Alert, and update the bell icon in the upper right corner of your window. 
+
 [... show functionality…]
 
 ### Alerts
+
+The alerts icon will lead you to a closer view of your Alerts allowing you to filter by table name, column name, monitor type, and status. This will be where you have the option to click to see anomalous rows. You can also add note, mark alerts as resolved, and clear resolved alerts by clicking on the x at the top right of the Alert component. Once Alerts have been dismissed, they will no longer display by default, but you click the toggle on this page to see those you have dismissed as well as those that you haven’t gotten to yet.
 
 [... show functionality…]
 
