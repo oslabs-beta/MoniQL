@@ -23,13 +23,12 @@ import {
 } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { selectPageActionCreator } from '../actions/actions';
+import moniqlicon from '../../public/moniql.png';
 
 //icons
 //dashboard
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
-import HomeIcon from '@mui/icons-material/Home';
 //alerts
-import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
 import { NearbyErrorOutlined } from '@mui/icons-material';
 //ERD
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
@@ -160,9 +159,10 @@ const SideBar = () => {
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
+            mt: 3
           }}
         >
-          <AutoAwesomeIcon sx={{ mt: 3, color: '#4cceac' }} />
+          <img src={moniqlicon} alt='moniqlicon' width='30%' height='auto' style={{marginTop:'3'}}  />
 
           <Typography
             align='center'
@@ -170,8 +170,9 @@ const SideBar = () => {
             noWrap
             color='#a4a9fc'
             component='div'
+            mt='1'
             // transform: { rotate: '90deg'}
-            sx={{ display: { xs: 'none', sm: 'block' } }}
+            sx={{ display: { xs: 'none', sm: 'block'  } }}
           >
             MoniQL
           </Typography>
