@@ -28,14 +28,13 @@ To get started on monitoring your database with this Project:
 1. Fork and clone this repo to your local machine.
 2. Run `npm install` for necessary dependencies.
 3. Download and install Postgres to access MoniQL’s Postgres features.
-4. Create an `.env` file on your local machine.
-5. Create your auth db.
-6. Make sure the `setup_db.sh` script is executable by running `chmod +x setup_db.sh`.
-7. On the command line run `./setup_db.sh`.
-8. When prompted, provide the URI to your empty database where you want to create the db.
-9. Create a `.env` file in your root and add the following line:
+4. Create a new remote (cloud-hosted) db instance to hold MoniQL's auth, monitors, and alerts data. (ElephantSQL)[https://www.elephantsql.com/] offers free hosting.
+5. Make sure the `setup_db.sh` script is executable by running `chmod +x setup_db.sh`.
+6. On the command line run `./setup_db.sh`.
+7. When prompted, provide the URI to your empty database where you want to create the db.
+8. Create a `.env` file in the root of your MoniQL directory and add the following line:
    - `PG_URI=<URI for your newly created DB>`
-10. Create users with usernames, passwords, and URIs to the target cloud database to be monitored.
+9. Create users with usernames, passwords, and URIs to the target cloud database to be monitored.
 
 ## Built With
 

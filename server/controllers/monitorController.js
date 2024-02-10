@@ -191,7 +191,8 @@ monitorController.range = async (req, res, next) => {
     
     
     if(anomalousArray.length) {
-      const alerts = [alertObjCreator(table, 'Range', 'out of range', 'error', column, anomalousArray, anomalousArray[0][column], anomalousArray[0][timeColumn])];
+      const firstHundredAnomalousRows = anomalousArray.slice(0, 100);
+      const alerts = [alertObjCreator(table, 'Range', 'out of range', 'error', column, firstHundredAnomalousRows, anomalousArray[0][column], anomalousArray[0][timeColumn])];
       if (isScheduledCall) return alerts
       res.locals.alerts = [];
       res.locals.alerts.push(alertObjCreator(table, 'Range', 'out of range', 'error', column, anomalousArray, anomalousArray[0][column], anomalousArray[0][timeColumn]));
@@ -238,10 +239,11 @@ monitorController.null = async (req, res, next) => {
 
     
     if(anomalousArray.length) {
+      const firstHundredAnomalousRows = anomalousArray.slice(0, 100);
       const alerts = []
       for(const column in anomalousArray[0]){
         if(anomalousArray[0][column] === null) {
-          alerts.push(alertObjCreator(table, 'Null', 'null found', 'error', column, anomalousArray, null, anomalousArray[0][timeColumn]));
+          alerts.push(alertObjCreator(table, 'Null', 'null found', 'error', column, firstHundredAnomalousRows, null, anomalousArray[0][timeColumn]));
         }
       }
       if (isScheduledCall) return alerts
@@ -327,7 +329,8 @@ monitorController.custom = async (req, res, next) => {
     const anomalousArray = data.rows;
     console.log('anomalous rows in moncont.range: ', anomalousArray);
     if(anomalousArray.length) {
-      const alerts = [alertObjCreator('custom query table(s)', 'Custom', 'custom', 'error', 'custom', anomalousArray)];
+      const firstHundredAnomalousRows = anomalousArray.slice(0, 100);
+      const alerts = [alertObjCreator('custom query table(s)', 'Custom', 'custom', 'error', 'custom', firstHundredAnomalousRows)];
       // might be better to make a different alert object for custom queries
       if (isScheduledCall) return alerts;
       res.locals.alerts = alerts;

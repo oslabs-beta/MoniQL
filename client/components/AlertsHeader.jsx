@@ -96,7 +96,6 @@ const AlertsHeader = () => {
       if (!showDismissed && !alert.display) {
         return false;
       }
-
       if (showDismissed && alert.display === false) {
         return true;
       }

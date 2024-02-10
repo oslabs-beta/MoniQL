@@ -5,7 +5,7 @@ const initialState = {
   focusTable: null,
   depth: 6,
   tablesWeightsObj: {},
-  dashDisplayAlertsTimeRange: [new Date() - 1000 * 60 * 60 * 24 * 7, Date.now()],
+  dashDisplayAlertsTimeRange: [new Date() - 1000 * 60 * 60 * 24 * 7, new Date(Date.now() + 2 * 60 * 60 * 1000)],
 };
 
 const diagramReducer = (state = initialState, action) => {

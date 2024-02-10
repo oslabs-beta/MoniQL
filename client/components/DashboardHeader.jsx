@@ -6,13 +6,13 @@ import {
   Chip,
   FormControl,
   FormHelperText
-} from "@mui/material";
-import tokens from "./stylesheets/Themes";
-import React, { useState } from "react";
-import { DatePicker } from "@mui/x-date-pickers";
-import dayjs from "dayjs";
-import { useSelector, useDispatch } from "react-redux";
-import { updateDashDisplayTimeRangeActionCreator } from "../actions/actions";
+} from '@mui/material';
+import tokens from './stylesheets/Themes';
+import React, { useState } from 'react';
+import { DatePicker } from '@mui/x-date-pickers';
+import dayjs from 'dayjs';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateDashDisplayTimeRangeActionCreator } from '../actions/actions';
 
 const SubHeader = ({ title, subtitle }) => {
   const theme = useTheme();
@@ -23,7 +23,7 @@ const SubHeader = ({ title, subtitle }) => {
         variant="h1"
         color={colors.grey[100]}
         fontWeight="bold"
-        sx={{ m: "0 0 5px 0" }}
+        sx={{ m: '0 0 5px 0' }}
       >
         {title}
       </Typography>
@@ -49,7 +49,7 @@ const DashboardHeader = () => {
     const timeRangeArrAsTimestamps = timeRangeArr.map((date) => date.valueOf());
     dispatch(updateDashDisplayTimeRangeActionCreator(timeRangeArrAsTimestamps));
     setDashDisplayAlertsTimeRange(timeRangeArr.map(dayjs));
-    console.log("timeRangeArr", timeRangeArr);
+    console.log('timeRangeArr', timeRangeArr);
   };
 
   return (
@@ -59,12 +59,12 @@ const DashboardHeader = () => {
           title="Dashboard"
           // subtitle="Hi, welcome to your dashboard  ʕ ⊃･ ◡ ･ ʔ⊃ ━☆ﾟ.*･｡*☆"
         />
-        <Box sx={{ display: "flex", flexDirection: "column", minWidth: 120 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', minWidth: 120 }}>
           <Box
             sx={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
               minWidth: 120,
             }}
           >
@@ -80,8 +80,8 @@ const DashboardHeader = () => {
                   ])
                 }
                 sx={{
-                  backgroundColor: "#2E2D3D",
-                  borderRadius: "5px",
+                  backgroundColor: '#2E2D3D',
+                  borderRadius: '5px',
                 }}
               />
               <FormHelperText>
@@ -89,11 +89,11 @@ const DashboardHeader = () => {
               </FormHelperText>
             </FormControl>
             <Box
-              sx={{ display: "flex", justifyContent: "center", mx: 0.5, mb: 2 }}
+              sx={{ display: 'flex', justifyContent: 'center', mx: 0.5, mb: 2 }}
             >
               <Divider
                 orientation="horizontal"
-                sx={{ bgcolor: "white", height: ".5px", width: "10px" }}
+                sx={{ bgcolor: 'white', height: '.5px', width: '10px' }}
                 variant="middle"
                 flexItem
               />
@@ -109,19 +109,19 @@ const DashboardHeader = () => {
                   ])
                 }
                 sx={{
-                  backgroundColor: "#2E2D3D",
-                  borderRadius: "5px",
+                  backgroundColor: '#2E2D3D',
+                  borderRadius: '5px',
                 }}
               />
               <FormHelperText>Pick end date for lookback range</FormHelperText>
             </FormControl>
             <Box
               sx={{
-                display: "flex",
-                flexDirection: ["column", "row"],
-                flexWrap: "wrap",
-                alignItems: "center",
-                justifyContent: "center",
+                display: 'flex',
+                flexDirection: ['column', 'row'],
+                flexWrap: 'wrap',
+                alignItems: 'center',
+                justifyContent: 'center',
                 minWidth: 120,
                 ml: 3,
                 mb: 2,
@@ -131,8 +131,8 @@ const DashboardHeader = () => {
                 label="Reset to past 7 days"
                 onClick={() =>
                   handleDashDisplayAlertsTimeRange([
-                    dayjs().subtract(7, "day"),
-                    dayjs(),
+                    dayjs().subtract(7, 'day'),
+                    dayjs().add(2, 'hour'), // so that new alerts will display as they come in
                   ])
                 }
                 sx={{ mr: 1, p: 0.5 }}
@@ -141,8 +141,8 @@ const DashboardHeader = () => {
                 label="Past 30 days"
                 onClick={() =>
                   handleDashDisplayAlertsTimeRange([
-                    dayjs().subtract(30, "day"),
-                    dayjs(),
+                    dayjs().subtract(30, 'day'),
+                    dayjs().add(2, 'hour'),
                   ])
                 }
                 sx={{ mr: 1, p: 0.5 }}
@@ -151,8 +151,8 @@ const DashboardHeader = () => {
                 label="Past 60 days"
                 onClick={() =>
                   handleDashDisplayAlertsTimeRange([
-                    dayjs().subtract(60, "day"),
-                    dayjs(),
+                    dayjs().subtract(60, 'day'),
+                    dayjs().add(2, 'hour'),
                   ])
                 }
                 sx={{ mr: 1, p: 0.5 }}
@@ -161,8 +161,8 @@ const DashboardHeader = () => {
                 label="Past 90 days"
                 onClick={() =>
                   handleDashDisplayAlertsTimeRange([
-                    dayjs().subtract(90, "day"),
-                    dayjs(),
+                    dayjs().subtract(90, 'day'),
+                    dayjs().add(2, 'hour'),
                   ])
                 }
                 sx={{ mr: 1, p: 0.5 }}
