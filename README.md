@@ -19,23 +19,22 @@
 
 ## Introduction
 
-MoniQL is a mighty PostgreSQL database monitor and visualiser. Designed to simplify and automate tasks involved in taking care of a relational database, MoniQL is here to keep your database safe and happy!
+MoniQL is a mighty PostgreSQL database monitor and visualiser. Designed to simplify and automate tasks involved in taking care of a relational database, MoniQL is here to keep your database safe and happy--MoniQL runs on queries only and does not set any constraints or triggers or anything else on your database!
 
 ## Getting Started
 
 To get started on monitoring your database with this Project:
 
-1. Fork and clone this repo to your local machine.
+1. Clone this repo to your local machine.
 2. Run `npm install` for necessary dependencies.
-3. Download and install Postgres to access MoniQL’s Postgres features.
-4. Create an `.env` file on your local machine.
-5. Create your auth db.
-6. Make sure the `setup_db.sh` script is executable by running `chmod +x setup_db.sh`.
-7. On the command line run `./setup_db.sh`.
-8. When prompted, provide the URI to your empty database where you want to create the db.
-9. Create a `.env` file in your root and add the following line:
+3. Download and install PostgresQL to access MoniQL’s PostgresQL features.
+4. Create a new remote (cloud-hosted) db instance to hold MoniQL's auth, monitors, and alerts data. [ElephantSQL](https://www.elephantsql.com/) offers free hosting.
+5. Make sure the `setup_db.sh` script is executable by running `chmod +x setup_db.sh`.
+6. On the command line run `./setup_db.sh`.
+7. When prompted, provide the URI to your empty database where you want to store your MoniQL data. 
+8. Create a `.env` file in your root and add the following line:
    - `PG_URI=<URI for your newly created DB>`
-10. Create users with usernames, passwords, and URIs to the target cloud database to be monitored.
+9. Create users with usernames, passwords, and URIs to the target cloud database to be monitored.
 
 ## Built With
 
@@ -46,7 +45,7 @@ To get started on monitoring your database with this Project:
  
 ![Webpack](https://img.shields.io/badge/webpack-%238DD6F9.svg?style=for-the-badge&logo=webpack&logoColor=black)  ![Nodemon](https://img.shields.io/badge/NODEMON-%23323330.svg?style=for-the-badge&logo=nodemon&logoColor=%BBDEAD)  ![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)  
 
-- Javascript
+- JavaScript
 - React
 - Redux
 - PostgreSQL
@@ -54,7 +53,7 @@ To get started on monitoring your database with this Project:
 - React-Flow
 - Node-Cron
 - Socket.io
-- Express
+- Express.js
 - Webpack
 - Love <3
 
@@ -66,11 +65,11 @@ Upon application launch, you will be taken to the splash page with [currently do
 
 ### Header and Sidebar
 
-The bell icon in the header will display the number of unresolved alerts from the running monitors. Clicking on the bell icon will open a drawer on the right side where you have the option to click to see anomalous rows. You can also add a note, mark alerts as resolved, and clear resolved alerts by clicking on the x.
+The bell icon in the header will display the number of unresolved alerts from the running monitors. Clicking on the bell icon will open a drawer on the right side where you have the option to click on an alert to see anomalous rows. You can also add a note, mark alerts as resolved, and clear resolved alerts by clicking on the x.
 
 The user silhouette icon will open up an option for Sign out so you can end your session.
 
-The sidebar has Dashboard, ERD, Monitors, Alerts, and a settings icon for easy navigation.
+The sidebar has Dashboard, Focus Table ERD, Monitors, Alerts, and a settings icon for easy navigation.
 
 ### Dashboard
 
@@ -87,19 +86,20 @@ The ERD icon will take you to MoniQL’s organized, interactive, and pleasingly 
 
 ### Monitors
 
-The monitors icon will take you to the engine of MoniQL’s core monitoring functionality where you can view and edit a list of your active monitors that you can filter by table name, column name, and monitor type. On the right side of the screen, you can choose a type of Monitor to create—so far we have full stack functionality for Range Monitors, Null Monitors, and Custom Monitors, and for each you can decide how often you’d like them to fire automatically, or you can fire at will with a button click. Range Monitors allow you to pick a minimum or a maximum value, or both, for any column that contains numbers, and set off an alert whenever a number outside of your chosen range is found. Our default Null Monitors look for null values in any column on a given table. And perhaps most useful to devs like yourself, our Custom Monitors allow you to enter whatever SQL query you’d like, set up to return anomalous values, and automatically check your database for such values at time intervals of your choosing. When one of your Monitors finds anomalous values on a table of yours, MoniQL will create an Alert, and update the bell icon in the upper right corner of your window. 
+The monitors icon will take you to the engine of MoniQL’s core monitoring functionality where you can view and edit a list of your active monitors. You can also filter monitors by table name, column name, and monitor type. On the right side of the screen, you can choose a type of Monitor to create—-so far we have full stack functionality for Range Monitors, Null Monitors, and Custom Monitors, and for each you can decide how often you’d like them to fire automatically, or you can fire at will with a button click. Range Monitors allow you to pick a minimum or a maximum value, or both, for any column that contains numbers, and set off an alert whenever a number outside of your chosen range is found. Our default Null Monitors look for null values in any column on a given table. And perhaps most useful to devs like yourself, our Custom Monitors allow you to enter whatever SQL query you’d like, set up to return anomalous values, and automatically check your database for such values at time intervals of your choosing. When one of your Monitors finds anomalous values on a table of yours, MoniQL will create an Alert, and update the bell icon in the upper right corner of your window. 
 
 ![Monitors Demo Animation](https://miro.medium.com/v2/resize:fit:640/format:webp/1*ym_JZoLu-0zD4orPeuWgCQ.gif)
 
 ### Alerts
 
-The alerts icon will lead you to a closer view of your Alerts allowing you to filter by table name, column name, monitor type, and status. This will be where you have the option to click to see anomalous rows. You can also add note, mark alerts as resolved, and clear resolved alerts by clicking on the x at the top right of the Alert component. Once Alerts have been dismissed, they will no longer display by default, but you click the toggle on this page to see those you have dismissed as well as those that you haven’t gotten to yet.
+The alerts icon will lead you to a closer view of your Alerts allowing you to filter by table name, column name, monitor type, and status. This will be where you have the option to click to see anomalous rows. You can also add notes, mark alerts as resolved, and clear resolved alerts by clicking on the x at the top right of the Alert component. Once Alerts have been dismissed, they will no longer display by default, but you can click the toggle on this page to see those you have dismissed as well as those that you haven’t gotten to yet.
 
 ![Alerts Demo Animation](https://miro.medium.com/v2/resize:fit:640/format:webp/1*SZi7OfIhOWRrzDeIk9hQqA.gif)
 
 ## Stretch Features
 
 - Support for other SQL databases: our current solution supports PostgreSQL databases with URIs, we would like to eventually support more database types.
+- More monitors! We have queries set up on the backend to return statistical data on any column holding numbers, but haven't yet implemented that on the frontend.
 - Query helper: we would like to incorporate a query helper that would assist in ensuring efficient and correct queries are being made.
 - Dark mode: styling to accommodate other color schemes.
 - Settings: additional settings for the app such as notification sounds.
