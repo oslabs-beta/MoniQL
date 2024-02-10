@@ -15,8 +15,8 @@ import {
 } from '@mui/material';
 import tokens from '../components/stylesheets/Themes';
 import RangeMonitor from '../components/monitors/RangeMonitor';
-import FreshnessMonitor from '../components/monitors/FreshnessMonitor';
-import VolumeMonitor from '../components/monitors/VolumeMonitor';
+// import FreshnessMonitor from '../components/monitors/FreshnessMonitor'; //freshness and volume monitors are under construction. Commented out here and on lines 32, 306 & 307 to prevent errors.
+// import VolumeMonitor from '../components/monitors/VolumeMonitor';
 import CustomMonitor from '../components/monitors/CustomMonitor';
 import NullMonitor from '../components/monitors/NullMonitor';
 import { addAlertsActionCreator } from '../actions/actions';
@@ -29,7 +29,7 @@ const MonitorContainer = () => {
   const colors = tokens(theme.palette.mode);
   const dispatch = useDispatch();
   const [selectedMonitor, setSelectedMonitor] = useState('');
-  const monitors = ['Range', 'Freshness', 'Volume', 'Null', 'Custom'];
+  const monitors = ['Range', /*'Freshness', 'Volume',*/ 'Null', 'Custom']; //freshness and volume monitors are under construction. Commented out here and on lines 306 & 307 to prevent errors.
   const activeMonitors = useSelector((state) => state.monitor.activeMonitors);
   const displayMonitors = useSelector((state) => state.monitor.displayMonitors);
   const user_id = useSelector((state) => state.user.user_id);
@@ -51,6 +51,7 @@ const MonitorContainer = () => {
   // };
 
   const handleSaveChanges = (updatedMonitor) => {
+    
     setNewActiveMonitors((prevMonitors) =>
       prevMonitors.map((monitor) =>
         monitor.monitor_id === updatedMonitor.monitor_id
@@ -58,6 +59,7 @@ const MonitorContainer = () => {
           : monitor
       )
     );
+    console.log('%%%%% UPDATED MONITOR%%%%%', updatedMonitor)
     updateMonitorQuery(updatedMonitor);
     // Exit the editing mode
     setEditingMonitor(null);
@@ -301,10 +303,10 @@ const MonitorContainer = () => {
             }}
           >
             {selectedMonitor === 'Range' && <RangeMonitor />}
-            {selectedMonitor === 'Freshness' && <FreshnessMonitor />}
-            {selectedMonitor === 'Volume' && <VolumeMonitor />}
             {selectedMonitor === 'Null' && <NullMonitor />}
             {selectedMonitor === 'Custom' && <CustomMonitor />}
+            {/* {selectedMonitor === 'Freshness' && <FreshnessMonitor />} //these two are still works in progress. The logic is mostly set up on the back end but has not been fully tested.
+            {selectedMonitor === 'Volume' && <VolumeMonitor />} */}       
           </Box>
         </Card>
       </Box>
