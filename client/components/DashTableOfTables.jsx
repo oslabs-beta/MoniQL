@@ -65,6 +65,8 @@ const DashTableOfTables = () => {
     console.log('dashMonitorData updated', dashMonitorData);
   }, [dashMonitorData]);
 
+  let mostRecentUpdate;
+
   const getDashMonitorData = () => {
 
     const newDashMonitorData = { ...dashMonitorData };
@@ -74,16 +76,27 @@ const DashTableOfTables = () => {
     alerts.forEach((alertObj) => {  
       const { table, resolved, display, monitorType } = alertObj;
       // console.log('table in getDashMonitorData in dashToT', table, 'resolved', resolved, 'display', display, 'monitorType', monitorType)
-      if(newDashMonitorData[table]) {
-        newDashMonitorData[table].numAlerts++;
-        resolved ? newDashMonitorData[table].numResolved++ : newDashMonitorData[table].numUnresolved++;
-        display ? newDashMonitorData[table].numNotDismissed++ : newDashMonitorData[table].numDismissed++;
-        newDashMonitorData[table][`num${monitorType}`]++;
+    
+      if(!didGetDashMonitorData){
+        if(newDashMonitorData[table]){ 
+          newDashMonitorData[table].numAlerts++;
+          resolved ? newDashMonitorData[table].numResolved++ : newDashMonitorData[table].numUnresolved++;
+          display ? newDashMonitorData[table].numNotDismissed++ : newDashMonitorData[table].numDismissed++;
+          newDashMonitorData[table][`num${monitorType}`]++;
+        }
+      } else if(alertObj.updated_at > mostRecentUpdate){
+        if(newDashMonitorData[table]){
+          newDashMonitorData[table].numAlerts++;
+          resolved ? newDashMonitorData[table].numResolved++ : newDashMonitorData[table].numUnresolved++;
+          display ? newDashMonitorData[table].numNotDismissed++ : newDashMonitorData[table].numDismissed++;
+          newDashMonitorData[table][`num${monitorType}`]++;
+        }
       }
     });
 
     setDashMonitorData(newDashMonitorData);
     setDidGetDashMonitorData(true);
+    mostRecentUpdate = Date.now();
   };
 
   // columns:
