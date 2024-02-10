@@ -358,8 +358,8 @@ monitorController.scheduleMonitors = async (req, res, next) => {
       console.log('*********INITIAL MONITOR PULL*********',monitor)
       const { type, parameters } = monitor
       
-      // const cronExpression = `*/${parameters.frequency} * * * * ` //uncomment this line and comment out below to translate monitor freq to minute column for development.
-      const cronExpression = `0 */${parameters.frequency} * * * `
+      const cronExpression = `*/${parameters.frequency} * * * * ` //uncomment this line and comment out below to translate monitor freq to minute column for development.
+      // const cronExpression = `0 */${parameters.frequency} * * * `
       // const monitorFunction = monitorController.range
       console.log('CRON EXPRESSION:', cronExpression)
       const req = {parameters: parameters, user_id: user_id}
