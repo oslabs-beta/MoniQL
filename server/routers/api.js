@@ -27,7 +27,7 @@ router.post('/getMonitors', userController.getMonitors, (req, res) => {res.statu
 
 router.post('/monitors', userController.insertMonitor, monitorController.scheduleMonitors, userController.getMonitors, (req, res) => {res.status(200).json(res.locals.monitors)});
 
-router.put('/monitors', userController.updateMonitor, (req, res) => {res.status(200).json(res.locals.monitors)});
+router.put('/monitors', userController.updateMonitor, monitorController.scheduleMonitors, (req, res) => {res.status(200).json(res.locals.monitors)});
 
 router.post('/alerts', userController.getAlerts, (req, res) => {res.status(200).json(res.locals.allAlerts)});
 

@@ -348,28 +348,52 @@ monitorController.custom = async (req, res, next) => {
   }
 };
 
+monitorController.monitorSchedule = new Map()
+
 monitorController.scheduleMonitors = async (req, res, next) => {
   const monitors = res.locals.monitors
-  const user_id = res.locals.user_id
-  console.log(`$$$$$$$$ USER_ID IN SCHEDULE MONITORS IS ${user_id} $$$$$$$$`)
+  // const user_id = res.locals.user_id
+ 
+  // console.log(`$$$$$$$$ USER_ID IN SCHEDULE MONITORS IS ${user_id} $$$$$$$$`)
   
   if (monitors.length) {
     monitors.forEach((monitor, i) => {
       console.log('*********INITIAL MONITOR PULL*********',monitor)
-      const { type, parameters } = monitor
+      const { type, parameters, monitor_id, user_id } = monitor
+     
       
-      const cronExpression = `*/${parameters.frequency} * * * * ` //uncomment this line and comment out below to translate monitor freq to minute column for development.
-      // const cronExpression = `0 */${parameters.frequency} * * * `
-      // const monitorFunction = monitorController.range
-      console.log('CRON EXPRESSION:', cronExpression)
+      
+      // console.log('CRON EXPRESSION:', cronExpression)
       const req = {parameters: parameters, user_id: user_id}
       console.log('TYPE:', type.toLowerCase())
       const monitorFunction = monitorController[type.toLowerCase()]
       
       // Calculate delay based on index to stagger execution
-      const delay = i * 2000; // 2 seconds apart for each monitor
-
-      cron.schedule(cronExpression, async () => {
+      // const delay = monitorController.monitorSchedule.size * 2000; // 2 seconds apart for each monitor
+      
+      //Check if a monitor currently in the schedule has the current monitor_id
+      //if it does we will replace the existing scheduled monitor 
+      //this allows us to edit monitors that are currently scheduled
+      
+      if (!monitorController.monitorSchedule.has(user_id)){
+        monitorController.monitorSchedule.set(user_id, new Map());
+      }
+      const userSchedule = monitorController.monitorSchedule.get(user_id)
+      
+      
+      if (userSchedule.has(monitor_id)){
+        console.log(`******** REPLACING MONITOR WITH ID ${monitor_id} *************`)
+        const existingMonitor = userSchedule.get(monitor_id)
+        existingMonitor.stop();
+        userSchedule.delete(monitor_id)
+      }
+      
+      const cronExpression = `*/${parameters.frequency} * * * * ` //uncomment this line and comment out below to translate monitor freq to minute column for development.
+      // const cronExpression = `0 */${parameters.frequency} * * * `
+      
+      const delay = userSchedule.size * 2000 // 2 seconds apart for each monitor
+      
+      const newTask = cron.schedule(cronExpression, async () => {
         console.log(`Executing task for ${type}-type monitor with frequency: ${parameters.frequency} minutes`)
         // monitorController.test(req)
 
@@ -395,9 +419,11 @@ monitorController.scheduleMonitors = async (req, res, next) => {
 
 
       }, {scheduled: true})
-      
+      userSchedule.set(monitor_id, newTask);
     })
+    
   }
+  console.log('$$$$$$$ THIS IS THE SCHEDULED MONITORS $$$$$$$$', monitorController.monitorSchedule)
   return next(); 
 }
 
