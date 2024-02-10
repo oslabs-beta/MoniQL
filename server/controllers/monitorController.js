@@ -348,39 +348,33 @@ monitorController.custom = async (req, res, next) => {
   }
 };
 
+//Create state-like Map object for storing each user's Map of active monitors.
 monitorController.monitorSchedule = new Map()
 
 monitorController.scheduleMonitors = async (req, res, next) => {
   const monitors = res.locals.monitors
-  // const user_id = res.locals.user_id
- 
-  // console.log(`$$$$$$$$ USER_ID IN SCHEDULE MONITORS IS ${user_id} $$$$$$$$`)
   
+  //iterate through the active monitors array. In the case of editing a monitor, the array will only have length 1
   if (monitors.length) {
     monitors.forEach((monitor, i) => {
-      console.log('*********INITIAL MONITOR PULL*********',monitor)
+
       const { type, parameters, monitor_id, user_id } = monitor
-     
-      
-      
-      // console.log('CRON EXPRESSION:', cronExpression)
+    
+      //create the mock req object to send to middleware that have been upgraded to optionally take a direct call
       const req = {parameters: parameters, user_id: user_id}
-      console.log('TYPE:', type.toLowerCase())
+      
+      //determine which function to make direct call to at scheduled monitor time
       const monitorFunction = monitorController[type.toLowerCase()]
       
-      // Calculate delay based on index to stagger execution
-      // const delay = monitorController.monitorSchedule.size * 2000; // 2 seconds apart for each monitor
-      
-      //Check if a monitor currently in the schedule has the current monitor_id
-      //if it does we will replace the existing scheduled monitor 
-      //this allows us to edit monitors that are currently scheduled
-      
+      //check whether there is already a Map of scheduled monitors set up for the current user, if not create one.
       if (!monitorController.monitorSchedule.has(user_id)){
         monitorController.monitorSchedule.set(user_id, new Map());
       }
       const userSchedule = monitorController.monitorSchedule.get(user_id)
       
-      
+      //Check if a monitor currently in the user's schedule has the current monitor_id
+      //if it does we will replace the existing scheduled monitor 
+      //this allows us to edit monitors that are currently scheduled
       if (userSchedule.has(monitor_id)){
         console.log(`******** REPLACING MONITOR WITH ID ${monitor_id} *************`)
         const existingMonitor = userSchedule.get(monitor_id)
@@ -388,18 +382,20 @@ monitorController.scheduleMonitors = async (req, res, next) => {
         userSchedule.delete(monitor_id)
       }
       
-      const cronExpression = `*/${parameters.frequency} * * * * ` //uncomment this line and comment out below to translate monitor freq to minute column for development.
-      // const cronExpression = `0 */${parameters.frequency} * * * `
+      // const cronExpression = `*/${parameters.frequency} * * * * ` //uncomment this line and comment out below to translate monitor freq to minute column for development.
+      const cronExpression = `0 */${parameters.frequency} * * * `
       
-      const delay = userSchedule.size * 2000 // 2 seconds apart for each monitor
+      const delay = userSchedule.size * 2000 // 2 seconds apart for each monitor -- ensures a delay for each monitor with same frequency. 
       
+      //begin scheduling logic with cron. takes a cron expression from above and a callback function to be executed at scheduled time interval
       const newTask = cron.schedule(cronExpression, async () => {
         console.log(`Executing task for ${type}-type monitor with frequency: ${parameters.frequency} minutes`)
-        // monitorController.test(req)
 
         // Delay the execution of the task
         await new Promise(resolve => setTimeout(resolve, delay));
 
+        // Make direct call to middleware function of monitor's type. if anomalous values are found, socket emits signal to client associated with user_id
+        //then we save alerts to the db to b pulled up on login
         const getAlerts = async () => {
           try {
             const alerts = await monitorFunction(req, null, null)
@@ -415,10 +411,9 @@ monitorController.scheduleMonitors = async (req, res, next) => {
           }
         };
         getAlerts()
-        console.log(req)
-
-
       }, {scheduled: true})
+      
+      //finally, add the monitor_id and associated nodecron task as keyvalue pairs to the user's schedule Map
       userSchedule.set(monitor_id, newTask);
     })
     
