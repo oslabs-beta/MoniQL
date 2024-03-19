@@ -219,7 +219,7 @@ const LoginContainer = ({ closeLogin }) => {
                 margin='normal'
                 required
                 fullWidth
-                label='SQL'
+                label='(URI of PostgresQL DB to Monitor)'
                 id='uri'
                 value={uri}
                 onChange={(e) => setUri(e.target.value)}
